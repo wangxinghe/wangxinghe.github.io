@@ -19,7 +19,7 @@ Android Studio是基于IntelliJ IDEA的android开发环境。在IntelliJ的基�
 - 内置支持Google Cloud Platform,易于嵌入Google云消息和App引擎
 
 ##### Android Studio vs. Eclipse ADT 
-![](http://ww4.sinaimg.cn/mw690/785c69ebgw1elx0fevdsrj20lb06fdht.jpg)
+![](/image/2014-11-02-android-studio/android studio vs. eclipse.jpg)
 
 ##### Update from older versions
 Help -> Check for updates
@@ -43,8 +43,8 @@ Help -> Check for updates
 基本操作类似于Eclispe.
 File->Setting->Keymap可以修改快捷键。下图为常用的Studio快捷键指令：
 
-![Programming](http://ww2.sinaimg.cn/mw690/785c69ebgw1elx1beg2cyj20lb0b4gqx.jpg)
-![Project](http://ww3.sinaimg.cn/mw690/785c69ebgw1elx1bmmbv9j20la068wh3.jpg)
+![](/image/2014-11-02-android-studio/Programming key command.jpg)
+![](/image/2014-11-02-android-studio/Project and editor key command.jpg)
 
 ### 5. Using the Android Project View
 Studio左侧导航栏可以选择试图。Project和Android视图结构不一样，
@@ -96,7 +96,7 @@ Project顶层有一个build.gradle文件，每个module也分别含有对应的b
 
 - 默认module(app)
 - 选择File -> New Module -> Android Lib ->Next（依赖module: lib）
-- 添加依赖关系.在app/build.gradle中添加依赖关系
+- 添加依赖关系.在app/build.gradle中添加依赖关系  
 
 		dependencies {
 			compile project(":lib")

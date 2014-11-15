@@ -1,11 +1,18 @@
 ---
 layout: page
-title: About
-permalink: /about/
+title: About Me
+footer: false
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+入行2年的Android程序媛  
+爱编程，爱开源，爱社区，文艺范。
 
-You can find the source code for the Jekyll new theme at: [github.com/jglovier/jekyll-new](https://github.com/jglovier/jekyll-new)
+<br/>
+<br/>
 
-You can find the source code for Jekyll at [github.com/jekyll/jekyll](https://github.com/jekyll/jekyll)
+###联系方式：        
+
+个人邮箱: [wangxingheks@gmail.com](mailto:wangxingheks@gmail.com)     
+新浪微博: [星bupt荷](http://weibo.com/u/2019322347)	  
+github : [wangxinghe](https://github.com/wangxinghe)       
+twitter: [wangxinghe](https://twitter.com/wangxinghe1988)
