@@ -2,8 +2,8 @@
 layout: post
 title: "Android Studio学习笔记"
 description: "Android Studio学习笔记"
-category: jekyll
-tags: [android]
+category: android
+tags: [Android]
 ---
 
 
