@@ -4,8 +4,8 @@ title: About Me
 footer: false
 ---
 
-入行2年的Android程序媛  
-爱编程，爱开源，爱社区，文艺范。
+Android程序媛，爱编程，爱开源，爱社区，文艺范。
+全栈发展中。。。
 
 <br/>
 <br/>
