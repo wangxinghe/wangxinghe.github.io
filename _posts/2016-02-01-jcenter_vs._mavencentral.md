@@ -1,4 +1,10 @@
-#JCenter vs. mavenCentral
+---
+layout: post
+title: "jcenter vs. mavenCentral"
+description: "jcenter vs. mavenCentral"
+category: android
+tags: [Android]
+---
 
 `jcenter()`和`mavenCentral()`是Android Studio中Gradle插件使用的仓库
 
