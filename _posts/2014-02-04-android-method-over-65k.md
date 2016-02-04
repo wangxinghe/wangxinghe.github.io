@@ -105,6 +105,7 @@ ART运行时只进行如下操作：
    IDE中可以先Sync一下工程，再在Build Variant选择特定的包进行构建：
    
   ![pic](/image/2014-02-04-android-methods-over-65k/studio-build-variant.png)
+
 #### 4. 测试    
 
 使用MultiDexTestRunner进行测试（在Gradle1.1之前，需要添加下面的dependencies），先进行配置：
