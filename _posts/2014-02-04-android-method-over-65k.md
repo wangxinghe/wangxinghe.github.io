@@ -18,6 +18,7 @@ tags: [Android]
  MultiDex使用方法如下：
  
  在build.gradle中进行如下配置
+ 
      android {
         compileSdkVersion 21
         buildToolsVersion "21.1.0"
@@ -52,6 +53,7 @@ tags: [Android]
 或者extends MultiDexApplication，并在attachBaseContext() 方法中添加MultiDex.install(this)
 
 （2）动态加载（后续研究）
+
 #####限制条件：
 multi support library在某些情况下可能存在问题，如：
 
