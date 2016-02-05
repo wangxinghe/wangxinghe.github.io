@@ -7,7 +7,7 @@
 
 url: http://wangxinghe.github.io
 title: 某学姐
-subtitle: 技术范儿~~~
+subtitle: 技术范儿~~~，(微博：某学姐)
 author: wangxinghe
 simple_search: http://google.com/search
 description: wangxinghe's blog
@@ -47,7 +47,7 @@ rouge: true# default python pygments have been replaced by pygments.rb
 
 gems: [jekyll-paginate]
 paginate: 5
-paginate_path: "page:num"
+#paginate_path: "page:num"
 #paginate: 8          # Posts per page on the blog index
 pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
 recent_posts: 8       # Posts in the sidebar Recent Posts section
