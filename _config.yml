@@ -43,7 +43,7 @@ permalink: /blog/:year-:month-:day/:title/
 plugins_dir: plugins
 markdown: kramdown
 lsi: false
-highlighter: true# default python pygments have been replaced by pygments.rb
+rouge: true# default python pygments have been replaced by pygments.rb
 
 gems: [jekyll-paginate]
 paginate: 5
