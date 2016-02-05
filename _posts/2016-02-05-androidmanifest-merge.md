@@ -9,7 +9,7 @@ tags: [Android]
 
 Android Studio工程通常包含多个`AndroidManifest`文件，最终构建成APK时，会合并成一个`AndroidManifest`文件。但是可能很多人应该都不知道是怎么合并的，本文将为大家揭开神秘面纱。
 
-##### 1. 合并冲突规则（merge conflict rules）
+### 1. 合并冲突规则（merge conflict rules）
 
 合并冲突，是指多个Manifest文件中含有同一属性但值不同时，默认合并规则解决不了从而导致的冲突。
 
@@ -30,7 +30,7 @@ Android Studio工程通常包含多个`AndroidManifest`文件，最终构建成A
 5. 每个Manifest文件只和其子Manifest文件的属性合并
 6. `<intent-filter>`的合并规则是叠加而不是覆盖
 
-##### 2. 合并冲突标记和选择器（merge conflict marker&selector）
+### 2. 合并冲突标记和选择器（merge conflict marker&selector）
 
 合并冲突标记，是android tools namespace中的一个属性，用来解决默认冲突规则解决不了的冲突。
 
@@ -111,7 +111,7 @@ Library manifest:
            ...
            
            
-##### 3. 向AndroidManifest文件注入build变量值
+### 3. 向AndroidManifest文件注入build变量值
 
 注入`build`变量值通常需要使用manifestPlaceholders，`applicationId`属性除外。另外支持部分注入，如`android:authority="com.acme.${localApplicationId}.foo"`.
 
@@ -163,7 +163,7 @@ Placeholder in the manifest file:
 
     <activity android:name=".MainActivity" android:label="${activityLabel}" >
     
-##### 4. 基于product favors group的合并（貌似没咋看懂，有知道的朋友可以告诉我～）
+### 4. 基于product favors group的合并（貌似没咋看懂，有知道的朋友可以告诉我～）
 
 ![](/image/2016-02-05-manifest-merge/manifest_merge_across_product_flovor_group.png)
 
@@ -171,13 +171,13 @@ AndroidManifest合并顺序为：
 
     prod-paid -> API-22-> density-mdpi -> ABI-x86
     
-##### 5. 关于隐藏的权限
+### 5. 关于隐藏的权限
 
 当导入的library工程里隐含一些默认的权限时，合并过程会把这些默认权限加进来，以保证不同版本的sdk能够正常运行。如：
 
 ![](/image/2016-02-05-manifest-merge/sdk_version_permission.png)
 
-##### 6. 关于merge错误处理
+### 6. 关于merge错误处理
 
 程序构建过程中，合并过程生成日志位于`build/outputs/logs`的`manifest-merger-<productFlavor>-report.txt`
 
