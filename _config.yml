@@ -40,10 +40,10 @@ safe: true
 #auto: true
 #root: /
 permalink: /blog/:year-:month-:day/:title/
-plugins: plugins
+plugins_dir: plugins
 markdown: kramdown
 lsi: false
-pygments: true# default python pygments have been replaced by pygments.rb
+highlighter: true# default python pygments have been replaced by pygments.rb
 
 paginate: 8          # Posts per page on the blog index
 pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
