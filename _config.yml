@@ -37,7 +37,7 @@ about_path: /about/
 
 # If publishing to a subdirectory as in http://site.com/project set 'root: /project'
 safe: true
-#auto: true
+auto: true
 #root: /
 permalink: /blog/:year-:month-:day/:title/
 plugins_dir: plugins
@@ -45,10 +45,10 @@ markdown: kramdown
 lsi: false
 rouge: true# default python pygments have been replaced by pygments.rb
 
-gems: [jekyll-paginate]
-paginate: 5
-#paginate_path: "page:num"
-#paginate: 8          # Posts per page on the blog index
+#gems: [jekyll-paginate]
+#paginate: 5
+paginate_path: "page:num"
+paginate: 8          # Posts per page on the blog index
 pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
 recent_posts: 8       # Posts in the sidebar Recent Posts section
 excerpt_link: "Read on &rarr;"  # "Continue reading" link text at the bottom of excerpted articles
