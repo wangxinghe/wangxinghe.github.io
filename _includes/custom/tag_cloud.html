@@ -1,0 +1,44 @@
+{% assign tag_cloud_max_font_size = 1.0 %}
+{% assign tag_cloud_min_font_size = 0.6 %}
+{% assign tag_cloud_font_unit = 'em' %}
+{% capture size_interval %}{{ tag_cloud_max_font_size | minus: tag_cloud_min_font_size }}{% endcapture %}
+
+{% comment %}
+{% assign max_count = 0 %}
+{% for tag in site.tags %}
+    {% if tag[1].size > max_count %}
+        {% assign max_count = tag[1].size %}
+    {% endif %}
+{% endfor %}
+
+{% assign min_count = max_count %}
+{% for tag in site.tags %}
+    {% if tag[1].size < min_count %}
+        {% assign min_count = tag[1].size %}
+    {% endif %}
+{% endfor %}
+{% endcomment %}
+
+{% capture min_count %}{{ site.tags | first | last | size }}{% endcapture %}
+{% assign max_count = min_count %}
+{% for tag in site.tags %}
+    {% capture post_count %}{{ tag | last | size }}{% endcapture %}
+    {% if post_count > max_count %}
+        {% assign max_count = post_count %}
+    {% endif %}
+    {% if post_count < min_count %}
+        {% assign min_count = post_count %}
+    {% endif %}
+{% endfor %}
+
+{% capture count_interval %}{{ max_count | minus: min_count }}{% endcapture %}
+{% for tag in site.tags %}
+    {% capture current_count %}{{ tag[1].size | minus: min_count }}{% endcapture %}
+    {% capture current_size %}{{ current_count | times: size_interval | divide_by: count_interval | plus: tag_cloud_min_font_size }}{% endcapture %}
+    {% comment %}
+    "{font-size: {{ current_size }}{{ tag_cloud_font_unit }}}{{ tag | first }}":tag.html#{{ tag | first }}
+    {% endcomment %}
+    {% capture current_post_count %}{{ current_count | plus: 1 }} {% endcapture %}
+    {% capture current_line_height %}{{ current_size | plus: tag_cloud_min_font_size }}{% endcapture %}
+    <a href="{{ root_url }}{{ site.tags_path }}#{{ tag[0] }}-ref"><span style="line-height:{{ current_line_height }}{{ tag_cloud_font_unit }}; font-size:{{ current_size }}{{ tag_cloud_font_unit }};white-space:nowrap;">{{ tag | first }}({{ current_post_count }})</span></a>
+{% endfor %}

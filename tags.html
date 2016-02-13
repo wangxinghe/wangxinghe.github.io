@@ -1,0 +1,16 @@
+---
+layout: page
+title: Tags
+footer: false
+---
+
+<div id="blog-archives">
+    {% for tag in site.tags %}
+        <h3 id="{{ tag[0] }}-ref">{{ tag[0] }}<span>({{ tag[1].size }})</span></h3>
+        {% for post in tag[1] %}
+            <article>
+            {% include archive_post.html %}
+            </article>
+        {% endfor %}
+    {% endfor %}
+</div>

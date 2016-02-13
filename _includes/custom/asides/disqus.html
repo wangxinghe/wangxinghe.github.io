@@ -1,0 +1,9 @@
+{% if site.disqus_short_name %}
+<section>
+    <div id="recentcomments" class="dsq-widget">
+        <h1 class = "dsq-widget-title">Recent Comments</h1>
+        <script type = "text/javascript" src = "http://{{ site.disqus_short_name }}.disqus.com/recent_comments_widget.js?num_items={{ site.disqus_aside_comment_count }}&hide_avatars=0&avatar_size={{ site.disqus_aside_avatar_size }}&excerpt_length={{ site.disqus_aside_comment_excerpt_length }}"></script>
+    </div>
+    <a href="http://disqus.com/">Powered by Disqus</a>
+</section>
+{% endif %}

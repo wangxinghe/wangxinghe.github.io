@@ -1,0 +1,29 @@
+---
+layout: default
+---
+
+<div class="blog-index">
+  {% assign index = true %}
+  {% for post in paginator.posts %}
+  {% assign content = post.content %}
+    <article>
+      {% include article.html %}
+    </article>
+  {% endfor %}
+  <div class="pagination">
+    {% if paginator.previous_page %}
+        {%if paginator.previous_page == 1 %}
+            <a class="next" href="/">Newer &rarr;</a>
+        {% else %}
+            <a class="next" href="/page{{paginator.previous_page}}">Newer &rarr;</a>
+        {% endif %}
+    {% endif %}
+    <a href="/archives.html">Blog Archives</a>
+    {% if paginator.next_page %}
+      <a class="prev" href="/page{{paginator.next_page}}">&larr; Older</a>
+    {% endif %}
+  </div>
+</div>
+<aside class="sidebar">
+    {% include kerberos/asides.html %}
+</aside>

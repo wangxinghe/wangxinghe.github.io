@@ -1,0 +1,20 @@
+{% assign tags_list = page.tags %}
+{% if tags_list.first[0] == null %}
+    {% comment %}
+        {% for tag in tags_list %} 
+            <a href="{{ root_url }}{{ site.tags_path }}#{{ tag }}-ref">{{ tag }} <span>{{ site.tags[tag].size }}</span></a>
+        {% endfor %}
+    {% endcomment %}
+    {% for tag in tags_list %} 
+        <a href="{{ root_url }}{{ site.tags_path }}#{{ tag }}-ref">{{ tag }}</span></a>
+    {% endfor %}
+{% else %}
+    {% comment %}
+        {% for tag in tags_list %} 
+            <a href="{{ root_url }}{{ site.tags_path }}#{{ tag[0] }}-ref">{{ tag[0] }} <span>{{ tag[1].size }}</span></a>
+        {% endfor %}
+    {% endcomment %}
+    {% for tag in tags_list %} 
+        <a href="{{ root_url }}{{ site.tags_path }}#{{ tag[0] }}-ref">{{ tag[0] }}</span></a>
+    {% endfor %}
+{% endif %}
