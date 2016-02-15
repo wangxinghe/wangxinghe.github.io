@@ -18,6 +18,6 @@ github : [某学姐](https://github.com/wangxinghe)
 twitter: [某学姐](https://twitter.com/wangxinghe1988)
 
 
-如果你觉得我的文章对你有帮助，可以请我喝杯一杯咖啡。
+如果你觉得我的文章对你有帮助，可以请我喝一杯咖啡。
 
 ![zhifubao](/images/zhifubao.jpg)
