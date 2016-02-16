@@ -200,3 +200,9 @@ Error log:
     Attribute activity@screenOrientation value=(portrait) from AndroidManifest.xml:3:9
     is also present at flavorlib:lib1:unspecified:3:18 value=(landscape)
     Suggestion: add 'tools:replace="icon"' to element at AndroidManifest.xml:1:5 to override
+    
+### 参考文档
+
+1.[http://developer.android.com/intl/zh-cn/tools/building/manifest-merge.html][manifest-merge]
+
+[manifest-merge]: http://developer.android.com/intl/zh-cn/tools/building/manifest-merge.html "manifest-merge"
