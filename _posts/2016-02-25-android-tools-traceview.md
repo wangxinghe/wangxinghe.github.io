@@ -59,7 +59,7 @@ tags: [Android]
 #### 参考文献：
 (0) [http://developer.android.com/intl/zh-cn/tools/performance/traceview/index.html](http://developer.android.com/intl/zh-cn/tools/performance/traceview/index.html)    
 (1) [http://developer.android.com/intl/zh-cn/tools/debugging/debugging-tracing.html](http://developer.android.com/intl/zh-cn/tools/debugging/debugging-tracing.html)    
-(2) [http://jwzhangjie.cn/page/7/](http://jwzhangjie.cn/page/7/)    
+(2) [http://jwzhangjie.cn/2015/07/14/android%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/](http://jwzhangjie.cn/2015/07/14/android%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D/)    
 (3) [http://myeyeofjava.iteye.com/blog/2250801](http://myeyeofjava.iteye.com/blog/2250801)    
 (4) [http://stackoverflow.com/questions/6476991/android-eclipse-traceview-i-just-dont-get-it](http://stackoverflow.com/questions/6476991/android-eclipse-traceview-i-just-dont-get-it)    
 (5) [http://stackoverflow.com/questions/28125441/how-to-understanding-callsrecurcalls-total-in-android-traceview-tool/28149711#28149711](http://stackoverflow.com/questions/28125441/how-to-understanding-callsrecurcalls-total-in-android-traceview-tool/28149711#28149711)    
