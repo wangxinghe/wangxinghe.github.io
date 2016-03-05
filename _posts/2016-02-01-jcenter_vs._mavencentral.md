@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "jcenter vs. mavenCentral"
 description: "jcenter vs. mavenCentral"
 category: android

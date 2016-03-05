@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "关于Android Studio项目的Gradle构建"
 description: "关于Android Studio项目的Gradle构建"
 category: android

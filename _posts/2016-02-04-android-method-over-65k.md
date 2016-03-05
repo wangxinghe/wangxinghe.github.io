@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "构建方法数超过65K的应用"
 description: "构建方法数超过65K的应用"
 category: android

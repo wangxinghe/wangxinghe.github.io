@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "AndroidManifest合并原理"
 description: "AndroidManifest合并原理"
 category: android

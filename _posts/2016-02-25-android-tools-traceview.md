@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "TraceView性能优化工具使用"
 description: "TraceView性能优化工具使用"
 category: android

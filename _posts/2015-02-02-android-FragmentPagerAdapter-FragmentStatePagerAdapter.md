@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "FragmentPagerAdapter和FragmentStatePagerAdapter分析"
 description: "Fragment相关"
 category: android

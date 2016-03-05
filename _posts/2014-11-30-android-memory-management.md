@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "Android内存管理"
 description: "Android内存管理"
 category: android

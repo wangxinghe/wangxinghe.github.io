@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "Android Studio学习笔记"
 description: "Android Studio学习笔记"
 category: android
