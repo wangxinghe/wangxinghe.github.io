@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title: "Github博客搭建"
 description: "Github博客搭建"
 category: jekyll
