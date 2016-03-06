@@ -30,7 +30,7 @@ LayoutManager获取Adapter某一项的View时会使用Recycler。当复用的Vie
 
 在分析Recycler的复用原理之前，我们先了解下如下两个类：
 
-####`RecycledViewPool`
+#### `RecycledViewPool`
 
 RecyclerViewPool用于多个RecyclerView之间共享View。只需要创建一个RecyclerViewPool实例，然后调用RecyclerView的`setRecycledViewPool(RecycledViewPool)`方法即可。RecyclerView默认会创建一个RecyclerViewPool实例。
 
