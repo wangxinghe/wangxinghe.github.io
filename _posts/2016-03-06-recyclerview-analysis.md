@@ -12,10 +12,13 @@ tags: [Android]
 
 **`AdapterView` vs. `RecyclerView`**
 
-* Item复用方面－`RecyclerView`内置了`RecyclerViewPool`、多级缓存、`ViewHolder`，而`AdapterView`需要       手动添加`ViewHolder`且复用功能也没`RecyclerView`更加完善    
-* 样式丰富方面－`RecyclerView`通过支持水平、垂直和表格列表及其他更复杂形式，而`AdapterView`只支持具体某一种    
-* 效果增强方面－`RecyclerView`内置了`ItemDecoration`和`ItemAnimator`，可以自定义绘制itemView之间的一些特殊UI或item项数据变化时的动画效果，而用`AdapterView`实现时采取的做法是将这些特殊UI作为itemView的一部分，设置可见不可见决定是否展现，且数据变化时的动画效果没有提供，实现起来比较麻烦    
-* 代码内聚方面－`RecyclerView`将功能密切相关的类写成内部类，如`ViewHolder`，`Adapter`，而`AdapterView`没有
+* **Item复用方面**：`RecyclerView`内置了`RecyclerViewPool`、多级缓存、`ViewHolder`，而`AdapterView`需要       手动添加`ViewHolder`且复用功能也没`RecyclerView`更加完善
+    
+* **样式丰富方面**：`RecyclerView`通过支持水平、垂直和表格列表及其他更复杂形式，而`AdapterView`只支持具体某一种
+    
+* **效果增强方面**：`RecyclerView`内置了`ItemDecoration`和`ItemAnimator`，可以自定义绘制itemView之间的一些特殊UI或item项数据变化时的动画效果，而用`AdapterView`实现时采取的做法是将这些特殊UI作为itemView的一部分，设置可见不可见决定是否展现，且数据变化时的动画效果没有提供，实现起来比较麻烦
+    
+* **代码内聚方面**：`RecyclerView`将功能密切相关的类写成内部类，如`ViewHolder`，`Adapter`，而`AdapterView`没有
 
 ### 1. Recycler
 （1）Recycler简介
