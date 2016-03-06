@@ -29,7 +29,9 @@ LayoutManager获取Adapter某一项的View时会使用Recycler。当复用的Vie
 （2）原理解析
 
 在分析Recycler的复用原理之前，我们先了解下如下两个类：
+
 ####`RecycledViewPool`
+
 RecyclerViewPool用于多个RecyclerView之间共享View。只需要创建一个RecyclerViewPool实例，然后调用RecyclerView的`setRecycledViewPool(RecycledViewPool)`方法即可。RecyclerView默认会创建一个RecyclerViewPool实例。
 
         public static class RecycledViewPool {
@@ -136,7 +138,9 @@ RecyclerViewPool用于多个RecyclerView之间共享View。只需要创建一个
     }
     
 通过源码我们可以看出`mScrap`是一个<viewType, List<ViewHolder>>的映射，`mMaxScrap`是一个<viewType, maxNum>的映射，这两个成员变量代表可复用View池的基本信息。调用`setMaxRecycledViews(int viewType, int max)`时，当用于复用的`mScrap`中viewType对应的ViewHolder个数超过maxNum时，会从列表末尾开始丢弃超过的部分。调用`getRecycledView(int viewType)`方法时从`mScrap`中移除并返回viewType对应的List<ViewHolder>的末尾项。
+
 #### `ViewCacheExtension`
+
 `ViewCacheExtension`是一个由开发者控制的可以作为View缓存的帮助类。调用Recycler.getViewForPosition(int)方法获取View时，Recycler先检查attached scrap和一级缓存，如果没有则检查`ViewCacheExtension.getViewForPositionAndType(Recycler, int, int)`，如果没有则检查RecyclerViewPool。注意：Recycler不会在这个类中做缓存View的操作，是否缓存View完全由开发者控制。
 
     public abstract static class ViewCacheExtension {
@@ -177,7 +181,9 @@ ViewHolder缓存列表。
 ### 2. LayoutManager
 `LayoutManager`主要作用是，测量和摆放RecyclerView中itemView，以及当itemView对用户不可见时循环复用处理。
 通过设置Layout Manager的属性，可以实现水平滚动、垂直滚动、方块表格等列表形式。其内部类`Properties`包含了所需要的大部分属性
+
 ### 3. ViewHolder
+
 对于传统的`AdapterView`，需要在实现的Adapter类中手动加`ViewHolder`，`RecyclerView`直接将`ViewHolder`内置，并在原来基础上功能上更强大。
 `ViewHolder`描述RecylerView中某个位置的itemView和元数据信息，属于Adapter的一部分。其实现类通常用于保存`findViewById`的结果。
 主要元素组成有：
@@ -206,9 +212,13 @@ ViewHolder缓存列表。
 `FLAG_TMP_DETACHED`——ViewHolder从父RecyclerView临时分离的标志，便于后续移除或添加回来    
 `FLAG_ADAPTER_POSITION_UNKNOWN`——ViewHolder不知道对应的Adapter的位置，直到绑定到一个新位置    
 `FLAG_ADAPTER_FULLUPDATE`——方法`addChangePayload(null)`调用时设置    
+
 ### 4. Adapter
+
 和`AdapterView`中用到的`BaseAdapter`、`ListAdapter`等作用类似，都是作为itemView和data之间的适配器，将data绑定到某一个itemView上。差别在于，`RecyclerView`将`Adapter`内置作为其内部类，我认为将功能密切相关的类以内部类的形式定义使得代码内聚更好，更便于理解与阅读。
+
 ### 5. ItemDecoration
+
 当我们想在某些item上加一些特殊的UI时，往往都是在itemView中先布局好，然后通过设置可见性来决定哪些位置显示不显示。`RecyclerView`将itemView和装饰UI分隔开来，装饰UI即`ItemDecoration`，主要用于绘制item间的分割线、高亮或者margin等。其源码如下：
 
     public static abstract class ItemDecoration {
@@ -228,9 +238,13 @@ ViewHolder缓存列表。
                     parent);
         }
     }
+
 ### 6. ItemAnimator
+
 过去`AdapterView`的item项操作往往是没有动画的。现在`RecyclerView`的`ItemAnimator`使得item的动画实现变得简单而样式丰富，我们可以自定义item项不同操作（如添加，删除）的动画效果。
+
 ### 7. 触摸事件监听
+
 关于Item项的手势监听事件，如单击和双击没有像其他`AdapterView`一样分别提供具体接口，但是`RecyclerView`提供`OnItemTouchListener`接口和`SimpleOnItemTouchListener`实现类，大家可以通过继承去实现自己想要的单击双击或其他事件监听。
 
 ps：关于`RecyclerView`的具体使用，我提供一个链接供大家参考[RecyclerView技术栈](http://www.jianshu.com/p/16712681731e)。今天就先讲这么多，以后有新的体会会继续补充的，各位期待吧～
