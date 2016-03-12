@@ -44,7 +44,7 @@ Activity是一件单一的、需要注意力的事情。通常用来和用户打
 
 下图是`ApplicationThread`的关系图:
 
-![](/2016-03-12-activity-launch-analysis/application_thread_extend_relation)
+![](/2016-03-12-activity-launch-analysis/application_thread_extend_relation.png)
 
 ### 3.调用流程：
 
