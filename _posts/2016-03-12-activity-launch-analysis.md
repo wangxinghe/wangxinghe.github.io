@@ -16,27 +16,27 @@ tags: [Android]
 
 ### 1.Activity几个重要类：
 
-####（1）Activity    
+#### （1）Activity    
 
 `An activity is a single, focused thing that the user can do.  Almost all activities interact with the user, so the Activity class takes care of creating a window for you in which you can place your UI with {@link #setContentView}.`
 
 Activity是一件单一的、需要注意力的事情。通常用来和用户打交道，为用户创建一个窗口来放置UI。
 
-####（2）Instrumentation
+#### （2）Instrumentation
 
 用于执行具体操作的类，辅助Activity的监控和测试。
 
-####（3）ActivityManagerNative、ActivityManagerProxy、IActivityManager
+#### （3）ActivityManagerNative、ActivityManagerProxy、IActivityManager
 
 我理解是，提供给用户进程，用来与system_process进程的ActivityManagerService打交道的一些类。
 
-####（4）ApplicationThread、ApplicationThreadNative、IApplicationThread
+#### （4）ApplicationThread、ApplicationThreadNative、IApplicationThread
 
 我理解是，ActivityManagerService用来与用户进程打交道的一些类，最终会回调到用户进程。
 
 ### 2.关系梳理：
 
- ![](/2016-03-12-activity-launch-analysis/activity_manager_extend_relation.png)
+ ![](/image/2016-03-12-activity-launch-analysis/activity_manager_extend_relation.png)
 
 `ActivityManager`是用户进程中对应用层开放的类，应用层要完成某项操作，最终都是由system_process进程的`ActivityManagerService`来实现。即`ActivityManager`需要和`ActivityManagerService`进行跨进程通信。Android中IPC通过`Binder`机制实现。`ActivityManagerService`继承于`ActivityManagerNative`，而`ActivityManagerNative`实现`IBinder`和`IActivityManager`接口，一方面具有`IActivityManager`的功能，另一方面作为一个`Binder`实例可以进行IPC操作。`ActivityManagerProxy`的作用是作为`ActivityManagerService`的一个代理，将`ActivityManager`与`ActivityManagerService`解耦合，它也继承`IActivityManager`，这就是典型的代理模式的用法，代理者和被代理者继承相同的接口完成操作，从而client端不知道具体操作是由代理者还是被代理者完成。
 
@@ -44,7 +44,7 @@ Activity是一件单一的、需要注意力的事情。通常用来和用户打
 
 下图是`ApplicationThread`的关系图:
 
-![](/2016-03-12-activity-launch-analysis/application_thread_extend_relation.png)
+![](/image/2016-03-12-activity-launch-analysis/application_thread_extend_relation.png)
 
 ### 3.调用流程：
 
