@@ -207,3 +207,9 @@ Error log:
 1.[http://developer.android.com/intl/zh-cn/tools/building/manifest-merge.html][manifest-merge]
 
 [manifest-merge]: http://developer.android.com/intl/zh-cn/tools/building/manifest-merge.html "manifest-merge"
+
+------------------------------------
+
+**个人公众号：学姐的IT专栏**
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)

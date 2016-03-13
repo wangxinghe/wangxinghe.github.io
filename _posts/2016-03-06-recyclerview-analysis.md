@@ -255,3 +255,9 @@ ps：关于`RecyclerView`的具体使用，我提供一个链接供大家参考[
 
 #### 附录：
 1.[RecyclerView技术栈](http://www.jianshu.com/p/16712681731e)
+
+------------------------------------
+
+**个人公众号：学姐的IT专栏**
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)

@@ -66,6 +66,10 @@ tags: [Android]
 (5) [http://stackoverflow.com/questions/28125441/how-to-understanding-callsrecurcalls-total-in-android-traceview-tool/28149711#28149711](http://stackoverflow.com/questions/28125441/how-to-understanding-callsrecurcalls-total-in-android-traceview-tool/28149711#28149711)    
 (6) [http://stackoverflow.com/questions/15760447/what-is-the-meaning-of-incl-cpu-time-excl-cpu-time-incl-real-cpu-time-excl-re](http://stackoverflow.com/questions/15760447/what-is-the-meaning-of-incl-cpu-time-excl-cpu-time-incl-real-cpu-time-excl-re)
 
+------------------------------------
 
+**个人公众号：学姐的IT专栏**
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
 
 
