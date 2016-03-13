@@ -716,3 +716,9 @@ ActivityManagerService的startActivity启动过程又转移到mStackSupervisor.s
 2.[http://ju.outofmemory.cn/entry/230403](http://ju.outofmemory.cn/entry/230403)
 
 3.[http://blog.csdn.net/stonecao/article/details/6579710](http://blog.csdn.net/stonecao/article/details/6579710)
+
+------------------------------------
+
+**个人公众号：学姐的IT专栏**
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
