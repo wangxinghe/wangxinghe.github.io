@@ -5,20 +5,21 @@ title: About Me
 footer: false
 ---
 
-Android程序媛，爱编程，爱开源，爱社区，文艺范。
-全栈发展中。。。
+Hi, welcome to my blog.
 
-<br/>
+I am **mouxuejie**. A female developer majoring in android and striving to be a full stack developer.
 
-### 联系方式：        
+If you like my articles, you can follow my WeChat Pub named **学姐的IT专栏**.
 
-Wechat Pub：xuejie_mobile     
+Also the following ways are available.
+
 [Email](mailto:wangxingheks@gmail.com)     
 [Weibo](http://weibo.com/u/2019322347)	  
 [Github](https://github.com/wangxinghe)       
 [Twitter](https://twitter.com/wangxinghe1988)
 
 
-如果你觉得我的文章对你有帮助，可以请我喝一杯咖啡。
+
+Praise me by AliPay is also favourable~
 
 ![zhifubao](/images/zhifubao.jpg)
