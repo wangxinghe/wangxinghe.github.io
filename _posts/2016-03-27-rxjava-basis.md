@@ -9,8 +9,6 @@ tags: [Android]
 
 ##  什么是RxJava
 
--------
-
 ###  1. 定义
 
 `RxJava is a Java VM implementation of Reactive Extensions: a library for composing asynchronous and event-based programs by using observable sequences.`
@@ -103,8 +101,6 @@ Java中如果不使用观察者模式，数据都是主动获取，即**Pull**�
     });
     
 ## API介绍及使用
-
-------
 
 由于RxJava内容较多，学姐打算采用**从基础到高级**循序渐进的方式讲解。
 
@@ -529,8 +525,6 @@ RxJava提供了一个很**牛逼**的功能，可以对事件或事件序列进�
 
 ## 总结
 
-------
-
 1.RxJava最大特点是链式调用，使异步逻辑结构更清晰明了
 
 2.观察者模式：Obverable(被观察者), Observer/Subscriber(观察者), Subscription(订阅)
@@ -538,8 +532,6 @@ RxJava提供了一个很**牛逼**的功能，可以对事件或事件序列进�
 3.真的很感谢[扔物线](https://github.com/rengwuxian)，拜读他的文章学习的`RxJava`
  
 ## 参考文档
-
--------
 
 1.[http://gank.io/post/560e15be2dca930e00da1083](http://gank.io/post/560e15be2dca930e00da1083)
 
