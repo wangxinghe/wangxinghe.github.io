@@ -78,3 +78,9 @@ Android中组件间通信是通过Intent实现。
 1. [http://casatwy.com/iOS-Modulization.html](http://casatwy.com/iOS-Modulization.html)
 
 2. [http://blog.cnbang.net/tech/3080/](http://blog.cnbang.net/tech/3080/)
+
+------------------------------------
+
+**个人公众号：学姐的IT专栏**
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
