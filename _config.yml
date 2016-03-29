@@ -90,7 +90,7 @@ delicious_user:
 delicious_count:
 
 # Disqus Comments
-disqus_short_name: wangxinghe
+disqus_short_name: mouxuejiecom
 disqus_show_comment_count: true
 disqus_aside_comment_count: 8
 disqus_aside_avatar_size: 32
