@@ -1,3 +1,11 @@
+---
+layout: post
+comments: true
+title: "Android消息循环机制源码分析"
+description: "Android消息循环机制源码分析"
+category: android
+tags: [Android]
+---
 
 ## 概述
 
