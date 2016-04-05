@@ -13,7 +13,7 @@ If you like my articles, you can follow my WeChat Pub named **学姐的IT专栏*
 
 Also the following ways are available.
 
-[Email](mailto:wangxingheks@gmail.com)     
+[Email](mailto:mouxuejie@gmail.com)     
 [Weibo](http://weibo.com/u/2019322347)	  
 [Github](https://github.com/wangxinghe)       
 [Twitter](https://twitter.com/wangxinghe1988)
