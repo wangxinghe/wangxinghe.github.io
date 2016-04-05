@@ -81,21 +81,21 @@ Python下载地址：`https://www.python.org/download/	`
 执行`jekyll build --trace`将所有文章根据模板进行编译，结果在_sites文件夹下  
 执行指令`jekyll serve`将本地开启一个监听端口4000的服务器，浏览器中查看localhost:4000就能看到博文了。			
 
-9.本地博客与github同步  
-在github上新建名为`wangxinghe.github.io`的repository，此处是master分支  
+9.本地博客与github同步
+在github上新建名为`xxx.github.io`的repository，此处是master分支  
 打开Git Bash命令行，`cd github`进入本地check路径下，执行指令
 
-	git clone https://github.com/wangxinghe/wangxinghe.github.io.git		
+	git clone https://github.com/xxx/xxx.github.io.git		
 将远程master分支clone到本地。  
-然后将jekyll项目所有文件复制到本地的Git项目	`*/github/wangxinghe.github.io`  
-`cd wangxinghe.github.io`切到Git项目			
+然后将jekyll项目所有文件复制到本地的Git项目	`*/github/xxx.github.io`  
+`cd xxx.github.io`切到Git项目			
 执行如下指令，完成本地修改push到github上：
 
 	github add .		
 	git commit -m "the first commit"	
 	git push -u origin master		
  
-等大概10分钟左右，再访问`https://wangxinghe.github.io/`将看到博客内容		
+等大概10分钟左右，再访问`https://xxx.github.io/`将看到博客内容		
 
 参考文献  
 http://jekyllcn.com/ jekyll学习网站  
