@@ -521,3 +521,8 @@ mCalculator即为上面得到的本地代理对象，其add()的实现是
 （1）[http://blog.csdn.net/singwhatiwanna/article/details/19756201](http://blog.csdn.net/singwhatiwanna/article/details/19756201)
 
 （2）[http://blog.csdn.net/luoshengyang/article/details/6618363](http://blog.csdn.net/luoshengyang/article/details/6618363)
+
+
+## 欢迎大家关注我的公众号：学姐的IT专栏
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
