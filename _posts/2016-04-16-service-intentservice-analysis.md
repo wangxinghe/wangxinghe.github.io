@@ -1,3 +1,12 @@
+---
+layout: post
+comments: true
+title: "Service知识总结"
+description: "Service知识总结"
+category: android
+tags: [Android]
+---
+
 
 ## 1. 概述
 
