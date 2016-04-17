@@ -46,7 +46,7 @@ lsi: false
 rouge: true# default python pygments have been replaced by pygments.rb
 
 gems: [jekyll-paginate]
-paginate: 5
+paginate: 10
 #paginate_path: "page:num"
 #paginate: 8          # Posts per page on the blog index
 pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
