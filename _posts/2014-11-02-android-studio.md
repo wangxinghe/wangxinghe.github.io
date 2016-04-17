@@ -19,6 +19,8 @@ Android Studio是基于IntelliJ IDEA的android开发环境。在IntelliJ的基�
 - 支持混淆（Proguard）和app签名
 - 内置支持Google Cloud Platform,易于嵌入Google云消息和App引擎
 
+<!--more-->
+
 ##### Android Studio vs. Eclipse ADT 
 ![](/image/2014-11-02-android-studio/android studio vs. eclipse.jpg)
 

@@ -14,6 +14,8 @@ tags: [Android]
 
 想要对进程间通信方式有个相对全面的了解，就先从几个比较重要的概念`IPC`、`AIDL`、`Binder`说起吧。
 
+<!--more-->
+
 （1）`IPC`：Inter-Process Communication，即进程间通信
 
 （2）`AIDL`：Android Interface Definition Language，即Android接口定义语言。Client和Service要实现        

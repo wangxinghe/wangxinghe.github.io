@@ -10,6 +10,8 @@ tags: [Android]
 ### 概述
 之前面试的时候经常有人问是否用过`RecyclerView`，最近项目中也大量用到`RecyclerView`。对于有点追求的码工来时，当然不会满足于仅仅会使用这一层次，学姐就是一个有追求的妹纸。我先从普通的`AdapterView`和`RecyclerView`的比较说起，后面再详细介绍几个关键类。
 
+<!--more-->
+
 **`AdapterView` vs. `RecyclerView`**
 
 * **Item复用方面**：`RecyclerView`内置了`RecyclerViewPool`、多级缓存、`ViewHolder`，而`AdapterView`需要       手动添加`ViewHolder`且复用功能也没`RecyclerView`更加完善

@@ -11,6 +11,8 @@ tags: [Android]
 
 Android Studio早期版本使用的是mavenCentral，从某个时候开始切换到jcenter了。
 
+<!--more-->
+
 这是因为jcenter在性能和占存储大小方面比mavenCentral更优：
 
 1. jcenter是世界上最大的Java仓库

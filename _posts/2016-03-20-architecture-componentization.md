@@ -11,6 +11,8 @@ tags: [Android]
 
 项目发展到一定阶段，随着需求的增加以及需求的频繁变更，项目会越来越大，耦合会越来越多，开发效率也会降低，这个时候需要做的就是进行模块拆分，官方的说法就是组件化。
 
+<!--more-->
+
 ### App基本框架模型
 
 ![App_Framework](/image/2016-03-20-architecture-componentization/app_framework.jpg)

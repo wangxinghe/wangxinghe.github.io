@@ -10,6 +10,8 @@ tags: [Android]
 
 `Activity`应该是大家再熟悉不过的了。从刚开始搭建Android开发环境，跑的第一个例子`Hello World`就用到了`Activity`。再后来会接触到`Activity`的生命周期，想当初学姐这几个生命周期顺序经常会记错💔，再后来就是广泛使用`FragmentActivity`和`Fragment`了。
 
+<!--more-->
+
 平常开发中以上这些资料Baidu一大堆，还轮不到Google劳神。然而熟练运用这些顶多也就是一个Coder搬砖熟练工而已，算不上Engineer吧～
 
 本文从就从Activity的源码角度分析其启动过程。

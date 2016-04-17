@@ -9,6 +9,9 @@ tags: [Android]
 一、FragmentPagerAdapter
 
 适合于 `Fragment`数量不多的情况。当某个页面不可见时，该页面对应的View可能会被销毁，但是所有的Fragment都会一直存在于内存中。如果Fragment需要保存的状态较多时，会导致占用内存较大，因此对于Fragment数量较多的情况，建议使用FragmentStatePagerAdapter。  
+
+<!--more-->
+
 当使用FragmentPagerAdapter时，`ViewPager`必须有有效id。
 
     @Override

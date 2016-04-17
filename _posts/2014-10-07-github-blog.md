@@ -21,6 +21,8 @@ tags: [Jekyll]
    8.本地调试  
    9.本地博客与github同步
 
+<!--more-->
+
 详细步骤：  
 1.搭建git环境  
 git下载地址：`http://msysgit.github.io/`  
