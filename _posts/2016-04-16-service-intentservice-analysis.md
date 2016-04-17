@@ -588,3 +588,7 @@ ps3：关于使用Service还是Thread的标准是，看是否需要在后台执�
 [http://developer.android.com/intl/zh-cn/guide/components/services.html](http://developer.android.com/intl/zh-cn/guide/components/services.html)
 
 [http://developer.android.com/intl/zh-cn/training/run-background-service/index.html](http://developer.android.com/intl/zh-cn/training/run-background-service/index.html)
+
+## 欢迎大家关注我的公众号：学姐的IT专栏
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
