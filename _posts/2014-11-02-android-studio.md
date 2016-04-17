@@ -11,6 +11,8 @@ tags: [Android]
 ### 1. Introduction
 Android Studio是基于IntelliJ IDEA的android开发环境。在IntelliJ的基础上增加了一些新的特性：
 
+<!--more-->
+
 - 基于Gradle的构建系统
 - 支持多个apk的编译生成
 - 支持多种Google Services和多种设备类型
@@ -19,7 +21,6 @@ Android Studio是基于IntelliJ IDEA的android开发环境。在IntelliJ的基�
 - 支持混淆（Proguard）和app签名
 - 内置支持Google Cloud Platform,易于嵌入Google云消息和App引擎
 
-<!--more-->
 
 ##### Android Studio vs. Eclipse ADT 
 ![](/image/2014-11-02-android-studio/android studio vs. eclipse.jpg)
