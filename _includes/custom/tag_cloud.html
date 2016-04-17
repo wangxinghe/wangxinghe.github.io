@@ -40,5 +40,5 @@
     {% endcomment %}
     {% capture current_post_count %}{{ current_count | plus: 1 }} {% endcapture %}
     {% capture current_line_height %}{{ current_size | plus: tag_cloud_min_font_size }}{% endcapture %}
-    <a href="{{ root_url }}{{ site.tags_path }}#{{ tag[0] }}-ref">{{ tag | first }}({{ current_post_count }})</a>
+    <a href="{{ root_url }}{{ site.tags_path }}#{{ tag[0] }}-ref"><span style="white-space:nowrap;">{{ tag | first }}({{ current_post_count }})</span></a>
 {% endfor %}
