@@ -10,6 +10,8 @@ tags: [Android]
 
 Gradle构建脚本使用`DSL`(Domain Specific Language)来描述构建逻辑，使用的语言是`Groovy`。想了解Android Studio工程的Gradle构建系统，可以先从`Project的settings.gradle`、`Project的build.gradle`、`Module的build.gradle`、`gradle/wrapper`这些文件分析起。
 
+<!--more-->
+
 ### 1. Project的settings.gradle
 
 这个文件描述的是Project里包含哪些module。
