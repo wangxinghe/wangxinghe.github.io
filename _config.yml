@@ -10,7 +10,7 @@ title: 某学姐
 subtitle: Android程序媛，技术粉，阅读爱好者。微信公众号：学姐的IT专栏
 author: mouxuejie
 simple_search: http://google.com/search
-description: wangxinghe's blog
+description: mouxuejie's blog
 keywords: python, twisted, mongodb, git, hadoop, hbase, lua, mac, browser, html, embedded, linux, debian, iOS, Android, Objective-C, C, C++, StarCraft, NoSQL, SQLite, PostgreSQL, pylons, django, pyramid
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
@@ -23,7 +23,7 @@ date_format: "%Y-%m-%d"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email: wangxinghe <wangxingheks@gmail.com>
+email: mouxuejie <mouxuejie@gmail.com>
 # ----------------------- #
 # Site path
 # ----------------------- #
@@ -78,7 +78,7 @@ google_plus_one_size: medium
 
 # Google Plus Profile
 # Hidden: No visible button, just add author information to search results
-googleplus_user: wangxingheks@gmail.com
+googleplus_user: mouxuejie@gmail.com
 googleplus_hidden: false
 
 # Pinboard
