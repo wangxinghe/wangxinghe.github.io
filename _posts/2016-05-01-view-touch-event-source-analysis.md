@@ -24,7 +24,7 @@ tags: [Android]
 
 以下是学姐简化版源码。
 
-####（1）ViewGroup.dispatchTouchEvent(event)
+#### （1）ViewGroup.dispatchTouchEvent(event)
 
     boolean dispatchTouchEvent(MotionEvent event) {
         int action = event.getAction();
@@ -90,7 +90,7 @@ tags: [Android]
        return handled;
     }
 
-####（2）View.dispatchTouchEvent(event)
+#### （2）View.dispatchTouchEvent(event)
 
     //View的Touch事件分发。当外部设置了mOnTouchListener时，先交由mOnTouchListener.onTouch(event)消费。
     若未消费，则交给View的onTouchEvent(event)消费。onTouchEvent的实现是，如果设置了mOnClickListener，
