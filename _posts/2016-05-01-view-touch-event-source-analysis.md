@@ -175,3 +175,8 @@ View3.onTouchEvent -> ViewGroup2.onTouchEvent -> ViewGroup1.onTouchEvent
 个人理解这种传递顺序，是由dispatchTransformedTouchEvent引起的，这里就是递归调用，整个事件的入口就是ViewGroup.dispatchTouchEvent.
 
 内容预告：下篇文章会补充Activity及touch事件处理的相关示例说明，请大家继续关注～
+
+
+## 欢迎大家关注我的公众号：学姐的IT专栏
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
