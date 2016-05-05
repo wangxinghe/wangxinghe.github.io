@@ -16,4 +16,4 @@ Also the following ways are available.
 [Email](mailto:mouxuejie@gmail.com)     
 [Weibo](http://weibo.com/u/2019322347)	  
 [Github](https://github.com/mouxuejie)       
-[Twitter](https://twitter.com/wangxinghe1988)
+[Twitter](https://twitter.com/mouxuejie)
