@@ -13,6 +13,14 @@ If you like my articles, you can follow my WeChat Pub named **学姐的IT专栏*
 
 Also the following ways are available.
 
+## Recent Plan
+
+   - Learn iOS Basically
+   - Learn Android Deeply
+   - Commit code to Github More
+   
+Github Project
+
 [Email](mailto:mouxuejie@gmail.com)     
 [Weibo](http://weibo.com/u/2019322347)	  
 [Github](https://github.com/mouxuejie)       
