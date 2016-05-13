@@ -23,3 +23,11 @@ Also the following ways are available.
    - Learn iOS Basically
    - Learn Android Deeply
    - Commit code to Github More
+   
+## Interesting Guys
+
+   - [casatwy.com](casatwy.com)
+   - [txx](http://weibo.com/u/2157980617?topnav=1&wvr=6&topsug=1&is_all=1)
+   - [Lody](http://weibo.com/p/1005055627960273/home?from=page_100505&mod=TAB#place)
+   - [某烧饼](http://feng.moe/)
+   
