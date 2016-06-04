@@ -30,6 +30,7 @@ tags: [Notes]
 - codeKK: [http://p.codekk.com/](http://p.codekk.com/)
 - 技术小黑屋: [http://droidyue.com/](http://droidyue.com/)
 - 开发技术前线: [http://www.devtf.cn/](http://www.devtf.cn/)
+- 阿里巴巴－自娱: [http://myeyeofjava.iteye.com/](http://myeyeofjava.iteye.com/)
 - 秋百万: [http://www.liaohuqiu.net/cn/](http://www.liaohuqiu.net/cn/)
 - 杰风居: [http://jayfeng.com/](http://jayfeng.com/)
 - Lite Your Android: [http://litesuits.com/](http://litesuits.com/)
