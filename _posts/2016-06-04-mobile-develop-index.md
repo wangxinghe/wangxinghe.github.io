@@ -7,11 +7,12 @@ category: Notes
 tags: [Notes]
 ---
 
-## Android
-
 只重视质量，不看重数量和名气
 
 <!--more-->
+
+
+## Android
 
 ### 1.学习网站
 
