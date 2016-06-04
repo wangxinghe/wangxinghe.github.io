@@ -81,6 +81,8 @@ tags: [Notes]
 
 - 聊聊架构
 - 移动开发前线
+- WeMobileDev
+- QQ空间终端开发团队
 - Android程序员
 - iOS大全
 - 糖炒小虾
