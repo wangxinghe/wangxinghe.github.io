@@ -9,6 +9,10 @@ tags: [Notes]
 
 ## Android
 
+只重视质量，不看重数量和名气
+
+<!--more-->
+
 ### 1.学习网站
 
 - 官网： [https://developer.android.com/index.html](https://developer.android.com/index.html)
