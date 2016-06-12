@@ -319,3 +319,6 @@ makeDexElements的C实现中，会执行里相关dex2opt优化操作，这个是
 
 未完待续。
 
+## 欢迎大家关注我的公众号：学姐的IT专栏
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
