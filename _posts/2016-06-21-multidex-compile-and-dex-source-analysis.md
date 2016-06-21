@@ -657,4 +657,6 @@ c. build-system/builder/src/main/java/com/android/builder/core/AndroidBuilder.ja
 
 可能也没有讲清楚或有遗漏，欢迎指正。
 
+## 欢迎大家关注我的公众号：学姐的IT专栏
 
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
