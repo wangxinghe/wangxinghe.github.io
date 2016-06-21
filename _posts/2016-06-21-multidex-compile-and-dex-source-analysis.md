@@ -15,9 +15,9 @@ tags: [Android]
 
 <!--more-->
 
-#0x01 从BasePlugin入口说起
+## 0x01 从BasePlugin入口说起
 
-### 1.1 BasePlugin入口
+#### 1.1 BasePlugin入口
 
 Android Studio项目是基于Gradle构建的，module的build.gradle文件首部都会声明apply plugin: 'com.android.application'或apply plugin: 'com.android.library'，对应到源码是`/build-system/gradle/src/main/groovy/com/android/build/gradle/BasePlugin.java`的apply(Project)。而Gradle构建过程都是由一系列task组成。
 
@@ -25,7 +25,7 @@ Android Studio项目是基于Gradle构建的，module的build.gradle文件首部
 
     BasePlugin.apply(Project) -> createTasks() -> createAndroidTasks(boolean force) -> VariantManager.createAndroidTasks()
 
-### 1.2 Android Tasks的创建
+#### 1.2 Android Tasks的创建
 
 我们再来看看Android Tasks的创建：
 
@@ -110,7 +110,7 @@ VariantManager是Android Tasks创建的入口类。
         ......
     }
 
-### 1.3 Compile Task And Post Compile Task
+#### 1.3 Compile Task And Post Compile Task
 
 我们看下compile task.
 
@@ -293,13 +293,13 @@ c. build-system/builder/src/main/java/com/android/builder/core/AndroidBuilder.ja
 
 遍历所有文件列表，依次对每个文件进行处理。
 
-1、对于.apk, .zip, .jar文件：
+**1、对于.apk, .zip, .jar文件：**
 
 读取解压后的ZipEntry列表。若为.class文件，则按照下面介绍的Class文件处理方法；若为classes.dex文件，则添加到libraryDexBuffers列表中；若为资源文件，则添加到outputResources的Map中。
 
-2、对于.class文件：
+**2、对于.class文件：**
 
-2.1 整个过程可以概括为：
+#### 2.1 整个过程可以概括为：
 
 （1）将class进行类转换处理 
 
@@ -309,7 +309,7 @@ c. build-system/builder/src/main/java/com/android/builder/core/AndroidBuilder.ja
 
 （4）将byte[]列表依次写入到classes.dex, classes2.dex, classes3.dex...
 
-2.2 相应的里面涉及到几个线程池：
+#### 2.2 相应的里面涉及到几个线程池：
 
 （1）类转化线程池classTranslatorPool。用于将原始class文件转换成ClassDefItem
 
@@ -317,7 +317,7 @@ c. build-system/builder/src/main/java/com/android/builder/core/AndroidBuilder.ja
 
 （3）dex字节码化线程池dexOutPool。用于将dex列表转化为byte[]字节数组，并添加到字节码列表中
 
-2.3 关于multi-dex生成dex过程涉及的几个变量：
+#### 2.3 关于multi-dex生成dex过程涉及的几个变量：
 
 （1）numMethodIds
 
@@ -335,7 +335,7 @@ c. build-system/builder/src/main/java/com/android/builder/core/AndroidBuilder.ja
 
 这样当前预估最大方法数，就可以理解为numMethodIds + maxMethodIdsInClass + maxMethodIdsInProcess，即尚未进行转换处理的Class最大方法数 ＋ 转换／写入过程中的最大方法数 ＋ dex中已有方法数。
 
-2.4 关于multi-dex生成dex过程
+#### 2.4 关于multi-dex生成dex过程
 
 若当前预估最大方法数超过单个Dex允许最大方法数时：
 
