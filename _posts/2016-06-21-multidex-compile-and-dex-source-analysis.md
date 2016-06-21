@@ -7,7 +7,7 @@ category: Android
 tags: [Android]
 ---
 
-#0x00 概述
+## 0x00 概述
 
 上篇文章讲的是dex的安装过程。
 
@@ -246,7 +246,7 @@ c. build-system/builder/src/main/java/com/android/builder/core/AndroidBuilder.ja
         ProcessResult result = mJavaProcessExecutor.execute(javaProcessInfo, processOutputHandler);
     }
 
-#0x02 Class文件Dex过程分析
+## 0x02 Class文件Dex过程分析
 
 入口方法为dalvik/dx/src/com/android/dx/command/Main.java的main()。从下面代码可以看出，其调用流程为：
 
@@ -633,7 +633,7 @@ c. build-system/builder/src/main/java/com/android/builder/core/AndroidBuilder.ja
         }
     }
     
-#0x03 总结
+## 0x03 总结
 
 构建一个apk的入口为BasePlugin.apply(Project)，构建过程由各种Android Tasks组成。    
 其中Compile Task，用于将.java文件编译成.class文件。    
