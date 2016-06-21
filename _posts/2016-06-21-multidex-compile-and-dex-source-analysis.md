@@ -345,6 +345,10 @@ c. build-system/builder/src/main/java/com/android/builder/core/AndroidBuilder.ja
 
 从上面可以看出，multi-dex过程中，需要等到dex写入操作完成，才能继续进行后面的类转化操作。
 
+如果multiDexEnabled，则先处理main dex list中的class并写入main dex。如果minifyEnabled，则为了将main dex最小化，需要创建secondary dex，并将main dex list之外的类写入从dex。
+
+对于非multiDexEnabled的情况，则只创建一个dex。
+
 （2）将上面得到的List<byte[]>列表，依次写到classes.dex，classes2.dex，classes3.dex...
 
 代码如下：
