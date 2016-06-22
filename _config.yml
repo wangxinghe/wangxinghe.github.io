@@ -42,6 +42,7 @@ safe: true
 permalink: /blog/:year-:month-:day/:title/
 plugins_dir: plugins
 markdown: kramdown
+highlighter: pygments
 lsi: false
 rouge: true# default python pygments have been replaced by pygments.rb
 
