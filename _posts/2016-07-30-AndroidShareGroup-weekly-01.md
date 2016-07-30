@@ -24,7 +24,7 @@ tags: [AndroidShareGroup]
 
 **群号码：538266272**
 
-![／image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg](／image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg)
+![／image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg](/image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg)
 
 ## 本周Topic
 
@@ -44,7 +44,7 @@ tags: [AndroidShareGroup]
 
 #### 3.关于toString()
 
-![图1](／image/2016-07-30-AndroidShareGroup-weekly-01/to_string.png)
+![图1](/image/2016-07-30-AndroidShareGroup-weekly-01/to_string.png)
 
 大家平常开发中对于JavaBean对象的toString()方法应该都是自己写的，其实Android Studio自带生成toString()方法，大家可以试试看，一个容易被忽略的问题。
 
@@ -52,7 +52,7 @@ tags: [AndroidShareGroup]
 
 [https://github.com/misakuo/JsonModelGenerator](https://github.com/misakuo/JsonModelGenerator)
 
-![图2](／image/2016-07-30-AndroidShareGroup-weekly-01/json-model-generator.png)
+![图2](/image/2016-07-30-AndroidShareGroup-weekly-01/json-model-generator.png)
 
 推荐理由：Android Studio的GsonFormat插件可以很方便的实现JSON转Model。但是JSON Model Generator插件也有值得借鉴的地方，比如每个Object都会拿出来做一个独立的类，不生成静态内部类。因为静态内部类是个语法糖一样的东西，真正获取到内部类的应用需要通过编译期生成的一个方法，即反编译看到的$ClassName开头的那个方法。同时内部类访问外部类私有成员的时候也会增加access方法。
 
@@ -64,7 +64,7 @@ tags: [AndroidShareGroup]
 
 #### 6.Library Module的Resource Id操作
 
-![图3](／image/2016-07-30-AndroidShareGroup-weekly-01/library-resource-id.png)
+![图3](/image/2016-07-30-AndroidShareGroup-weekly-01/library-resource-id.png)
 
 Library Module中用不能使用Switch方式操作resource id。因为在SDK tools r14之后这些id是non final的，要操作需要使用if else，Android Studio有快捷键进行转换。
 
@@ -106,7 +106,7 @@ https就是在http上加了SSL/TLS。推荐图书《图解密码技术》
 
 #### 11.Material图标生成工具
 
-![图4](／image/2016-07-30-AndroidShareGroup-weekly-01/android-material-icon-generator.png)
+![图4](/image/2016-07-30-AndroidShareGroup-weekly-01/android-material-icon-generator.png)
 
 [http://bitdroid.de/Android-Material-Icon-Generator/](http://bitdroid.de/Android-Material-Icon-Generator/)
 
