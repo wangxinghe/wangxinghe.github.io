@@ -22,6 +22,10 @@ tags: [AndroidShareGroup]
 
 因此**AndroidShareGroup周报**由此诞生了，这是第一期。
 
+如果你也想和我们一起学习技术，可以加入我们QQ群。
+
+<!--more-->
+
 **群号码：538266272**
 
 ![／image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg](/image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg)
