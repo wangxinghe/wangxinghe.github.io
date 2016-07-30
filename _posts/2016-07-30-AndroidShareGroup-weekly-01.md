@@ -1,8 +1,8 @@
 ---
 layout: post
 comments: true
-title: "AndroidShareGroup周报第一期"
-description: "AndroidShareGroup周报第一期"
+title: "AndroidShareGroup技术周报（第一期）"
+description: "AndroidShareGroup技术周报（第一期）"
 category: AndroidShareGroup
 tags: [AndroidShareGroup]
 ---
