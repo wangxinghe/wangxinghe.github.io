@@ -81,5 +81,5 @@ tags: [Android]
 
 ## 0x03 参考文档
 
+- [https://developer.android.com/studio/build/index.html?hl=zh-cn#build-config](https://developer.android.com/studio/build/index.html?hl=zh-cn#build-config)
 - [https://developer.android.com/studio/command-line/zipalign.html](https://developer.android.com/studio/command-line/zipalign.html)
-- []()
