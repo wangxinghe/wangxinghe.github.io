@@ -222,3 +222,7 @@ Android应用的编译和构建是基于Gradle，我们只需要在主Module的b
 3. [http://jayfeng.com/2015/11/07/Android%E6%89%93%E5%8C%85%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/
 ](http://jayfeng.com/2015/11/07/Android%E6%89%93%E5%8C%85%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/
 )
+
+关注互联网技术开发或人才相关，请扫码关注某学姐的公众号：学姐的IT专栏
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)

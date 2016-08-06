@@ -83,3 +83,9 @@ tags: [Android]
 
 - [https://developer.android.com/studio/build/index.html?hl=zh-cn#build-config](https://developer.android.com/studio/build/index.html?hl=zh-cn#build-config)
 - [https://developer.android.com/studio/command-line/zipalign.html](https://developer.android.com/studio/command-line/zipalign.html)
+
+关注互联网技术开发或人才相关，请扫码关注某学姐的公众号：学姐的IT专栏
+
+![学姐的IT专栏](/images/qrcode_for_gh_771805c73e44_430.jpg)
+
+
