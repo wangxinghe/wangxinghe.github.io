@@ -34,3 +34,10 @@ If you like my articles, you can follow my WeChat Pub called **学姐的IT专栏
 - [Lody](http://weibo.com/p/1005055627960273/home?from=page_100505&mod=TAB#place)
 - [某烧饼](http://feng.moe/)
    
+## Copyright Announcement
+
+![cc](/images/cc.png)
+
+The Blog [mouxuejie.com](http://www.mouxuejie.com/) owned by [mouxuejie](https://github.com/wangxinghe) is licensed by [Creative Commons BY-NC-ND 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+All Rights Reserved, No Infringement Allowed.
