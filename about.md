@@ -27,6 +27,20 @@ If you like my articles, you can follow my WeChat Pub called **学姐的IT专栏
 - Learn TCP/IP Protocol
 - Commit code to Github More
    
+## Book List
+
+**Have Read**
+
+- 少有人走的路
+- 百年孤独
+- 人类简史
+- 小王子
+
+**In Reading**
+
+- 三体
+- 禅与摩托车维修艺术
+
 ## Interesting Guys
 
 - [casatwy.com](casatwy.com)
