@@ -127,11 +127,11 @@ tags: [Android]
 
 一个完整的zip包的文件结构如下图所示。
 
-![image/2016-08-06-multi-channel-package-faster/zip_format.png](image/2016-08-06-multi-channel-package-faster/zip_format.png)
+![/image/2016-08-06-multi-channel-package-faster/zip_format.png](/image/2016-08-06-multi-channel-package-faster/zip_format.png)
 
 该结构的末尾部分，结构如下表所示。
 
-![image/2016-08-06-multi-channel-package-faster/eocd.png](image/2016-08-06-multi-channel-package-faster/eocd.png)
+![/image/2016-08-06-multi-channel-package-faster/eocd.png](/image/2016-08-06-multi-channel-package-faster/eocd.png)
 
 很显然，我们能看到最后两个字段是comment length和comment。
 
