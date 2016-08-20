@@ -113,7 +113,7 @@ Idtk同学，文章都是关于自定义View的。
 
 如果想和我们一起学习技术，可以加入我们QQ群。**群号码：538266272**
 
-![／image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg](/image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg)
+![/image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg](/image/2016-07-30-AndroidShareGroup-weekly-01/AndroidShareGroup.jpg)
 
 互联网技术开发或人才相关，请扫码关注某学姐的微信公众号。**学姐的IT专栏**
 
