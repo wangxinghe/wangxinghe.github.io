@@ -7,7 +7,7 @@ category: AndroidShareGroup
 tags: [AndroidShareGroup]
 ---
 
-##0x00前言
+## 0x00前言
 
 每次前言都不知道说什么。
 
@@ -21,7 +21,7 @@ tags: [AndroidShareGroup]
 
 <!--more-->
 
-##0x01本周Topic
+## 0x01本周Topic
 
 ### 1.UTF-8编码获取字符串长度
 
