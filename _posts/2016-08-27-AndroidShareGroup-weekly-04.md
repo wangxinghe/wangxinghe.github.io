@@ -60,6 +60,12 @@ Android自定义相册，实现了拍照、图片选择（单选/多选）、 �
     
 [http://www.wangyuwei.me/2016/08/24/%E6%89%8B%E6%91%B8%E6%89%8B%E5%B8%A6%E4%BD%A0%E7%94%A8VideoView%E5%AE%9E%E7%8E%B0%E8%8B%B1%E8%AF%AD%E6%B5%81%E5%88%A9%E8%AF%B4%E7%82%AB%E9%85%B7%E5%BC%95%E5%AF%BC%E9%A1%B5/](http://www.wangyuwei.me/2016/08/24/%E6%89%8B%E6%91%B8%E6%89%8B%E5%B8%A6%E4%BD%A0%E7%94%A8VideoView%E5%AE%9E%E7%8E%B0%E8%8B%B1%E8%AF%AD%E6%B5%81%E5%88%A9%E8%AF%B4%E7%82%AB%E9%85%B7%E5%BC%95%E5%AF%BC%E9%A1%B5/) 手摸手带你用VideoView实现英语流利说炫酷引导页
 
+### 9.移动推送
+[http://mp.weixin.qq.com/s?sn=6cea730ef5a144ac243f07019fb43076&/__biz=MzA4NTg1MjM0Mg%3D%3D&mid=2657261350&idx=1#rd](http://mp.weixin.qq.com/s?sn=6cea730ef5a144ac243f07019fb43076&__biz=MzA4NTg1MjM0Mg%3D%3D&mid=2657261350&idx=1#rd)
+Android端外推送到底有多烦？
+
+[https://www.aliyun.com/product/cps](https://www.aliyun.com/product/cps) 阿里云移动推送
+
 ## 0x02博客推荐
 
 1.[http://blog.csdn.net/itachi85](http://blog.csdn.net/itachi85)
