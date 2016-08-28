@@ -18,18 +18,31 @@ tags: [Android]
 <!--more-->
 
 ### 1 常量命名
+
 所有单词大写，单词间以"_"分隔
+
 ### 2 变量命名
+
 驼峰命名。成员变量以`m`开头；静态变量以`s`开头
+
 ### 3 方法命名
+
 驼峰命名。
+
 ### 4 接口
+
 首字母大写，驼峰命名，使用名词。带`I`前缀，或`able`,`ible`,`er`等后缀，如`IManager`,`OnClickListener`
+
 ### 5 类
+
 首字母大写，驼峰命名，使用名词。
+
 ### 6 包
+
 所有单词小写，只能包含`a-z`字母，或有含义的阿拉伯数字如`4`代替`for`,`2`代替`to`
+
 ### 7 资源文件
+
 （1）布局文件
 
 | Type  | Format  |
@@ -60,15 +73,23 @@ tags: [Android]
 - 总体上来说，要按照先 `public`, 后 `protected`, 最后 `private`, 方法的排布也应该有一个逻辑的先后顺序，由重到轻。
 
 ### 1 import
+
 类／包导入顺序为：`Android`，`Third Party`，`Java/Javax`。且这三组之间空一行，组内按a-z排列顺序
+
 ### 2 常量/变量
+
 顺序为：（1）常量、静态变量、成员变量（2）`public`,`protected`,`private`
+
 ### 3 方法
+
 对于普通类，方法顺序为：先`public`再`protected`后`private`    
+
 对于组件类，方法顺序为：`构造方法`、`生命周期方法`、`public方法`、`protected方法`、`private方法`    
 
 ## 0x02 通用规则
+
 ### 1 基础
+
 - 不要直接跨业务模块调用方法，一个模块提供一个对外类
 - **禁止将整个类格式化**
 - 每个类长度不超过1000行
@@ -82,6 +103,7 @@ tags: [Android]
 - `if/else`,`switch`,`for`,`while`...
 
 ### 2 异常处理
+
 **基本原则**：`Don't Ignore Exceptions. Don't Catch Generic Exception.`
 
 - 异常可以抛给上层处理、或在catch块中抛给上层处理、或直接在try/catch中打印并做出合理处理，如果catch块不做处理需要注明原因
@@ -89,6 +111,7 @@ tags: [Android]
 - 在某些情况下，允许直接捕获Exception基类。如为了防止在UI或批处理任务中出现错误，可以在应用顶层加上`try/catch(Exception e)`，但是需要注明原因
 
 ## 0x03 代码注释
+
 对于需要说明的代码，最好写注释说明。
 
 ## 0x04 代码示例
@@ -239,5 +262,6 @@ tags: [Android]
     }
 
 ## 0x05 参考资料
+
 - [http://source.android.com/source/code-style.html](http://source.android.com/source/code-style.html)
 - [https://google.github.io/styleguide/javaguide.html](https://google.github.io/styleguide/javaguide.html)
