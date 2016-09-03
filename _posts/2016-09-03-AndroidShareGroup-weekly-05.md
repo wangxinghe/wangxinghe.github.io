@@ -19,6 +19,8 @@ tags: [AndroidShareGroup]
 
 希望大家能够快乐的学到东西。
 
+<!--more-->
+
 ## 0x01本周Topic
 
 ### 1.APP淘宝，你为什么这么慢卡？
