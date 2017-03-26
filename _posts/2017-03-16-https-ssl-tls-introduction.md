@@ -46,7 +46,7 @@ tags: [Basis]
 https在http的基础上增加了一层SSL/TLS安全协议，SSL/TLS用于承载http通信过程确保安全性。而通信双方则是基于https协议进行通信。    
 其层次关系如下图：
 
-![](./image/2017-03-16-https-ssl-tls-introduction/https.png)
+![](/image/2017-03-16-https-ssl-tls-introduction/https.png)
 
 ## 2、什么是SSL/TLS协议？
 
@@ -72,7 +72,7 @@ SSL/TLS解决了消息传输过程中的如下安全性问题。
 
 ### SSL/TLS协议的构成
 
-![](./image/2017-03-16-https-ssl-tls-introduction/ssl.png)
+![](/image/2017-03-16-https-ssl-tls-introduction/ssl.png)
 
 以TLS协议为例，TLS协议由**TLS握手协议**和**TLS记录协议**组成，TLS记录协议位于TLS握手协议下层。
 
@@ -84,7 +84,7 @@ TLS握手协议，包括**握手协议**、**密码规格变更协议**、**警�
 
 #### TLS记录协议
 
-![Alt text](./image/2017-03-16-https-ssl-tls-introduction/tls记录协议.png)
+![Alt text](/image/2017-03-16-https-ssl-tls-introduction/tls记录协议.png)
 
 对于发送端，接收高层客户数据，然后分段 -> 压缩 -> 添加MAC -> 加密。	
 对于接收端，解密 -> 校验MAC -> 解压 -> 重组，然后将数据传递给高层客户。	
@@ -161,7 +161,7 @@ TLS握手协议过程，包括4次握手。
 
 用图形交互来理解：
 
-![Alt text](./image/2017-03-16-https-ssl-tls-introduction/握手协议过程1.png)
+![Alt text](/image/2017-03-16-https-ssl-tls-introduction/握手协议过程1.png)
 
 分别对握手过程的每一步进行细化。
 
@@ -248,7 +248,7 @@ Diffie-Hellman密钥交换情况（客户端Y-Gx mod P）
 
 用流程图表示这一过程。
 
-![Alt text](./image/2017-03-16-https-ssl-tls-introduction/主密码.png)
+![Alt text](/image/2017-03-16-https-ssl-tls-introduction/主密码.png)
 
 **ServerKeyExchange的作用：**	
 
