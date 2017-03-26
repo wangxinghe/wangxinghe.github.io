@@ -11,19 +11,21 @@ tags: [Basis]
 
 于是在写这篇文章的时候，又复习了一遍《图解密码技术》这本书的Chapter 14关于SSL/TLS的介绍。
 
+<!--more-->
+
 本文按以下思路来讲解。
 
-- 1、为什么使用HTTPS协议？
-	a. http存在的问题
-	b. http和https的关系
-- 2、什么是SSL/TLS协议？
-	a. ssl/tls解决的问题
-	b. ssl/tls使用的密码技术
-	c. ssl/tls协议的构成
-- 3、SSL/TLS通信过程
-	a. tls记录协议
-	b. tls握手协议
-	c. 总结
+- 1、为什么使用HTTPS协议？    
+	a. http存在的问题    
+	b. http和https的关系    
+- 2、什么是SSL/TLS协议？    
+	a. ssl/tls解决的问题    
+	b. ssl/tls使用的密码技术    
+	c. ssl/tls协议的构成    
+- 3、SSL/TLS通信过程    
+	a. tls记录协议    
+	b. tls握手协议    
+	c. 总结    
 
 ## 1、为什么使用HTTPS协议？
 
