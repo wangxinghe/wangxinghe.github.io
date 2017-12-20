@@ -10,6 +10,8 @@ tags: [Android]
 
 去年写过一篇RecyclerView的源码分析，时隔一年又看了一遍RecyclerView和ListView的源码，有一些新的体会。出于篇幅考虑本篇还是写RecyclerView，下一篇写ListView。
 
+<!--more-->
+
 本文还是先按照`measure -> layout -> draw`的基本流程过代码。
 
 ### 0x00 基本代码结构
