@@ -80,15 +80,19 @@ Entry是<WeakReference<ThreadLocal>, Object>的键值对。
    具体查找过程：    
  （1）先计算索引，int i = key.threadLocalHashCode & (table.length - 1);    
  （2）如果table[i]元素非空且table[i].key == key，说明找到了，返回table[i].value    
- （3）否则，从i开始遍历一轮每个元素e（即从包括i开始往后直到第一个空元素，算作1轮）。    
-   （3.1）如果e.key == key，则说明找到并返回e.value；    
-   （3.2）如果e.key == null，则说明是垃圾数据，调用expungeStaleEntry(i)进行垃圾数据逻辑处理即可    
-   （3.3）如果e.key != null && e.key != key，则说明存在hash冲突，这个位置被别的对象先占了，根据`线性探测法`往后寻找，循环上面步骤。        
+ （3）否则，从i开始遍历一轮每个元素e（即从包括i开始往后直到第一个空元素，算作1轮，i有可能就是第一个空元素）。    
+   （3.1）如果e.key == key，则说明**找到**并返回e.value；    
+   （3.2）如果e.key == null，则说明是**垃圾数据**，调用`expungeStaleEntry(i)`进行垃圾数据逻辑处理即可    
+   （3.3）如果e.key != null && e.key != key，则说明存在**hash冲突**，这个位置被别的对象先占了，根据`线性探测法`往后寻找，循环上面步骤。        
 4、如果没有查到，则调用初始化方法并返回初始值。
 
-`expungeStaleEntry(int staleSlot)`，垃圾数据处理逻辑：    
-（1）staleSlot位置的数据清空，size -1    
-（2）
+`expungeStaleEntry(int staleSlot)`为垃圾数据处理逻辑：    
+**简单来说干了两件事：跑1轮，清空里面的垃圾数据，非垃圾数据重新hash。**    
+（1）staleSlot位置的数据清空，size-1    
+（2）从staleSlot+1开始遍历一轮每个元素e，位置为i（即从staleSlot+1开始往后直到第一个空元素，算作1轮）    
+    （2.1）如果e.key == null，则说明是**垃圾数据**，将e清空，size-1    
+    （2.2）如果e.key != null 但  [h = e.key.threadLocalHashCode & (len - 1)] != i，说明元素e本来不应该放在位置i，当时只是因为发生**hash冲突**h位置被别人占了，将第i个位置置空，然后根据`线性探测法`重新放置元素e的位置，即找到从h开始的第一个空元素位置放进去即可。
+
 
 **存数据set()**    
 
