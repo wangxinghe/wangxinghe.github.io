@@ -72,7 +72,7 @@ Entry是<WeakReference<ThreadLocal>, Object>的键值对。
 
 数据存取，主要是关注set/get方法。
 
-**取数据get()**    
+#### 取数据get()    
 
 1、获取当前线程    
 2、获取当前线程的ThreadLocalMap对象    
@@ -91,15 +91,52 @@ Entry是<WeakReference<ThreadLocal>, Object>的键值对。
 （1）staleSlot位置的数据清空，size-1    
 （2）从staleSlot+1开始遍历一轮每个元素e，位置为i（即从staleSlot+1开始往后直到第一个空元素，算作1轮）    
     （2.1）如果e.key == null，则说明是`垃圾数据`，将e清空，size-1    
-    （2.2）如果e.key != null 但  [h = e.key.threadLocalHashCode & (len - 1)] != i，说明元素e本来不应该放在位置i，当时只是因为发生`hash冲突`h位置被别人占了，将第i个位置置空，然后根据`线性探测法`重新放置元素e的位置，即找到从h开始的第一个空元素位置放进去即可。
+    （2.2）如果e.key != null 但  [h = e.key.threadLocalHashCode & (len - 1)] != i，说明元素e本来不应该放在位置i，当时只是因为发生`hash冲突`h位置被别人占了，将第i个位置置空，然后根据`线性探测法`重新放置元素e的位置，即找到从h开始的第一个空元素位置放进去即可。    
+（3）返回第一个空元素的位置。    
 
 
-**存数据set()**    
+#### 存数据set(T value)    
 
-    
+1、获取当前线程    
+2、获取当前线程的ThreadLocalMap对象    
+3、将<key, value>放入ThreadLocalMap中，其中key为当前ThreadLocal实例，value为外部传入Object    
+具体放入步骤：    
+（1）计算索引，int i = key.threadLocalHashCode & (len-1);    
+（2）从i开始遍历一轮每个元素e（即从包括i开始往后直到第一个空元素，算作1轮）    
+    （2.1）如果e.key == key，说明找到了赋值的位置，进行赋值e.value = value并return    
+    （2.2）如果e.key == null，说明是垃圾数据，调用`replaceStaleEntry(key, value, i)`处理完后并return    
+    （2.3）否则继续遍历下一个元素    
+（3）将<key, value>放到第一个空元素位置，size＋1。    
+（4）调用`cleanSomeSlots(i, size)`清空部分数据    
+（5）若一个数据也没有清空，且size >= threshold，则调用`rehash`重新hash
+
+`replaceStaleEntry(key, value, staleSlot)`垃圾数据处理逻辑：    
+`简单来说干了两件事：1、将<key, value>填充到staleSlot位置；2、跑一轮，找到第一个垃圾数据位置slotToExpunge，然后从slotToExpunge开始执行两轮垃圾数据清理操作`    
+（1）从staleSlot开始走prevIndex往前回溯一轮(即从staleSlot往前回溯到第一个空元素)，找到最前面的垃圾数据的位置i，将该位置记录为`slotToExpunge`    
+（2）从staleSlot+1开始往后遍历一轮每个元素e，位置为i（即从staleSlot+1往后遍历直到第一个空元素）    
+    （2.1）如果e.key == key，说明位置`找到`，将table[i]和table[staleSlot]元素交换，并将<key, value>填充到table[staleSlot]，此时table[i]为垃圾数据。如果前面步骤（1）中staleSlot就是第一个垃圾数据的位置，现在数据交换后第一个垃圾数据位置变成了i，将该位置记录为`slotToExpunge`。然后调用`expungeStaleEntry(int staleSlot)`执行一轮垃圾数据处理。之后再接着前一轮的空数据的位置调用`cleanSomeSlots(i, size)`再执行一轮清理垃圾数据。然后return   
+    （2.2）如果e.key == null，说明是`垃圾数据`，再看是不是staleSlot＋1开始的第一个垃圾数据，如果是的话，将该位置记录为`slotToExpunge`    
+（3）将<key, value>填充到staleSlot位置。    
+（4）调用`expungeStaleEntry(int staleSlot)`执行垃圾数据处理。之后再调用`cleanSomeSlots(i, size)`进一步清理垃圾数据。
+
+`cleanSomeSlots(i, size)`数据清空逻辑：    
+从位置i开始，以`二分`的方式往后遍历`log(n)`次，并清理垃圾数据。    
+
+`rehash`逻辑：    
+（1）整体扫描一遍数组，对于每一个垃圾数据，调用`expungeStaleEntry(i)`执行垃圾清理操作    
+（2）如果size >= 3/4 * threshold，执行resize扩容操作    
+
+`resize`逻辑：    
+（1）新数组容量扩大为原来老数组的2倍    
+（2）将老数组里的元素依次映射到新数组（老数组垃圾数据丢弃，index计算方式k.threadLocalHashCode & (newLen - 1)， 线性探测解决hash冲突）    
+
+
 #### （3）内存回收和扩容问题    
 
+内存回收：get和set过程只要遍历到垃圾数据就会来一波垃圾数据清理操作。    
+扩容问题：set的时候，由于数据量可能扩大，所以可能会扩容。    
 
+其他的比如`threadLocalHashCode`，`HASH_INCREMENT = 0x61c88647`看下面文章介绍即可。
 
 ### 4、参考文档
 
