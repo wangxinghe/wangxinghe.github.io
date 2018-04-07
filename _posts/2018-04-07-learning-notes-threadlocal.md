@@ -103,8 +103,8 @@ Entry是<WeakReference<ThreadLocal>, Object>的键值对。
 具体放入步骤：    
 （1）计算索引，int i = key.threadLocalHashCode & (len-1);    
 （2）从i开始遍历一轮每个元素e（即从包括i开始往后直到第一个空元素，算作1轮）    
-    （2.1）如果e.key == key，说明找到了赋值的位置，进行赋值e.value = value并return    
-    （2.2）如果e.key == null，说明是垃圾数据，调用`replaceStaleEntry(key, value, i)`处理完后并return    
+    （2.1）如果e.key == key，说明`找到`了赋值的位置，进行赋值e.value = value并return    
+    （2.2）如果e.key == null，说明是`垃圾数据`，调用`replaceStaleEntry(key, value, i)`处理完后并return    
     （2.3）否则继续遍历下一个元素    
 （3）将<key, value>放到第一个空元素位置，size＋1。    
 （4）调用`cleanSomeSlots(i, size)`清空部分数据    
