@@ -7,7 +7,6 @@ category: Java
 tags: [Java]
 ---
 
-这一系列文章是自己归纳总结用的，自己怎么好理解怎么写。
 
 **1、ThreadLocal设计图**    
 **2、应用场景分析**    
@@ -22,7 +21,7 @@ tags: [Java]
 
 ### 1、ThreadLocal设计图
 
-![](/image/2018-04-07-learning-notes-threadlocal/threadlocal.png)
+![](/image/2018-04-07-learning-notes-threadlocal/threadlocal.jpg)
 
 设计图分析：    
 
@@ -50,7 +49,7 @@ ThreadLocal和synchronized的比较：
 
 ### 3、关键类ThreadLocalMap
 
-####（1）数据结构
+#### （1）数据结构
 
 **ThreadLocalMap三要素：**    
 Entry[] table;  //数组    
@@ -69,7 +68,7 @@ Entry是<WeakReference<ThreadLocal>, Object>的键值对。
         }
     }
     
-####（2）怎么存/取数据
+#### （2）怎么存/取数据
 
 数据存取，主要是关注set/get方法。
 
@@ -86,7 +85,7 @@ key.threadLocalHashCode
 **存数据set()**    
 
     
-####（3）内存回收和扩容问题    
+#### （3）内存回收和扩容问题    
 
 
 
