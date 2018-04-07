@@ -78,9 +78,17 @@ Entry是<WeakReference<ThreadLocal>, Object>的键值对。
 2、获取当前线程的ThreadLocalMap对象    
 3、当前ThreadLocal实例作为key，从ThreadLocalMap中查找对应的value，并返回结果。     
    具体查找过程：    
-
-key.threadLocalHashCode    
+ （1）先计算索引，int i = key.threadLocalHashCode & (table.length - 1);    
+ （2）如果table[i]元素非空且table[i].key == key，说明找到了，返回table[i].value    
+ （3）否则，从i开始遍历一轮每个元素e（即从包括i开始往后直到第一个空元素，算作1轮）。    
+   （3.1）如果e.key == key，则说明找到并返回e.value；    
+   （3.2）如果e.key == null，则说明是垃圾数据，调用expungeStaleEntry(i)进行垃圾数据逻辑处理即可    
+   （3.3）如果e.key != null && e.key != key，则说明存在hash冲突，这个位置被别的对象先占了，根据`线性探测法`往后寻找，循环上面步骤。        
 4、如果没有查到，则调用初始化方法并返回初始值。
+
+`expungeStaleEntry(int staleSlot)`，垃圾数据处理逻辑：    
+（1）staleSlot位置的数据清空，size -1    
+（2）
 
 **存数据set()**    
 
