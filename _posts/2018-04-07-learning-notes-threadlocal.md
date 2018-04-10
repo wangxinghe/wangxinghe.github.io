@@ -39,7 +39,7 @@ tags: [Java]
 ### 2、应用场景分析
 
 ThreadLocal简单说来就是：    
-一个Thread维护自己的一个Map，每个Thread只拿自己Map中的数据，各个Thread互不干扰，不存在什么线程间数据共享问题。
+一个Thread维护自己的一个Map，每个Thread只拿自己Map中的数据，各个Thread互不干扰，不存在什么线程间数据共享问题。Map中可以存放一个或多个数据。
 
 比如Android中的Looper机制就是，主线程和各子线程都有自己独立的Looper实例。    
 比如Hibernate的JDBC数据库连接，每个线程有自己独立的Connection，互不干扰。    
