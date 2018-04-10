@@ -24,7 +24,7 @@ tags: [Java]
 我们不难推断出LinkedHashMap的相关特性：    
 （1）双向链表的头结点和尾结点：head，tail   
 （2）每个结点包含next，before，after属性    
-（3）结点访问(put/get)后，存在一个双向链表结构的调整过程。如果按照插入顺序排列，则新结点插入双向链表的尾部；如果按照访问顺序排列，则最新访问的结点移动到双向链表的尾部    
+（3）结点访问(put/get/remove)后，存在一个双向链表结构的调整过程。如果按照插入顺序排列，则新结点插入双向链表的尾部；如果按照访问顺序排列，则最新访问的结点移动到双向链表的尾部    
 
 结合源码来看：
 
@@ -50,7 +50,7 @@ tags: [Java]
     
 然后再来看双向链表中结构调整的相关代码：
 
-####（1）新增结点：
+#### （1）新增结点：
 
 创建结点后，首先将新结点加到双向链表结尾，其次调整head和tail的指向。
 
@@ -136,15 +136,43 @@ tags: [Java]
 （1）结点结构上LinkedHashMap.Entry多了before、after属性    
 （2）下面几个方法LinkedHashMap增加了对双向链表的结点操作，和头结点尾结点指针的调整    
 
-`newNode(int hash, K key, V value, Node<K,V> e)`    
-`afterNodeAccess(Node<K,V> e)`    
-`afterNodeRemoval(Node<K,V> e)`    
-`afterNodeInsertion(boolean evict)`    
+    newNode(int hash, K key, V value, Node<K,V> e)   
+    afterNodeAccess(Node<K,V> e)    
+    afterNodeRemoval(Node<K,V> e)    
+    afterNodeInsertion(boolean evict)    
 
 
 ### 2、LRU实现
 
+由于LinkedHashMap支持双向链表的访问顺序排序和插入顺序排序方式，且提供了`removeEldestEntry`方法，因此可以实现LruCache和FIFOCache。
 
+如下代码实现了LruCache：
+
+    public class LruCache<K,V> {
+        private Map<K, V> cache;
+
+        public LruCache(final int capacity) {
+            cache = new LinkedHashMap<K, V>(capacity, 0.75f, true){
+                @Override
+                protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+                    return size() > capacity;
+                }
+            };
+        }
+
+        public V get(K key) {
+            if (cache.containsKey(key)) {
+                return cache.get(key);
+            }
+            return null;
+        }
+
+        public void set(K key, V val) {
+            cache.put(key, val);
+        }
+    }
+
+如果要实现一个FIFOCache，accessorOrder=false即可。
 
 ### 3、参考文档
 
