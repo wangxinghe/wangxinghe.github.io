@@ -114,20 +114,119 @@ HashMap的结构图如上所示：
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
-扩容逻辑：
+扩容逻辑：    
+1.创建一个新数组newTab，其容量是旧数组oldTab的2倍，即newCap = oldCap << 1    
+2.依次遍历旧数组oldTab的每个元素e = oldTab[j]，将其插入新数组newTab：    
 
+- （1）若e只有一个头结点，则计算插入newTab的位置`index = e.hash & (newCap - 1)`，并赋值给newTab[index]    
+- （2）若e是红黑树，则将其拆分为hiHead，loHead 2个结构分别放到newTab[j]和newTab[j+oldCap]的2个位置    
+- （3）若e是含多个结点的单链表，则根据单链表的每个结点是否满足`(e.hash & oldCap) == 0`划分为loHead和hiHead两个链表，并依次赋给newTab[j]和newTab[j + oldCap]，即`newTab[j] = loHead; newTab[j + oldCap] = hiHead;`
+
+几点需要注意的地方：    
+（1）数据存到哪个数组就用哪个数组的容量求索引，新数组用newCap，旧数组用oldCap    
+（2）扩容之后，新数组长度变大了，旧数组每个桶中的元素对半划分为2个结构，放到新数组的2个桶中。    
+（3）划分规则：原来求index是根据hash & (oldCap - 1)，oldCap翻倍后相当于(oldCap - 1)左移1位，假设oldCap＝1000，则扩容后为10000，index的范围是[0000-0111, 1000-1111]，所以根据oldCap的最高位是1还是0来划分为2部分即可。
 
 
 #### （2）取数据get(Object key)    
 
+基本逻辑：    
+1.计算key的hash值    
+2.根据i = (n - 1) & hash计算索引，得到在数组（桶）第几个位置    
+3.针对table[i]，考虑如下情况：
+
+- （1）若table[i]头结点p为空，则返null
+- （2）若table[i]头结点p满足`p.hash == hash && (p.key == key || key.equals(p.key))`，则返头结点p    
+- （3）若table[i]是红黑树，则走红黑树的get逻辑
+- （4）若table[i]是单链表，则遍历单链表找到满足`p.hash == hash && (p.key == key || key.equals(p.key))`的结点并返回
+
 #### （3）删数据remove(Object key)    
+
+删除单个结点逻辑：    
+和get逻辑差不多，无非是先找到结点，再去删除结点，删除之后size-1，如果结点在红黑树上，则根据size决定是否将红黑树退化成单链表，最后调一下`afterNodeRemoval(node);`做后续处理。
+
+删除所有结点逻辑：    
+直接将数组每个元素置为null，size＝0    
+    
+    public void clear() {
+        Node<K,V>[] tab;
+        modCount++;
+        if ((tab = table) != null && size > 0) {
+            size = 0;
+            for (int i = 0; i < tab.length; ++i)
+                tab[i] = null;
+        }
+    }
 
 #### （4）遍历HashIterator    
 
+平常开发中遍历的时候，一般是调用集合的iterator()得到Iterator，然后调用Iterator的next()方法访问下一个元素。
+
+我们看HashIterator源码：
+
+    abstract class HashIterator {
+        Node<K,V> next;        // next entry to return
+        Node<K,V> current;     // current entry
+        int expectedModCount;  // for fast-fail
+        int index;             // current slot
+
+        HashIterator() {
+            expectedModCount = modCount;
+            Node<K,V>[] t = table;
+            current = next = null;
+            index = 0;
+            if (t != null && size > 0) { // advance to first entry
+                do {} while (index < t.length && (next = t[index++]) == null);
+            }
+        }
+
+        public final boolean hasNext() {
+            return next != null;
+        }
+
+        final Node<K,V> nextNode() {
+            Node<K,V>[] t;
+            Node<K,V> e = next;
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+            if (e == null)
+                throw new NoSuchElementException();
+            if ((next = (current = e).next) == null && (t = table) != null) {
+                do {} while (index < t.length && (next = t[index++]) == null);
+            }
+            return e;
+        }
+    ｝
+
+在调用nextNode()的方法时，直接返回next。另外我们还需要提前把下一次访问的结点找到作为新的next。
+
+基本逻辑：    
+1.根据当前的next，确定要返回的next结点    
+2.确定下一次访问时的current和next。current = next，next = ?，考虑如下情况：
+
+- （1）如果next不是当前数组某个元素中的单链表或红黑树中最后一个结点，则next = next.next
+- （2）如果next是当前数组某个元素中最后一个结点或者空结点，则转向数组下一个元素（下一个桶Bin），然后再在下一个Bin中遍历单链表或红黑树的结点作为新的next
+
+这么看来遍历的规则就是：整体顺序是按照桶的index大小，同一个index的桶中按照单链表或红黑树的next指向去找next。
+
 #### （5）扩容
+
+扩容发生在put过程，当结点数量size > threshold时，会触发扩容。
+
+threshold的确定规则：大小是2的k次幂。
+
+    static final int tableSizeFor(int cap) {
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+    }
 
 
 ### 3、参考文档
 
 （1）[Java 容器源码分析之 HashMap](http://blog.jrwang.me/2016/java-collections-hashmap/)    
-（2）
+（2）[Java HashMap工作原理](http://www.importnew.com/16599.html)
