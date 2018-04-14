@@ -14,4 +14,11 @@ tags: [Android]
 **（3）CacheInterceptor**  
 **（4）ConnectInterceptor**      
 **（5）CallServerInterceptor**    
-**3、参考文档**
+**3、底层网络通信机制**    
+**4、参考文档**
+
+<!--more-->
+
+代码结构
+
+功能性能
