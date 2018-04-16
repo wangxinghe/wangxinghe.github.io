@@ -81,7 +81,7 @@ tags: [Android]
  
 上图是Buffer机制的框架图。
 
-`Segment`是一个双向循环链表，容量为8K字节，头结点为head。    
+`Segment`是一个双向循环链表，每个结点容量为8K字节，头结点为head。    
 `SegmentPool`维护一个Segment单向链表，容量为8*Segment，回收不用的Segment对象。    
 当从InputStream中读数据时，读取的数据会写进Segment双向循环链表tail。如果Segment双向链表内存不够，会从SegmentPool中take()一个Segment添加到双向循环链表尾部。    
 当往OutputStrem中写数据时，从Segment双向循环链表head开始读取数据到OutputStream，读完的Segment结点从双向循环链表移除，并回收到SegmentPool中，等待下次复用。    
