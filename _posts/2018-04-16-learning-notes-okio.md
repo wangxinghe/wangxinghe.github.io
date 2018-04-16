@@ -38,13 +38,44 @@ tags: [Android]
 
 下面重点讲下OKio框架设计中关键的几个部分。
 
-#### （1）Sink / Source**   
+#### （1）Source / Sink   
 
+`Source`的意思是`水源`，`Sink`的意思是**水槽**，非常形象的表明了流的输入输出。    
+其中`Source`对应输入流，`Sink`对应输出流。
+
+以`Source`为例，其代码如下：
+
+    public interface Source extends Closeable {
+      /**
+       * Removes at least 1, and up to {@code byteCount} bytes from this and appends
+       * them to {@code sink}. Returns the number of bytes read, or -1 if this
+       * source is exhausted.
+       */
+      long read(Buffer sink, long byteCount) throws IOException;
+
+      /** Returns the timeout for this source. */
+      Timeout timeout();
+
+      /**
+       * Closes this source and releases the resources held by this source. It is an
+       * error to read a closed source. It is safe to close a source more than once.
+       */
+      @Override void close() throws IOException;
+    }
+
+继承关系如图：
  
-#### （2）Buffer机制--Segment和SegmentPool**    
+ ![](/image/2018-04-16-learning-notes-okio/source.png)
+ 
+`Source`和`BufferedSource`都是接口，真正的实现类是`RealBufferedSource`，真正的read操作还是通过`Buffer`来执行，Buffer类似于BufferedInputStream/BufferedReader里的byte[]/char[]缓冲数组，不过Buffer里面是一个链表的数据结构。
+
+`Sink`结构和Source类似。
+
+#### （2）Buffer机制--Segment和SegmentPool    
 
 
-#### （3）超时机制--Timeout和AsyncTimeout**    
+
+#### （3）超时机制--Timeout和AsyncTimeout    
 
 
 
