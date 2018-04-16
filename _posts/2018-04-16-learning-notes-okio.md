@@ -25,14 +25,17 @@ tags: [Android]
 上面两张图是OKio和Java IO的类图。我们可以很直观的看出两者之间的异同。
     
 **相同点：**    
-本质一样，都是对流的操作，Source类似于InputStream／Reader，Sink类似于OutputStream／Writer。    
+本质一样，都是对流的操作，Source类似于InputStream／Reader，Sink类似于OutputStream／Writer，Source/Sink到最后操作的还是InputStream/OutputStream。    
 除了基本的read/write外，还有支持特定需求的各种子类。
 
-**不同点：**    
-（1）OKio精简了输入输出流的类个数    
-（2）OKio的Buffer机制更加优秀，引入Segment和SegmentPool复用机制    
+**OKio的优势**    
+（1）N合一。OKio精简了输入输出流的类个数    
+（2）低的CPU和内存消耗。OKio的Buffer机制更加优秀，引入Segment和SegmentPool复用机制    
 （3）OKio支持Timeout超时机制    
-（4）OKio支持md5、sha、base64等数据处理    
+（4）使用方便。ByteString处理不变byte，Buffer处理可变byte。
+（5）提供了一系列的工具。OKio支持md5、sha、base64等数据处理    
+
+这部分总结，参考链接（1）的大佬总结的很好，膜拜。
 
 ### 2、OKio的设计思想    
 
@@ -74,6 +77,122 @@ tags: [Android]
 #### （2）Buffer机制--Segment和SegmentPool    
 
 
+ ![](/image/2018-04-16-learning-notes-okio/buffer2.png)
+ 
+上图是Buffer机制的框架图。
+
+`Segment`是一个双向循环链表，容量为8K字节，头结点为head。    
+`SegmentPool`维护一个Segment单向链表，容量为8*Segment，回收不用的Segment对象。    
+当从InputStream中读数据时，读取的数据会写进Segment双向循环链表tail。如果Segment双向链表内存不够，会从SegmentPool中take()一个Segment添加到双向循环链表尾部。    
+当往OutputStrem中写数据时，从Segment双向循环链表head开始读取数据到OutputStream，读完的Segment结点从双向循环链表移除，并回收到SegmentPool中，等待下次复用。    
+
+看完整个Buffer的代码会发现，Buffer的结构非常类似于Netty里的`ByteBuf`。
+
+可以简单看下ByteBuf的结构图：    
+
+![](/image/2018-04-16-learning-notes-okio/bytebuf.png)
+
+更详细的内容可以参考下面给出的参考链接。
+
+下面是`Segment`类的定义：
+
+    final class Segment {
+      //一个Segment中data字节数组的最大容量8K，单位：字节
+      static final int SIZE = 8192;
+      //当Segment中字节数 > SHARE_MINIMUM时（大Segment），只能共享，不能添加到SegmentPool
+      static final int SHARE_MINIMUM = 1024;
+      //字节数组
+      final byte[] data;
+      //下一次读取的开始位置
+      int pos;
+      //写入的开始位置
+      int limit;
+      //data是否可以直接供其他Segment或byte string复用，不需要又去重新拷贝一份data，节省内存
+      boolean shared;
+      //data是否仅当前Segment独有，不share
+      boolean owner;
+      //后继结点
+      Segment next;
+      //前驱结点
+      Segment prev;
+
+      //添加一个Segment到当前Segment的后面
+      public Segment push(Segment segment) {...}
+      
+      //移除当前Segment
+      public @Nullable Segment pop() {...｝
+      
+      //当前Segment分裂成2个Segment结点。前面结点pos~limit数据范围是[pos..pos+byteCount)，
+      后面结点pos~limit数据范围是[pos+byteCount..limit)
+      public Segment split(int byteCount) {...}
+      
+      //当前Segment结点和prev前驱结点合并成一个Segment，统一合并到prev，然后当前Segment结点从双向循环链表移除并添加到SegmentPool复用。当然合并的前提是：2个Segment的字节总和不超过8K。合并后可能会移动pos、limit
+      public void compact() {...}
+    ｝
+
+下面是`SegmentPool`类的代码：
+
+    final class SegmentPool {
+      //最大字节数，相当于8个Segment的容量，64 KiB.
+      static final long MAX_SIZE = 64 * 1024;
+      //单链表，next是下次take()返回的结点
+      static @Nullable Segment next;
+      //字节总数
+      static long byteCount;
+      
+      //返回一个Segment，返回的是next
+      static Segment take() {...｝
+      
+      //添加一个Segment，添加到next前面
+      static void recycle(Segment segment) {...}
+    ｝
+
+`Buffer`重点关注2个方法read/write。    
+基本思路就是：对于InputStream，数据从InputStream读到Buffer里的Segment双向循环链表，必要的时候需要从SegmentPool中取Segment补充到双向循环链表；对于OutputStream，数据从Buffer里的Segment双向循环链表写到OutputStream，并将写完的Segment扔到SegmentPool中。
+下面是代码：
+
+    /** Write {@code byteCount} bytes from this to {@code out}. */
+    public Buffer writeTo(OutputStream out, long byteCount) throws IOException {
+        if (out == null) throw new IllegalArgumentException("out == null");
+        checkOffsetAndCount(size, 0, byteCount);
+
+        Segment s = head;
+        while (byteCount > 0) {
+          int toCopy = (int) Math.min(byteCount, s.limit - s.pos);
+          out.write(s.data, s.pos, toCopy);
+
+          s.pos += toCopy;
+          size -= toCopy;
+          byteCount -= toCopy;
+
+          if (s.pos == s.limit) {
+            Segment toRecycle = s;
+            head = s = toRecycle.pop();
+            SegmentPool.recycle(toRecycle);
+          }
+        }
+
+        return this;
+    }
+
+
+      private void readFrom(InputStream in, long byteCount, boolean forever) throws IOException {
+    if (in == null) throw new IllegalArgumentException("in == null");
+    while (byteCount > 0 || forever) {
+      Segment tail = writableSegment(1);
+      int maxToCopy = (int) Math.min(byteCount, Segment.SIZE - tail.limit);
+      int bytesRead = in.read(tail.data, tail.limit, maxToCopy);
+      if (bytesRead == -1) {
+        if (forever) return;
+        throw new EOFException();
+      }
+      tail.limit += bytesRead;
+      size += bytesRead;
+      byteCount -= bytesRead;
+    }
+  }
+
+当然还提供了
 
 #### （3）超时机制--Timeout和AsyncTimeout    
 
@@ -199,12 +318,12 @@ OKio框架中提供了`Timeout`和`AsyncTimeout`两个类，用于实现超时�
           }
         };
       }
-      
-从上面可以知道，一个Socket流设置一个AsyncTimeout，在read/write操作的开始调用enter()，结束调用exit()，很显然说明一个AsyncTimeout结点专门检测一个Socket流是否超时。
-
-
+   
+OKio并不是那么好理解，可以多看看别人写的总结，下面列出了部分链接。
 
 ### 3、参考文档
 
 （1）[深入理解okio的优化思想](https://blog.csdn.net/zoudifei/article/details/51232711)    
-
+（2）[Okio精简高效的IO库](https://blog.csdn.net/hesong1120/article/details/78652565)    
+（3）[大概是最完全的Okio源码解析文章](https://www.jianshu.com/p/f033a64539a1)
+（4）[Netty4学习笔记（4）-- ByteBuf和设计模式](https://blog.csdn.net/zxhoo/article/details/17577865)    
