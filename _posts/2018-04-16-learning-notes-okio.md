@@ -32,7 +32,7 @@ tags: [Android]
 （1）N合一。OKio精简了输入输出流的类个数    
 （2）低的CPU和内存消耗。OKio的Buffer机制更加优秀，引入Segment和SegmentPool复用机制    
 （3）OKio支持Timeout超时机制    
-（4）使用方便。ByteString处理不变byte，Buffer处理可变byte。
+（4）使用方便。ByteString处理不变byte，Buffer处理可变byte。    
 （5）提供了一系列的工具。OKio支持md5、sha、base64等数据处理    
 
 这部分总结，参考链接（1）的大佬总结的很好，膜拜。
