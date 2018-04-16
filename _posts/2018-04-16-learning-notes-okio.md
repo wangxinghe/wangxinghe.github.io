@@ -43,7 +43,7 @@ tags: [Android]
 
 #### （1）Source / Sink   
 
-`Source`的意思是`水源`，`Sink`的意思是**水槽**，非常形象的表明了流的输入输出。    
+`Source`的意思是**水源**，`Sink`的意思是**水槽**，非常形象的表明了流的输入输出。    
 其中`Source`对应输入流，`Sink`对应输出流。
 
 以`Source`为例，其代码如下：
@@ -177,22 +177,20 @@ tags: [Android]
 
 
       private void readFrom(InputStream in, long byteCount, boolean forever) throws IOException {
-    if (in == null) throw new IllegalArgumentException("in == null");
-    while (byteCount > 0 || forever) {
-      Segment tail = writableSegment(1);
-      int maxToCopy = (int) Math.min(byteCount, Segment.SIZE - tail.limit);
-      int bytesRead = in.read(tail.data, tail.limit, maxToCopy);
-      if (bytesRead == -1) {
-        if (forever) return;
-        throw new EOFException();
+        if (in == null) throw new IllegalArgumentException("in == null");
+        while (byteCount > 0 || forever) {
+          Segment tail = writableSegment(1);
+          int maxToCopy = (int) Math.min(byteCount, Segment.SIZE - tail.limit);
+          int bytesRead = in.read(tail.data, tail.limit, maxToCopy);
+          if (bytesRead == -1) {
+            if (forever) return;
+            throw new EOFException();
+          }
+          tail.limit += bytesRead;
+          size += bytesRead;
+          byteCount -= bytesRead;
+        }
       }
-      tail.limit += bytesRead;
-      size += bytesRead;
-      byteCount -= bytesRead;
-    }
-  }
-
-当然还提供了
 
 #### （3）超时机制--Timeout和AsyncTimeout    
 
