@@ -325,5 +325,5 @@ OKio并不是那么好理解，可以多看看别人写的总结，下面列出�
 
 （1）[深入理解okio的优化思想](https://blog.csdn.net/zoudifei/article/details/51232711)    
 （2）[Okio精简高效的IO库](https://blog.csdn.net/hesong1120/article/details/78652565)    
-（3）[大概是最完全的Okio源码解析文章](https://www.jianshu.com/p/f033a64539a1)
+（3）[大概是最完全的Okio源码解析文章](https://www.jianshu.com/p/f033a64539a1)    
 （4）[Netty4学习笔记（4）-- ByteBuf和设计模式](https://blog.csdn.net/zxhoo/article/details/17577865)    
