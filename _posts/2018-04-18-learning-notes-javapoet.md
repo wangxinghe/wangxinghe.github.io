@@ -120,5 +120,8 @@ javapoet需要配合auto-service库一起使用：
 ### 4、参考文档
 
 （1）[https://github.com/square/javapoet](https://github.com/square/javapoet)    
+（2）[ServiceLoader实现原理](https://blog.csdn.net/is_zhoufeng/article/details/50722440)    
+（3）[从0到1：实现 Android 编译时注解](https://www.jianshu.com/p/9e34defcb76f)
+
 
 
