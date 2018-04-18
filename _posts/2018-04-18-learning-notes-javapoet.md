@@ -64,3 +64,61 @@ javapoet需要配合auto-service库一起使用：
 
 ### 2、JavaPoet原理
 
+`利用JavaPoet生成Java类文件，本质上是将外界传进来的属性值按照Java类格式规范依次转换成String，并将String写进类文件。`
+
+我们先看搞清楚Java类文件的基本结构：
+
+![](/image/2018-04-18-learning-notes-javapoet/java-file.png)
+
+之前有一篇Android编码规范的文章讲过怎么规范写一个类的代码：[Android编码规范](http://mouxuejie.com/blog/2016-08-28/android-code-style/)，结合起来看很容易理解上面的结构图。
+
+我们结合上面结构图来看，发现主要有几个必不可少的元素：
+
+- JavaFile Java文件
+- TypeSpec 类
+- FieldSpec 变量
+- MethodSpec 方法
+- CodeBlock 代码块
+- AnnotationType/TypeName/Modifier等根据需求所需
+
+以上元素存在包含关系，每个元素有一系列属性。我们可以使用`Builder模式`构建每一个元素。
+
+**上面第一部分提到使用JavaPoet，整个过程结合起来看就是：**    
+（1）外部先构造JavaFile对象    
+（2）由JavaFile对象生成Java类文件    
+
+看下JavaFile调用入口的实现：
+
+![](/image/2018-04-18-learning-notes-javapoet/java-file-code1.png)
+
+![](/image/2018-04-18-learning-notes-javapoet/java-file-code2.png)
+
+**我们可以得出由JavaFile生成Java类文件的流程：**    
+（1）根据`JavacFiler`结合Java类文件路径生成FilerOutputJavaFileObject对象    
+（2）根据FilerOutputJavaFileObject对象，得到FilerWriter，FilerWriter extends java.io.FilterWriter    
+（3）遍历JavaFile两次。第一次目的是得到suggestedImports，writer传的NULL_APPENDABLE，不进行写操作；第二次是结合suggestedImports和JavaFile，按照最上面结构图的顺序，利用CodeWriter将CodeBlock和String等写进类文件（暂时不讲修饰符／返回值等的处理……    
+
+其中，suggestedImports ＝ importableTypes - referencedNames
+
+**将CodeBlock写进Java类文件的流程：**    
+（1）将代码串转换成CodeBlock对象。其中普通String和特殊字符（`$L、$N、$S、$T、$$、$>、$<、$[、$]、$W`）依次放到formats列表，args放到args列表    
+（2）依次遍历formats列表，如果遇到上述特殊字符则要么从args列表中取值出来填充，要么做出其他相关处理。    
+（3）最终得到的还是String，将String写进FilerWriter    
+
+附上CodeBlock的构建方式：    
+
+    public static CodeBlock of(String format, Object... args) {
+        return new Builder().add(format, args).build();
+    }
+
+网上讲JavaPoet原理的文章比较少，主要参考源码和官方文档。
+
+### 3、Annotation
+
+这部分基础知识另外再单独总结。
+
+### 4、参考文档
+
+（1）[https://github.com/square/javapoet](https://github.com/square/javapoet)    
+
+
