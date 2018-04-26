@@ -29,3 +29,40 @@ tags: [Java]
 
 <!--more-->
 
+### 1、集合类整体框架    
+
+![](/image/2018-04-26-learning-notes-collection/collection.png)
+
+### 2、List系列    
+
+#### （1）ArrayList    
+
+#### （2）LinkedList
+    
+#### （3）Vector、Stack
+    
+### 3、Set系列    
+
+#### （1）HashSet、LinkedHashSet
+    
+#### （2）TreeSet
+    
+### 4、Map系列
+    
+#### （1）HashMap、LinkedHashMap    
+
+#### （2）HashTable    
+
+#### （3）TreeMap  
+
+#### （4）WeakHashMap  
+
+### 5、Queue系列    
+
+### 6、Sparse系列    
+
+#### （1）SparseArray/SparseBooleanArray/SparseIntArray/SparseLongArray    
+
+### 7、集合类总结    
+
+### 8、参考文档    
