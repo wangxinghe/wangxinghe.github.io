@@ -9,7 +9,7 @@ tags: [Basis]
 
 **1、HTTP协议**    
 **（1）HTTP报文**    
-**（2）3次握手／4次挥手**    
+**（2）TCP3次握手／4次挥手**    
 **（3）HTTP请求过程**    
 **（4）HTTP协议缺点**    
 **2、HTTPS协议**    
@@ -149,17 +149,98 @@ HTTP协议位于应用层，一个HTTP请求的流转方向为：
      sex=man&name=Professional  
 
 
-#### （2）3次握手／4次挥手    
+#### （2）TCP3次握手／4次挥手    
 
-![](/image/2018-04-23-learning-notes-network-protocol/http-shakehand.png)
+![](/image/2018-04-23-learning-notes-network-protocol/tcp.png)
 
-3次握手、4次挥手、为什么
+**TCP的特点：**    
+（1）面向连接的传输层协议    
+（2）传输过程是可靠的。无差错、不丢失、不重复、按序到达    
+（3）全双工通信    
+（4）面向字节流    
+
+实现可靠传输的关键点：    
+TCP发送一个报文段，需要对方回复一个ACK来确认报文段是否发送成功，如果没有收到ACK则需要进行报文重传。    
+
+**报文格式：**    
+关于TCP报文格式，本文暂时不讲，只介绍几个重要的字段：    
+（1）`序列号Seq`：占4个字节，TCP连接中传输的每一个字节都按顺序编号    
+（2）`确认号Ack`：占4个字节，是期望收到对方下一个报文段的第一个数据字节的序号    
+（3）`SYN`：同步标志位，在连接建立时用来同步序列号，当SYN＝1时表明这是一个连接请求或连接接受请求    
+（4）`ACK`：确认标志位，仅当ACK＝1时确认号字段才有效    
+（5）`FIN`：终止标志位，用来释放连接，当FIN＝1时表明发送方的数据已发送完毕，并要求释放连接    
+
+**整体流程：**    
+1、连接建立阶段：    
+（1）Client向Server发出连接请求报文段，此时SYN＝1，Client进入SYN_SEND状态    
+（2）Server收到连接请求报文段后，同意建立连接并向Client发送确认，此时SYN=1，ACK=1，Server进入SYN_RECV状态    
+（3）Client收到Server的确认后，向B发送确认报文，ACK=1，Client进入ESTABLISHED状态；若Server收到Client的确认报文，则Server也进入ESTABLISHED状态    
+
+2、数据传输阶段：    
+Client和Server都可以发送和接收数据，当发送方向接收方发送数据时，接收方需要发送ACK确认报文，若发送方没有收到ACK确认报文则需要重传    
+
+3、连接释放阶段：    
+发起方可以是Client或Server，以Client为例。    
+（1）Client向Server发送连接释放报文段，此时FIN=1，Client进入FIN_WAIT_1状态    
+（2）Server收到连接释放报文段后发出确认，此时ACK=1，Server进入CLOSE_WAIT状态，从Client到Server这个方向的连接就释放了（半关闭状态，即Client已经没有数据要发送了，但Server发送数据Client仍要接收）；Client收到确认报文段后进入FIN_WAIT_2状态    
+（*）若Server还有数据报文段要发送，则向Client发送，Client收到后进行ACK应答    
+（3）Server向Client发送连接释放报文段，此时FIN=1，ACK=1，Server进入LAST_ACK状态，等待Client的确认    
+（4）Client收到连接释放报文段后，发送确认报文段，此时ACK＝1，Client进入TIME_WAIT状态；Server收到确认报文后进入CLOSED状态。如果Client在2MSL时间内没收到Server的重传报文则进入CLOSED状态，至此连接释放了。    
+
+MSL：Maximum Segment Lifetime，最长报文段寿命，可根据实际需求设定。    
+
+**Seq和Ack：**    
+序列号Seq取值规则：    
+序列号Seq对于某个端来说都是累加的，其取值只和本端的上一个报文的Seq有关。    
+两端建立连接时的初始值是随机的；    
+本端报文Seq取值 ＝ 本端上一个报文Seq取值 ＋ 本端上一个报文的Len(包大小，TCP Segment Length)    
+SYN、SYN-ACK、FIN、FIN-ACK报文段，不能携带数据，Len＝0，但是根据TCP规范要消耗一个序列号    
+ACK报文段可以携带数据也可以不携带，一般都不携带数据，本身会消耗一个序列号。不携带数据时，会影响本端下一个报文段的Seq，即下一个Seq取值和ACK一致。    
+
+用WireShark看数据时，Length属性对应的是以太帧数据的大小，TCP Segment Length属性对应的是TCP段报文大小，两者之间相差头部（Ethernet Header +IP Header ＝ 54字节），TCP报文中的Len就是TCP Segment Length。    
+`Frame=Ethernet Header +IP Header +TCP Header +TCP Segment Data`
+
+延伸阅读：[TCP通信流程解析](https://blog.csdn.net/phunxm/article/details/5836034)    
+
+确认号Ack取值规则：    
+确认号是针对发送端发送一个报文段，然后接收端发一个确认报文告诉发送方自己收到了该报文，因此Ack取值和发送方的Seq有关        
+Ack ＝ 发送报文段的Seq ＋ Len    
+
+
+**为什么是3次握手／4次挥手：**    
+为什么是3次握手？（答案来源于谢希仁《计算机网络》第五版。
+
+![](/image/2018-04-23-learning-notes-network-protocol/why-tcp-shakehand-3times.png)    
+
+按道理通过前2次握手，Client和Server就知道了对方已确认建立连接。之所以Client还需要发个ACK是因为：    
+之前发送的已经失效的SYN消息由于在某些网络结点滞留的原因，在连接释放后才到达Server，这是如果Server回复了SYN-ACK报文，连接就又建立了。所以Client收到SYN-ACK后，还需要通过发送一个ACK确认这个是不是已失效的。    
+
+为什么是4次挥手？    
+这里主要是想问，为啥第2、3次不合并为一次握手，和建立连接过程一样。原因是：    
+Client发了FIN-ACK后，表明Client端没有数据要发送了，但是Server收到报文后可能还有要发送的数据，如果第2、3次合并为一次FIN-ACK，那么没有合适的时机发送数据了，因此需要先发一个ACK，然后传数据，然后发送FIN-ACK。    
+
+**为什么要等2MSL：**    
+
+![](/image/2018-04-23-learning-notes-network-protocol/2msl.png)    
+
+**补充：**    
+网上有很多讲TCP建立连接和断开连接的文章，然而讲的很笼统，关键的地方没有讲清楚，没法做到融汇贯通。        
+
+最后我还是看谢希仁的《计算机网络》第五版，再结合下面两篇博文搞明白的。    
+
+[图解TCP传输过程（三次握手、数据传输、四次挥手）](https://www.polarxiong.com/archives/%E5%9B%BE%E8%A7%A3TCP%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B-%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.html)    这篇文章对整个流程以及seq,ack的理解是比较到位的。    
+
+[就是要你懂 TCP－阿里中间件团队博客](http://jm.taobao.org/2017/06/08/20170608/)    这篇文章抓住了TCP的核心，通过WireShark抓包分析来验证seq,ack的值，不过关于为什么是3次握手/4次挥手理解不太到位。    
 
 滑动窗口、拥塞控制
 
 #### （3）HTTP请求过程    
 
-从浏览器中输入URL到页面展示的过程
+从浏览器中输入URL到页面展示的全过程    
+
+[What really happens when you navigate to a URL](http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/)    
+[https://github.com/skyline75489/what-happens-when-zh_CN](https://github.com/skyline75489/what-happens-when-zh_CN)    
+[从输入URL到页面加载完成的过程中都发生了什么事情？](http://fex.baidu.com/blog/2014/05/what-happen/)        
 
 #### （4）HTTP协议缺点    
 
@@ -265,5 +346,6 @@ ps：SSL/TLS握手是个对称加密密钥协商的过程。涉及3个随机数�
 ### 6、参考文档    
 
 （1）[HTTP权威指南](https://book.douban.com/subject/10746113/)    
-（2）[HTTPS为什么安全 & 分析HTTPS连接建立全过程](http://wetest.qq.com/lab/view/110.html)    
+（2）[计算机网络](https://book.douban.com/subject/2970300/)
 （3）[图解密码技术](https://book.douban.com/subject/26822106/)    
+（4）[HTTPS为什么安全 & 分析HTTPS连接建立全过程](http://wetest.qq.com/lab/view/110.html)    
