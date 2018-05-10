@@ -24,7 +24,7 @@ tags: [Java]
 <!--more-->
 
 
-![](/image/2018-05-08-learning-notes-netty/netty-bind.png)
+![](/image/2018-05-08-learning-notes-netty/netty-xxx.svg)
 
 
 NioEventLoop里面有一个线程thread，这个线程在NioEventLoop创建的时候创建，在需要执行任务的时候才启动；还有一个任务队列LinkedBlockingQueue<Runnable> taskQueue
