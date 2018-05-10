@@ -23,13 +23,164 @@ tags: [Java]
 
 <!--more-->
 
-### 1、整体流程    
-#### （1）Server启动流程    
-#### （2）Client启动流程    
-### 2、重要元素介绍    
-#### （1）NioEventLoopGroup    
-#### （2）NioEventLoop    
-#### （3）Pipeline    
+
+![](/image/2018-05-08-learning-notes-netty/netty-bind.png)
+
+
+NioEventLoop里面有一个线程thread，这个线程在NioEventLoop创建的时候创建，在需要执行任务的时候才启动；还有一个任务队列LinkedBlockingQueue<Runnable> taskQueue
+startThread()是启动这个thread，在run()
+
+    // NioEventLoop
+    while(true) {
+        switch() {
+            case CONTINUE:
+            
+            case SELECT:
+            select(this.wakenUp.getAndSet(false));
+            if(this.wakenUp.get()) {
+                this.selector.wakeup();
+            }
+            default:
+            this.processSelectedKeys();
+            this.runAllTasks();
+        }
+    }
+
+select();
+做的事情为：从PriorityQueue scheduledTaskQueue优先队列中取出第一个Task，得到对应的deadline
+然后在while(true)中：
+（1）如果scheduledTaskQueue取的task的timeoutMillis到了，则break，同时调一下selector.selectNow();
+（2）如果LinkedBlockingQueue taskQueue非空，则break，同时调一下selector.selectNow();
+（3）执行阻塞操作 int selectedKeys = selector.select(timeoutMillis);
+（4）阻塞操作接受后，如果发现selectedKeys或scheduledTaskQueue或taskQueue不为空则break
+
+总结来说，就是有3种类型的任务：定时任务scheduledTaskQueue、普通任务taskQueue、IO任务selectedKeys
+
+select干的事情就是：从scheduledTaskQueue中拿一个任务出来，在一个while(true)循环中：如果检测到这个任务timeout时间到了则调一下selector.selectNow()然后立即跳出循环；如果有普通任务taskQueue非空，则调一下selector.selectNow()然后立即跳出循环；如果要执行的延时任务和普通任务都没有，则在这段timeout时间内执行IO阻塞操作selector.select(timeoutMillis)，完了后判断是否有要执行的延时任务和普通任务和selectKeys，如果有任何一个则break，否则的话还在这个 while(true)中走
+
+轮询到可执行的操作后，接下来就是处理了，处理的顺序是：先处理IO，再处理Task
+
+
+processSelectedKeys();执行比例ioRatio默认50（总数100）
+
+    public void processSelectedKeys() {
+        for(int i = 0; i < selectedKeys.size; ++i) {
+            SelectionKey k = selectedKeys.keys[i];
+            AbstractNioChannel ch = k.attachment();
+            NioUnsafe unsafe = ch.unsafe();
+            
+            int readyOps = k.readyOps();
+            if ((readyOps & OP_CONNECT) != 0) {
+                unsafe.finishConnect();
+            }
+            
+            if((readyOps & SelectionKey.OP_WRITE) != 0) {
+                unsafe.forceFlush();
+            }
+
+            if ((readyOps & (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) {
+                unsafe.read();
+            }
+        }
+    }
+
+对于服务端来说，上面的channel是NioServerSocketChannel，
+unsafe.read();做的事情是
+
+    public void read() {
+        List<Object> buf;
+        
+        do {
+            SocketChannel ch = SocketUtils.accept(this.javaChannel());
+            buf.add(new NioSocketChannel(this, ch));
+        } while(readBuf.size() < maxMessagesPerRead);
+        
+        for(int i = 0; i < readBuf.size(); ++i) {
+            pipeline.fireChannelRead(readBuf.get(i));
+        }
+        
+        pipeline.fireChannelReadComplete();
+    }
+
+
+
+pipeline.fireChannelRead(readBuf.get(i));
+执行的操作：先经过HeadContext -> unsafe -> handler -> ServerBootstrapAcceptor -> ...ChannelInBoundHandler... -> TailContext
+
+pipeline.fireChannelRead() -> head.invokeChannelRead(msg) -> head.channelRead() -> ctx.fireChannelRead(msg);递归往后传，前提是inboundHandler
+
+pipeline.fireChannelReadComplete() -> head.invokeChannelReadComplete() -> head.channelReadComplete -> ctx.fireChannelReadComplete()递归往后传,前提是inboundHandler。传完后调this.readIfIsAutoRead();
+
+readIfIsAutoRead()：
+pipeline.read() -> tail.read() -> 递归到head.read()，前提是findContextOutbound。然后head.read(）又走unsafe.beginRead()，设置一些selectionKey.interestOps(interestOps | this.readInterestOp);
+
+
+传到ServerBootstrapAcceptor时，ServerBootstrapAcceptor做的事情：
+
+        public void channelRead(ChannelHandlerContext ctx, Object msg) {
+            final Channel child = (Channel)msg;
+            child.pipeline().addLast(new ChannelHandler[]{this.childHandler});
+            AbstractBootstrap.setChannelOptions(child, this.childOptions, ServerBootstrap.logger);
+            Entry[] t = this.childAttrs;
+            int var5 = t.length;
+
+            for(int var6 = 0; var6 < var5; ++var6) {
+                Entry e = t[var6];
+                child.attr((AttributeKey)e.getKey()).set(e.getValue());
+            }
+
+            try {
+                this.childGroup.register(child).addListener(new ChannelFutureListener() {
+                    public void operationComplete(ChannelFuture future) throws Exception {
+                        if(!future.isSuccess()) {
+                            ServerBootstrap.ServerBootstrapAcceptor.forceClose(child, future.cause());
+                        }
+
+                    }
+                });
+            } catch (Throwable var8) {
+                forceClose(child, var8);
+            }
+        }
+
+相当于是初始化上面ACCEPT之后得到连接进来的子Channel即NioSocketChannel，初始化子Channel，设置子channel的options, attrs，childhandler，将子channel注册到childGroup。这里的childHandler就是ChannelInitializer。这个过程和NioServerSocketChannel初始化过程一样
+
+子Channel经过的Handler：HeadContext -> ChannelInitializer -> TailContext
+由于在子Channel的register过程，传到ChannelInitializer的时候会调用initChannel()方法，在initChannel()之后会removeChannelInitializer，所以实际上走的是HeadContext -> ChannelInitializer的initChannel()中注册的Handler -> TailContext。所以ChannelInitializer仅仅起到为外部提供回调传入新Handler的作用
+
+unsafe.forceFlush();做的事情：
+
+NioMessageUnsafe
+
+
+
+runAllTasks();//执行比例100-ioRatio
+做的事情：在do while()循环里，每次从scheduledTaskQueue里取出timeout时间到点的任务放到taskQueue里，然后执行taskQueue里的所有任务。循环跳出的条件是scheduledTaskQueue里没有到点的任务为止。
+
+
+一个Channel对应一个Pipeline
+
+关于unsafe：
+NioServerSocketChannel对应NioMessageUnsafe
+NioSocketChannel对应NioByteUnsafe
+
+Pipeline的读和写（DefaultChannelPipeline）：
+
+
+#### 异常处理
+
+调用链`当前发生异常的ChannelHandlerContext.exceptionCaught() -> ctx.fireExceptionCaught(cause) -> ...ChannelHandlerContext(不区分in和out)... -> TailContext.exceptionCaught()`
+
+    //TailContext
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        DefaultChannelPipeline.this.onUnhandledInboundException(cause);
+    }
+
+打log并释放Throwable对象
+
+
+
+
 ### （4）ChannelHandlerContext    
 ### 3、总结    
 
