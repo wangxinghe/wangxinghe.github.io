@@ -8,23 +8,70 @@ tags: [Java]
 ---
 
 
-**1、整体流程**    
-**（1）Server启动流程**    
-**（2）Client启动流程**    
-**2、重要元素介绍**    
-**（1）NioEventLoopGroup**    
-**（2）NioEventLoop**    
-**（3）Pipeline**    
-**（4）ChannelHandlerContext**    
-**3、总结**    
+**1、整体框架**    
+**（1）Server工作原理**    
+**（2）Client工作原理**    
+**2、基本流程**    
+**（1）Server绑定端口**    
+**（2）Client建立连接**    
+**（3）Client/Server读数据**    
+**（4）Client/Server写数据**    
+**3、重要元素**    
+**（1）NioSocketChannel/NioServerSocketChannel**    
+**（2）NioEventLoopGroup**    
+**（3）NioEventLoop**    
+**（4）Pipeline**    
+**（5）ChannelHandlerContext**    
+**（6）ByteBuf**    
+**4、总结**    
 **（1）链式结构**    
 **（2）缓存结构**    
-**4、参考文档**    
+**5、参考文档**    
 
 <!--more-->
 
 
-![](/image/2018-05-08-learning-notes-netty/netty-xxx.svg)
+### 1、整体框架    
+
+#### （1）Server工作原理    
+
+![](/image/2018-05-08-learning-notes-netty/netty-server.svg)
+
+#### （2）Client工作原理    
+
+![](/image/2018-05-08-learning-notes-netty/netty-client.svg)
+
+### 2、基本流程    
+
+#### （1）Server绑定端口    
+
+![](/image/2018-05-08-learning-notes-netty/netty-bind.svg)
+
+#### （2）Client建立连接    
+
+![](/image/2018-05-08-learning-notes-netty/netty-connect.svg)
+
+#### （3）Client/Server读数据
+
+![](/image/2018-05-08-learning-notes-netty/netty-read.svg)
+    
+#### （4）Client/Server写数据    
+
+![](/image/2018-05-08-learning-notes-netty/netty-write.svg)
+
+### 3、重要元素    
+
+#### （1）NioSocketChannel/NioServerSocketChannel
+    
+#### （2）NioEventLoopGroup
+    
+#### （3）NioEventLoop
+    
+#### （4）Pipeline
+    
+#### （5）ChannelHandlerContext
+    
+#### （6）ByteBuf    
 
 
 NioEventLoop里面有一个线程thread，这个线程在NioEventLoop创建的时候创建，在需要执行任务的时候才启动；还有一个任务队列LinkedBlockingQueue<Runnable> taskQueue
@@ -115,50 +162,8 @@ readIfIsAutoRead()：
 pipeline.read() -> tail.read() -> 递归到head.read()，前提是findContextOutbound。然后head.read(）又走unsafe.beginRead()，设置一些selectionKey.interestOps(interestOps | this.readInterestOp);
 
 
-传到ServerBootstrapAcceptor时，ServerBootstrapAcceptor做的事情：
-
-        public void channelRead(ChannelHandlerContext ctx, Object msg) {
-            final Channel child = (Channel)msg;
-            child.pipeline().addLast(new ChannelHandler[]{this.childHandler});
-            AbstractBootstrap.setChannelOptions(child, this.childOptions, ServerBootstrap.logger);
-            Entry[] t = this.childAttrs;
-            int var5 = t.length;
-
-            for(int var6 = 0; var6 < var5; ++var6) {
-                Entry e = t[var6];
-                child.attr((AttributeKey)e.getKey()).set(e.getValue());
-            }
-
-            try {
-                this.childGroup.register(child).addListener(new ChannelFutureListener() {
-                    public void operationComplete(ChannelFuture future) throws Exception {
-                        if(!future.isSuccess()) {
-                            ServerBootstrap.ServerBootstrapAcceptor.forceClose(child, future.cause());
-                        }
-
-                    }
-                });
-            } catch (Throwable var8) {
-                forceClose(child, var8);
-            }
-        }
-
-相当于是初始化上面ACCEPT之后得到连接进来的子Channel即NioSocketChannel，初始化子Channel，设置子channel的options, attrs，childhandler，将子channel注册到childGroup。这里的childHandler就是ChannelInitializer。这个过程和NioServerSocketChannel初始化过程一样
-
-子Channel经过的Handler：HeadContext -> ChannelInitializer -> TailContext
-由于在子Channel的register过程，传到ChannelInitializer的时候会调用initChannel()方法，在initChannel()之后会removeChannelInitializer，所以实际上走的是HeadContext -> ChannelInitializer的initChannel()中注册的Handler -> TailContext。所以ChannelInitializer仅仅起到为外部提供回调传入新Handler的作用
-
-unsafe.forceFlush();做的事情：
-
-NioMessageUnsafe
-
-
-
 runAllTasks();//执行比例100-ioRatio
 做的事情：在do while()循环里，每次从scheduledTaskQueue里取出timeout时间到点的任务放到taskQueue里，然后执行taskQueue里的所有任务。循环跳出的条件是scheduledTaskQueue里没有到点的任务为止。
-
-
-一个Channel对应一个Pipeline
 
 关于unsafe：
 NioServerSocketChannel对应NioMessageUnsafe
@@ -179,10 +184,7 @@ Pipeline的读和写（DefaultChannelPipeline）：
 打log并释放Throwable对象
 
 
-
-
-### （4）ChannelHandlerContext    
-### 3、总结    
+### 4、总结    
 
 #### （1）链式结构    
 
@@ -192,4 +194,4 @@ okhttp类似、tcp/ip协议模型
 
 okio、nio类似
 
-### 4、参考文档    
+### 5、参考文档    
