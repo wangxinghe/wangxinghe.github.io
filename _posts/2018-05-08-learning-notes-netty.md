@@ -121,7 +121,7 @@ NioEventLoop是用来执行任务的。主要包括3种类型的任务：定时�
 IO任务：SelectionKey
 
 2.processSelectedKeys():    
-处理IO任务。    
+处理IO任务OP_CONNECT/OP_ACCEPT/OP_READ/OP_WRITE。    
 
     // NioEventLoop
     public void processSelectedKeys() {
