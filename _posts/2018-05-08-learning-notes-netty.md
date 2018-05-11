@@ -33,6 +33,12 @@ tags: [Java]
 
 ### 1、整体框架    
 
+先看下Client/Server调用的代码：    
+
+![](/image/2018-05-08-learning-notes-netty/Bootstrap.png)
+
+![](/image/2018-05-08-learning-notes-netty/ServerBootstrap.png)
+
 #### （1）Server工作原理    
 
 ![](/image/2018-05-08-learning-notes-netty/netty-server.svg)
@@ -48,6 +54,10 @@ tags: [Java]
 （2）Client发起建立连接    
 （3）连接成功后，C/S读数据    
 （4）连接成功后，C/S写数据    
+
+看过源码后就会发现，Netty最终走的是JAVA NIO那一套，只不过在NIO基础上还做了很多额外的工作，简化了NIO使用上的繁琐。
+
+由于耗时任务都已经放到NioEventLoop线程里执行了，所以Bootstrap和ServerBootstrap是可以在主线程调用的。
 
 #### （1）Server绑定端口    
 
