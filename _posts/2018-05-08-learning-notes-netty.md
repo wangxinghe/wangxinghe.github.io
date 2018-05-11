@@ -79,9 +79,7 @@ tags: [Java]
 
 #### （1）NioSocketChannel/NioServerSocketChannel
 
-Channel可以理解成java中的Stream，既可以输入又可以输出，可以是设置成阻塞和非阻塞。
-
-NioSocketChannel是Client端的流，NioServerSocketChannel是Server端的流。
+NioSocketChannel/NioServerSocketChannel可以理解成java中的Socket/ServerSocket。既可以输入又可以输出，可以是设置成阻塞和非阻塞。
 
 一个NioSocketChannel对应一个连接，一个NioSocketChannel／NioServerSocketChannel对应一个Pipeline。    
 
@@ -178,7 +176,17 @@ TailContext，是ChannelInBoundHandler，是inBound类型。
 
 异常事件是从HeadContext往TailContext传递。
 
-数据传递过程是一个`链式传递`，因为之前稍微看过OkHttp源码，有点类似。
+对于Client端：    
+除HeadContext和TailContext外，Pipeline中的handler还包括Bootstrap.handler()中的handler。
+
+对于Server端：    
+除HeadContext和TailContext外，NioServerSocketChannel对应的Pipeline中的handler包括ServerBootstrap.handler()中的handler和ServerBootstrapAcceptor。
+接入新连接后，NioSocketChannel对应的Pipeline中的handler包括ServerBootstrap.childHandler()中的childHandler
+
+如果使用了`ChannelInitializer`这个handler的话，由于在它的initChannel()回调方法中又remove了它自己，所以最终对应的handler是initChannel()里的handler。因此ChannelInitializer仅仅起到初始化作用，不参与实际数据处理。
+
+
+PS: 数据传递过程是一个`链式传递`，因为之前稍微看过OkHttp源码，有点类似。
 
 #### （5）ChannelHandlerContext
 
