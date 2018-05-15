@@ -42,9 +42,7 @@ Interpret+JIT混合编译模式如下：
 
 ![](/image/2018-05-12-learning-notes-vm/mixed-compile.png)
 
-即对于热代码
-
-Interpret+JIT+AOT混合编译模式是在Interpret+JIT的基础上
+Interpret+JIT+AOT混合编译模式是在Interpret+JIT的基础上，又增加了AOT编译。
 
 
 JavaScript：使用Interpret解释执行方式。    
