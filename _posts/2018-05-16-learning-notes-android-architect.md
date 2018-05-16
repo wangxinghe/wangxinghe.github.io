@@ -37,4 +37,10 @@ tags: [Android]
 
 ### 3、Activity启动过程     
 
+![](/image/2018-05-16-learning-notes-android-architect/start_activity.svg)
+
+上面是App内部Activity A启动Activity B的工作过程，finish过程也类似。
+
+Binder客户端和Binder服务端是相对的。startActivity时，ActivityManagerProxy是客户端，ActivityManagerService是服务端；scheduleLaunchActivity时，ApplicationThreadProxy是客户端，ApplicationThread是服务端。
+
 ### 4、参考文档
