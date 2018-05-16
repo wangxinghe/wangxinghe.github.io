@@ -16,6 +16,19 @@ tags: [Android]
 
 ### 1、Android系统框架    
 
+参考：[http://gityuan.com/android/](http://gityuan.com/android/)
+
+下面是Android系统的整体框架图，图1着重从分层和模块化角度划分，图2着重从进程角度划分。
+
+![](/image/2018-05-16-learning-notes-android-architect/android-arch1.png)
+
+![](/image/2018-05-16-learning-notes-android-architect/android-boot.jpg)
+
+下图是各进程之间的关系图。
+
+![](/image/2018-05-16-learning-notes-android-architect/android-booting.jpg)
+
+App进程是由Zygote进程fork孵化来的。
 
 ### 2、App启动过程     
 
@@ -44,3 +57,10 @@ tags: [Android]
 Binder客户端和Binder服务端是相对的。startActivity时，ActivityManagerProxy是客户端，ActivityManagerService是服务端；scheduleLaunchActivity时，ApplicationThreadProxy是客户端，ApplicationThread是服务端。
 
 ### 4、参考文档
+
+（1）[http://gityuan.com/](http://gityuan.com/)    
+（2）[https://www.jianshu.com/u/ce54e5c21032](https://www.jianshu.com/u/ce54e5c21032)    
+（3）[https://blog.csdn.net/qq_23547831](https://blog.csdn.net/qq_23547831)    
+
+上面三位大拿都是小米的。
+
