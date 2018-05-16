@@ -28,7 +28,7 @@ tags: [Android]
 
 ![](/image/2018-05-16-learning-notes-android-architect/android-booting.jpg)
 
-App进程是由Zygote进程fork孵化来的。
+system_server进程和App进程都是由zygote进程fork来的。
 
 ### 2、App启动过程     
 
