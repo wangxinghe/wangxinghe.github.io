@@ -30,19 +30,31 @@ tags: [Android]
 **缓存机制：**    
 主要包括三级缓存：`内存缓存`，`磁盘缓存`，`网络`。    
 
+存数据方向：`网络 -> 磁盘 -> 内存`。    
+取数据方向：`内存 -> 磁盘 -> 网络`。    
+
 **数据加载方式：**    
-（1）先判断内存是否有数据，如果有则依次走post-process -> Bitmap Display    
-（2）如果内存没有数据再判断磁盘是否有数据，如果有则走Image Decoder -> pre-process -> Memory Cache -> post-process -> Bitmap Display     
-（3）如果内存和磁盘都没有数据，则从网络获取，依次走Image Downloader -> Disk Cache -> Image Decoder -> pre-process -> Memory Cache -> post-process -> Bitmap Display    
+
+- 先判断内存是否有数据，如果有则依次走post-process -> Bitmap Displayer    
+- 如果内存没有数据再判断磁盘是否有数据，如果有则走Image Decoder -> pre-process -> Memory Cache -> post-process -> Bitmap Displayer     
+- 如果内存和磁盘都没有数据，则从网络获取，依次走Image Downloader -> Disk Cache -> Image Decoder -> pre-process -> Memory Cache -> post-process -> Bitmap Displayer    
 
 在Bitmap存入Memory Cache和真正显示之前，都会经过Bitmap Processor进行处理（如果外部设置了的话）    
 
 接下来还有几件事情需要搞清楚：    
-（1）Bitmap怎么存到磁盘和内存，以及分别怎么从磁盘和内存取？        
-（2）存到磁盘和内存前是存原始数据吗？存之前做了哪些优化处理？    
+
+- Bitmap怎么存到磁盘和内存，以及分别怎么从磁盘和内存取？        
+- 存到磁盘和内存前是存原始数据吗？存之前做了哪些优化处理？    
 
 #### （2）数据存取    
 
+存磁盘`DiskCache`：    
+图片存储方式：`文件存储`，存储路径：cacheDir + fileName。    
+文件名生成方式：imageUri做`HashCode`和`MD5`，分别对应HashCodeFileNameGenerator和MD5FileNameGenerator    
+
+存内存`MemoryCache`：    
+图片存储方式：`Map<String, WeakReference<Bitmap>>`    
+key生成方式：`[imageUri]_[width]x[height]`，width和height对应ImageView的宽高    
 
 
 #### （3）ImageDecoder    
