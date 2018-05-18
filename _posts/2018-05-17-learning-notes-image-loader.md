@@ -53,7 +53,7 @@ tags: [Android]
 图片存储方式：`文件存储`，存储路径：cacheDir + fileName。    
 文件名生成方式：imageUri做`HashCode`和`MD5`，分别对应HashCodeFileNameGenerator和MD5FileNameGenerator    
 **优化？**    
-先decode处理，再存磁盘。
+先decode处理，再Bitmap.compress()压缩，再存磁盘。
 
 
 存内存`MemoryCache`：    
@@ -70,6 +70,24 @@ imageUri为调用ImageLoader时最外层传入的uri
 ![](/image/2018-05-17-learning-notes-image-loader/MemoryCache-DiskCache.svg)    
 
 默认使用的是LruMemoryCache和UnlimitedDiskCache。
+
+LruMemoryCache: 最近最少使用。
+    
+    LinkedHashMap<String, Bitmap> map    
+
+LimitedAgeMemoryCache：年龄限制，是一个wrapper类，用于修饰其他MemoryCache。
+
+    //被修饰的MemoryCache
+	private final MemoryCache cache;
+	//元素存活最长时间
+	private final long maxAge;
+	//时间map
+    Map<String, Long> loadingDates
+
+WeakMemoryCache：就是value是弱引用的MemoryCache
+
+其它……
+
 
 PSSSS，接下来还有几方面需要整理：    
 （1）上图几种缓存策略的实现细节        
