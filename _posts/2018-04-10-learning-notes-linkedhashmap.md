@@ -26,6 +26,11 @@ tags: [Java]
 （2）每个结点包含next，before，after属性    
 （3）结点访问(put/get/remove)后，存在一个双向链表结构的调整过程。如果按照插入顺序排列，则新结点插入双向链表的尾部；如果按照访问顺序排列，则最新访问的结点移动到双向链表的尾部    
 
+**注意：**    
+以访问顺序(accessOrder=true)为例，双向链表的顺序是`非最近访问 -> 最近访问`。    
+每次get(key)后，之后将key对应的元素调整到最后；每次put(key,value)，也是将key对应的元素插入调整到最后。    
+所以第一个元素是最老的。
+
 结合源码来看：
 
     public class LinkedHashMap<K,V> extends HashMap<K,V> implements Map<K,V>
@@ -144,9 +149,21 @@ tags: [Java]
 
 ### 2、LRU实现
 
-由于LinkedHashMap支持双向链表的访问顺序排序和插入顺序排序方式，且提供了`removeEldestEntry`方法，因此可以实现LruCache和FIFOCache。
+由于LinkedHashMap支持双向链表的访问顺序排序和插入顺序排序方式，因此可以实现LruCache和FIFOCache。    
+如果要实现一个LruCache，accessorOrder=true即可；如果要实现一个FIFOCache，accessorOrder=false即可。        
 
-如下代码实现了LruCache：
+关于元素删除的条件一般有2种情况：    
+（1）按`元素个数`，当size > maxSize时    
+（2）按`内存大小`，当size > maxSize时，比如在Bitmap场景，肯定不是按照Bitmap个数，而是按照Bitmap总内存。    
+
+都是在调用put(key, value)之后，进行删除操作。
+
+如果按元素个数，可以直接按照示例1代码，复写removeEldestEntry()方法即可。    
+如果按内存大小，需要在put之后，再调用trimToSize(maxSize)方式。
+
+使用trimToSize(maxSize)这种方式，同时适用于按照元素个数和内存大小删除的情况。
+
+示例1：
 
     public class LruCache<K,V> {
         private Map<K, V> cache;
@@ -172,7 +189,109 @@ tags: [Java]
         }
     }
 
-如果要实现一个FIFOCache，accessorOrder=false即可。
+示例2:    
+
+    public class LruMemoryCache implements MemoryCache {
+
+	    private final LinkedHashMap<String, Bitmap> map;
+
+    	private final int maxSize;
+	    /** Size of this cache in bytes */
+    	private int size;
+
+	    public LruMemoryCache(int maxSize) {
+		    if (maxSize <= 0) {
+			    throw new IllegalArgumentException("maxSize <= 0");
+		    }
+		    this.maxSize = maxSize;
+		    this.map = new LinkedHashMap<String, Bitmap>(0, 0.75f, true);
+	    }
+
+	    @Override
+	    public final Bitmap get(String key) {
+		    if (key == null) {
+			    throw new NullPointerException("key == null");
+		    }
+
+		    synchronized (this) {
+			    return map.get(key);
+		    }
+	    }
+
+    	@Override
+	    public final boolean put(String key, Bitmap value) {
+		    if (key == null || value == null) {
+			    throw new NullPointerException("key == null || value == null");
+		    }
+
+		    synchronized (this) {
+			    size += sizeOf(key, value);
+			    Bitmap previous = map.put(key, value);
+			    if (previous != null) {
+				    size -= sizeOf(key, previous);
+			    }
+		    }
+
+		    trimToSize(maxSize);
+		    return true;
+	    }
+
+    	private void trimToSize(int maxSize) {
+	    	while (true) {
+		    	String key;
+			    Bitmap value;
+			    synchronized (this) {
+				    if (size < 0 || (map.isEmpty() && size != 0)) {
+					    throw new IllegalStateException(getClass().getName() + ".sizeOf() is reporting inconsistent results!");
+				    }
+
+				    if (size <= maxSize || map.isEmpty()) {
+					    break;
+				    }
+
+				    Map.Entry<String, Bitmap> toEvict = map.entrySet().iterator().next();
+				    if (toEvict == null) {
+					    break;
+				    }
+				    key = toEvict.getKey();
+				    value = toEvict.getValue();
+				    map.remove(key);
+				    size -= sizeOf(key, value);
+			    }
+		    }
+	    }
+
+    	@Override
+	    public final Bitmap remove(String key) {
+		    if (key == null) {
+			    throw new NullPointerException("key == null");
+		    }
+
+		    synchronized (this) {
+			    Bitmap previous = map.remove(key);
+			    if (previous != null) {
+				    size -= sizeOf(key, previous);
+			    }
+			    return previous;
+		    }
+	    }
+
+    	@Override
+	    public Collection<String> keys() {
+		    synchronized (this) {
+			    return new HashSet<String>(map.keySet());
+		    }
+	    }
+
+    	@Override
+	    public void clear() {
+		    trimToSize(-1); // -1 will evict 0-sized elements
+	    }
+
+    	private int sizeOf(String key, Bitmap value) {
+	    	return value.getRowBytes() * value.getHeight();
+    	}
+    }
 
 ### 3、参考文档
 
