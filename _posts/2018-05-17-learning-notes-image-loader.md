@@ -72,8 +72,12 @@ imageUri为调用ImageLoader时最外层传入的uri
 默认使用的是LruMemoryCache和UnlimitedDiskCache。
 
 LruMemoryCache: 最近最少使用。
-    
-    LinkedHashMap<String, Bitmap> map    
+        
+    LinkedHashMap<String, Bitmap> map;    
+    //一般这个值设置为app内存最大值的1/8，最大值获取方式（单位：M）：am.getLargeMemoryClass()
+    private final int maxSize;
+	//map中元素内存总大小
+	private int size;
 
 LimitedAgeMemoryCache：年龄限制，是一个wrapper类，用于修饰其他MemoryCache。
 
