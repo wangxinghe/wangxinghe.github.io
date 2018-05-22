@@ -90,6 +90,12 @@ LimitedAgeMemoryCache：年龄限制，是一个wrapper类，用于修饰其他M
 
 WeakMemoryCache：就是value是弱引用的MemoryCache
 
+DiskLruCache：    
+journalFileTmp
+journalFile
+journalFileBackup 备份文件
+
+
 其它……
 
 
