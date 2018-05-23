@@ -449,6 +449,7 @@ childDimension是LayoutParams中的width和height，要得到childMeasureSpec，
             childTop += childHeight + lp.bottomMargin + getNextLocationOffset(child);
         ｝
     ｝
+    
 ### 4、draw过程    
 
 #### （1）绘制顺序    
