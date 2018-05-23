@@ -48,6 +48,8 @@ TitleBar对应各种ActionBar；
 ContentView对应R.id.content，setContentView设置的View被添加到R.id.content对应的View上，可通过findViewById(android.id.content)得到ContentView，findViewById(android.id.content).getChildAt(0)得到设置进去的View；    
 NavigationBar是虚拟按键。        
 
+延伸：沉浸式状态栏本质是将状态栏、导航栏隐藏，实现应用界面全屏化。 [状态栏及导航栏相关知识小结](http://lijiankun24.com/%E7%8A%B6%E6%80%81%E6%A0%8F%E5%8F%8A%E5%AF%BC%E8%88%AA%E6%A0%8F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/)
+
 `ViewRoot`：实现类是ViewRootImpl，它是连接WindowManager和DecorView的纽带，View的三大流程是通过ViewRoot来完成的。    
 
 
