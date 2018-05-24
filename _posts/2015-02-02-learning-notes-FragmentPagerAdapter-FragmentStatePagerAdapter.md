@@ -88,12 +88,22 @@ ViewPager状态发生变化时会调到populate()去填充页面，如setCurrent
 
 差别主要体现在左右页面切换时对`mCurItem-mOffscreenPageLimit和mCurItem＋mOffscreenPageLimit范围外`的页面的处理上。
 
-（1）`fragments对象的处理`：FragmentPagerAdapter范围外fragments会保存在内存中(detach)，虽然可能fragment对应的View会被销毁；FragmentStatePagerAdapter范围外fragments不会保存在内存中(remove)。    
+（1）`fragments对象的处理`：FragmentPagerAdapter范围外fragments会保存在内存中(detach)，但是fragment对应的View会被销毁；FragmentStatePagerAdapter范围外fragments不会保存在内存中(remove)，View也会被销毁。    
 （2）`状态的处理`：FragmentPagerAdapter范围外fragments对应的SavedState会保存；FragmentStatePagerAdapter范围外fragments对应的SavedState不会保存。这个SavedState在Fragment的生命周期回调中供外部传参数，和Activity类似。    
 （3）`适用场景`：相同数量的fragments，FragmentPagerAdapter内存较大，但页面切换更友好；FragmentStatePagerAdapter内存占用少，页面切换稍差。因此FragmentPagerAdapter适用于Fragment数量少的情况，FragmentStatePagerAdapter适用于Fragment数量多的情况。    
 
 
 关于fragments对象的处理：
+
+（1）FragmentPagerAdapter：    
+    destroyItem时，调用detach()，对应的生命周期方法`onPause() -> onStop() -> onDestroyView()`    
+    instantiateItem时，调用attach()，`onCreateView() -> onStart() -> onResume()`    
+    
+（2）FragmentStatePagerAdapter：        
+    destroyItem时，调用remove()，对应的生命周期方法`onPause() -> onStop() -> onDestroyView() -> onDestroy() -> onDetach()`    
+    instantiateItem时，调用add()，`onAttach() -> onCreate() -> onCreateView() -> onStart() -> onResume()`    
+    
+    
     
     //FragmentPagerAdapter
     @Override
