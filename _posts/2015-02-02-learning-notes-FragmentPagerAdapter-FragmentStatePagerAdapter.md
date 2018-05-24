@@ -1,7 +1,7 @@
 ---
 layout: post
 comments: true
-title: "Android学习笔记——FragmentPagerAdapter/FragmentStatePagerAdapter分析"
+title: "Android学习笔记——FragmentPagerAdapter/FragmentStatePagerAdapter"
 description: "Fragment相关"
 category: android
 tags: [Android]
