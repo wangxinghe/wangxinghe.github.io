@@ -107,7 +107,7 @@ Thread.MIN_PRIORITY（1）、Thread.NORM_PRIORITY（5）、Thread.MAX_PRIORITY�
 
 #### （2）线程调度    
 
-![](/image/2018-05-24-learning-notes-process-thread/thread_schedule)
+![](/image/2018-05-24-learning-notes-process-thread/thread_schedule.png)
 
 图片来自《深入理解Java虚拟机》
 
