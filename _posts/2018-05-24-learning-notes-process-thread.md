@@ -14,7 +14,7 @@ tags: [Android]
 **（2）进程间通信**    
 **（3）进程保活**    
 **3、线程**    
-**（1）线程分类**    
+**（1）线程优先级**    
 **（2）线程调度**    
 **（3）线程间通信**    
 **4、多线程编程**    
@@ -42,7 +42,7 @@ tags: [Android]
 
 `服务进程`：正在运行已使用startService()方法启动的服务，且不属于上述两个更高级别进程的进程。如Service（后台播放音乐、从网络下载数据场景）    
 
-`后台进程`：包含目前对用户不可见的Activity的进程。如Activity（已调用onStop()）。后台进程会保存在一个LRU列表中，以确保最近查看的Activity的进程最后一个被终止。    
+`后台进程`：包含目前对用户不可见的Activity的进程。如Activity（已调用onStop()）。后台进程会保存在一个LRU列表中，以确保最近查看的Activity的进程最后一个被终止。守护进程也属于后台进程。    
 
 `空进程`：不包含任何活动应用组件的进程，系统往往会终止这些进程。作用：用作缓存，以缩短下次在其中运行组件所需的启动时间。    
 
@@ -97,19 +97,41 @@ Android系统中，Zygote和system_server进程，Zygote和App进程的通信都
 
 ### 3、线程    
 
-#### （1）线程分类    
+#### （1）线程优先级    
 
+Java线程优先级使用1～10的整数表示，值越大优先级越高。
 
+Thread.MIN_PRIORITY（1）、Thread.NORM_PRIORITY（5）、Thread.MAX_PRIORITY（10）
+
+线程优先级只在局部起作用，不保证线程执行的顺序，真正的执行顺序和操作系统及虚拟机版本有关。只能说优先级高的线程获取CPU资源的概率高。    
 
 #### （2）线程调度    
 
+![](/image/2018-05-24-learning-notes-process-thread/thread_schedule)
+
+图片来自《深入理解Java虚拟机》
+
 #### （3）线程间通信    
+
+`主线程和子线程`：AsyncTask、Handler。    
+    
+Activity的runOnUiThread(Runnable action)和View的post(Runnable action)内部都是Handler机制。
+
+子线程和子线程：Handler
 
 ### 4、多线程编程    
 
 #### （1）线程协作    
 
+死锁
+
+wait()/notify()、sleep()/interrupt()
+
 #### （2）生产者消费者    
+
+[生产者/消费者问题的多种Java实现方式](https://blog.csdn.net/monkey_d_meng/article/details/6251879)    
+[Java实现生产者和消费者的5种方式](https://juejin.im/entry/596343686fb9a06bbd6f888c)    
+
 
 ### 5、参考文档     
 
