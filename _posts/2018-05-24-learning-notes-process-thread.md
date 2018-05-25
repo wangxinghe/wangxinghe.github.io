@@ -63,14 +63,43 @@ Android系统进程间通信方式：
 （2）`Socket`：网络数据交换场景。    
 （3）`Binder`：AIDL、Messageer、BroadcastReceiver、ContentProvider通信本质上都是基于Binder实现。    
 
-Zygote和system_server进程，Zygote和App进程的通信都是Socket通信；其他情况是Binder通信。    
+Android系统中，Zygote和system_server进程，Zygote和App进程的通信都是Socket通信；其他情况是Binder通信。    
 
 
 #### （3）进程保活    
 
+进程保活方式：`厂商白名单`、`启动前台服务`、`进程相互唤醒`、`利用系统漏洞`。
+
+`厂商白名单`：如有些手机厂商把知名App加入白名单，保证进程不死来提高用户体验。    
+
+`启动前台服务`：开启一个前台服务，如启动一个前台Activity或Service。开启一个像素的Activity，如手Q方案；启动一个前台Service，在系统通知栏生成一个Notification，哪怕App退到后台，进程也会一直运行。    
+
+`进程相互唤醒`：主要包括3种场景，即利用系统进程唤醒、第三方SDK唤醒、同体系App唤醒。    
+
+（1）系统进程唤醒：开机、网络切换（CONNECTIVITY_ACTION）、拍照（ACTION_NEW_PICTURE）、拍视频（ACTION_NEW_VIDEO）时，利用系统产生的广播唤醒App。开机广播有些定制ROM的厂商已将其去掉，Android N之后已取消网络切换、拍照、拍视频3种广播        
+（2）第三方SDK唤醒：比如某个App中集成微信SDK，则微信SDK会唤醒微信App；比如使用信鸽或友盟SDK的App，相互之间会相互唤醒等。    
+（3）同体系App唤醒：如阿里系的App，比如淘宝、天猫、支付宝等之间会相互唤醒。    
+
+`利用系统漏洞`：在`启动前台服务`这种方式上，想办法把通知栏去掉。    
+原理如下：
+对于 API level < 18 ：调用startForeground(ID， new Notification())，`发送空的Notification` ，图标则不会显示。    
+对于 API level >= 18：在需要提优先级的Service A启动一个InnerService，两个服务同时startForeground，且绑定同样的 notificationId，然后Stop掉InnerService ，这样通知栏图标即被移除，但是Service A还活着。    
+
+从大的方面，根据优先级进程可以分为：`前台进程`、`可见进程`、`服务进程`、`后台进程`、`空进程`。    
+从更具体方面，每个进程都有一个`oom_adj`，代表进程优先级值，这个值越小优先级越高，比如前台进程oom_adj的值为0，空进程最大。    
+
+系统往往会杀`优先级低且内存占用大`的进程。先按照oom_adj杀，oom_adj相同的话，按照内存占用杀。    
+
+参考：    
+[Android进程保活的一般套路](https://www.jianshu.com/p/1da4541b70ad)    
+[微信Android客户端后台保活经验分享](https://mp.weixin.qq.com/s?__biz=MzUxMzcxMzE5Ng==&mid=2247488488&amp;idx=1&amp;sn=f76fb0a8f88f6958d6a7ecfe6658b5a5&source=41#wechat_redirect)    
+[Android进程保活的一般套路](https://www.jianshu.com/p/1da4541b70ad)    
+
 ### 3、线程    
 
 #### （1）线程分类    
+
+
 
 #### （2）线程调度    
 
@@ -86,6 +115,7 @@ Zygote和system_server进程，Zygote和App进程的通信都是Socket通信；�
 
 （1）[进程和线程](https://developer.android.com/guide/components/processes-and-threads?hl=zh-cn)    
 （2）[进程间通信IPC (InterProcess Communication)](https://www.jianshu.com/p/c1015f5ffa74)    
+    
 
 
 
