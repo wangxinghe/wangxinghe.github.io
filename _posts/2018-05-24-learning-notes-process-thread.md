@@ -50,6 +50,22 @@ tags: [Android]
 
 #### （2）进程间通信    
 
+Linux进程间通信的方式：    
+（1）`管道`（Pipeline）：`无名管道`，半双工通信，数据单向通信，且在父子进程间通信；`有名管道`，半双工通信，允许无亲缘关系进程间通信。管道的实质是一个内核缓冲区。    
+（2）`信号量`（Semophore）：是一个计数器，用来控制多个进程对共享资源的访问。    
+（3）`消息队列`（Message Queue）：存放在内核中的消息链表，每个消息队列由消息队列标志符表示。    
+（4）`信号`（Signal）：用于通知接收进程某个事件已经发生。    
+（5）`共享内存`（Shared Memory）：映射一段能被其他进程访问的内存，这段内存由一个进程创建，但多个进程都可以访问。    
+（6）`套接字`（Socket）：与其他通信机制的区别是，可用于不同机器间的进程通信。
+
+Android系统进程间通信方式：    
+（1）`文件共享`：不适用于并发场景。    
+（2）`Socket`：网络数据交换场景。    
+（3）`Binder`：AIDL、Messageer、BroadcastReceiver、ContentProvider通信本质上都是基于Binder实现。    
+
+Zygote和system_server进程，Zygote和App进程的通信都是Socket通信；其他情况是Binder通信。    
+
+
 #### （3）进程保活    
 
 ### 3、线程    
@@ -69,6 +85,8 @@ tags: [Android]
 ### 5、参考文档     
 
 （1）[进程和线程](https://developer.android.com/guide/components/processes-and-threads?hl=zh-cn)    
-（2）[]()    
+（2）[进程间通信IPC (InterProcess Communication)](https://www.jianshu.com/p/c1015f5ffa74)    
+
+
 
 
