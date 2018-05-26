@@ -28,6 +28,14 @@ tags: [Android]
 
 ### 1、进程和线程的关系        
 
+进程是系统进行资源分配和调度的一个独立单位，比进程更小的可独立运行的基本单位。
+
+区别：    
+`调度方面`：进程是资源的拥有单位，线程是独立的调度和分派单位，可以显著的提高并发度和减少切换开销。    
+`并发性`：进程间可以并发，同一进程的线程间也可以并发，有效提高系统资源的利用率和吞吐量。    
+`拥有资源`：进程是基本的资源拥有单位，线程只拥有很少的资源，但是线程可以访问所属进程的资源。    
+`系统开销`：创建或者撤销进程的时候，系统要为之创建或回收PCB，系统资源等，切换时也需要保存和恢复CPU环境。而线程的切换只需要保存和恢复少量的寄存器，不涉及存储器管理方面的工作，所以开销较小。     
+
 ### 2、进程    
 
 #### （1）进程分类    
@@ -114,10 +122,29 @@ Thread.MIN_PRIORITY（1）、Thread.NORM_PRIORITY（5）、Thread.MAX_PRIORITY�
 #### （3）线程间通信    
 
 `主线程和子线程`：AsyncTask、Handler。    
-    
-Activity的runOnUiThread(Runnable action)和View的post(Runnable action)内部都是Handler机制。
 
-子线程和子线程：Handler
+从其他线程访问UI线程（本质还是Handler机制）：    
+
+Activity.runOnUiThread(Runnable)    
+View.post(Runnable)    
+View.postDelayed(Runnable, long)    
+
+    public void onClick(View v) {
+        new Thread(new Runnable() {
+            public void run() {
+                final Bitmap bitmap =
+                        loadImageFromNetwork("http://example.com/image.png");
+                mImageView.post(new Runnable() {
+                    public void run() {
+                        mImageView.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        }).start();
+    }
+
+
+`子线程和子线程`：Handler
 
 ### 4、多线程编程    
 
