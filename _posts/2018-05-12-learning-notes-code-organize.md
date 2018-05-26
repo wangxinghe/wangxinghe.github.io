@@ -69,7 +69,9 @@ View和ViewModel之间通过DataBinding进行双向绑定。
 
 特点：和MVP相比，View和ViewModel通过DataBinding实现一一对应关系。
 
-Demo参考：[选择恐惧症的福音！教你认清MVC，MVP和MVVM](http://zjutkz.net/2016/04/13/%E9%80%89%E6%8B%A9%E6%81%90%E6%83%A7%E7%97%87%E7%9A%84%E7%A6%8F%E9%9F%B3%EF%BC%81%E6%95%99%E4%BD%A0%E8%AE%A4%E6%B8%85MVC%EF%BC%8CMVP%E5%92%8CMVVM/)
+Demo参考：[选择恐惧症的福音！教你认清MVC，MVP和MVVM](http://zjutkz.net/2016/04/13/%E9%80%89%E6%8B%A9%E6%81%90%E6%83%A7%E7%97%87%E7%9A%84%E7%A6%8F%E9%9F%B3%EF%BC%81%E6%95%99%E4%BD%A0%E8%AE%A4%E6%B8%85MVC%EF%BC%8CMVP%E5%92%8CMVVM/)    
+
+关于DataBinding：[Android基础——框架模式MVVM之DataBinding的实践](https://blog.csdn.net/qq_30379689/article/details/53037430)
 
 关于ViewModel的理解参考：[MVVM模式中ViewModel和View、Model有什么区别](https://blog.csdn.net/AlbenXie/article/details/72771141)
 
@@ -79,9 +81,9 @@ Demo参考：[选择恐惧症的福音！教你认清MVC，MVP和MVVM](http://zj
 
 View：展现出来的用户界面。   
 Presenter：View和Interactor之间的桥梁，相当于是一个控制器，不做具体业务逻辑。    
-Entity：Bean数据结构，不包括业务逻辑处理。
+Entity：Bean数据结构，不包括业务逻辑处理。    
 Interactor：业务逻辑处理。    
-Router：模块之间跳转，比如从当前A页面跳到B页面，就是由Router负责。    
+Router：模块之间跳转，比如从当前A页面跳到B页面，就是由Router负责。（PS：如果有App级别的Router模块负责跳转，则组件内级别的Router跳转的话可以调用App级别的Router实现跳转）    
 
 VIPER模式，将MVP架构中原本由Model单独负责的Bean数据结构和业务逻辑处理分拆成2个类处理，Entity处理Bean数据结构，Interactor处理业务逻辑。此外在MVP基础上还增加了Router，负责模块跳转。    
 
@@ -100,7 +102,7 @@ TODO：clean architecture
 MVP：适用于不太复杂的模块。    
 MVVM：需要引入DataBinding框架，用起来比较复杂，感觉和MVP相比也没啥优势。    
 VIPER：适用于逻辑比较复杂的模块，职责分明。    
-本质上，上面那些架构都是在MVC基础上的优化，并不是死的，并不一定要去套上面的模式，遵循一些模块化的基本规则即可。    
+上面那些架构都是在MVC基础上的优化，并不是死的，并不一定要去套上面的模式，遵循一些模块化的基本原则即可。    
 
 ### 3、设计模式     
 
@@ -117,5 +119,5 @@ VIPER：适用于逻辑比较复杂的模块，职责分明。
 （2）[https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)    
 （3）[https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)    
 （4）[iOS应用架构谈](https://casatwy.com/iosying-yong-jia-gou-tan-kai-pian.html)    
-（5）[iOS 架构模式–解密 MVC，MVP，MVVM以及VIPER架构](http://www.codertopic.com/?p=247)    
+（5）[iOS 架构模式–解密 MVC，MVP，MVVM以及VIPER架构](http://ios.jobbole.com/83727/)    
 
