@@ -108,6 +108,110 @@ VIPER：适用于逻辑比较复杂的模块，职责分明。
 
 #### （1）单例模式     
 
+主要包括4种类型的写法：`饿汉式`，`双重检查锁`，`静态内部类`，`枚举`。且后面3种都属于懒汉式。
+
+1.`饿汉式` static final field
+
+    public class Singleton{
+        //类加载时就初始化
+        private static final Singleton instance = new Singleton();
+    
+        private Singleton(){}
+        public static Singleton getInstance(){
+            return instance;
+        }
+    }
+
+**特点**：类加载的时候就会创建单例。    
+**缺点**：不适用于实例创建依赖参数或者配置文件的场景；不适用于被使用的频率少的情况。    
+
+2.`双重检查锁`
+
+    public class Singleton{
+        private volatile static Singleton instance;
+        
+        private Singleton (){}
+        
+        public static Singleton getSingleton() {
+            if (instance == null) { //Single Checked                         
+                synchronized (Singleton.class) {
+                    if (instance == null) { //Double Checked
+                        instance = new Singleton();
+                    }
+                }
+            }
+            return instance ;
+        }
+    ｝
+    
+    
+    //懒汉式，线程安全（不建议）    
+    public class Singleton{
+        private static Singleton instance;
+
+        private Singleton (){}
+        
+        public static synchronized Singleton getInstance() {
+            if (instance == null) {
+                instance = new Singleton();
+            }
+            return instance;
+        }
+    ｝
+
+要点：    
+（1）instance = new Singleton()`非原子操作`，可以拆分为如下4步：    
+
+- 栈内存开辟空间给instance引用
+- 堆内存开辟空间
+- 堆内存中初始化Singleton对象    
+- 栈中引用指向堆内存空间地址    
+
+（2）`volatile` 保证内存可见性，防止`指令重排`。（`Java 5`之前无效）
+
+如果不使用volatile，new操作可能会出现指令重排，即执行顺序是1-2-4-3时，当第1个线程执行instance = new Singleton()操作，执行到1-2-4步时，这时第2个线程执行到Single Check这个位置的if (instance == null)，发现非空就会返回单例，然而事实上这个单例对象还没有初始化完。
+
+关于防止指令重排，实际上是会在volatile变量操作的前后插入内存屏障，使得位于屏障前的指令先于volatile指令执行，位于屏障后的指令后于volatile指令后执行。网上很多文章讲解要么不清楚要么有错误，这块还需要查书研究。
+
+3.`静态内部类` static nested class
+
+    public class Singleton {  
+        private static class SingletonHolder {  
+            private static final Singleton INSTANCE = new Singleton();  
+        }  
+    
+        private Singleton (){}  
+    
+        public static final Singleton getInstance() {  
+            return SingletonHolder.INSTANCE; 
+        }  
+    }
+    
+特点：懒加载，只有在SingletonHolder类被引用时才会完成INSTANCE对象的实例化，利用ClassLoader机制保证线程安全。    
+
+
+4.`枚举` Enum    
+
+    public enum Singleton{
+        INSTANCE;
+    }
+
+特点：枚举类是在第一次访问时才被实例化，默认线程安全；在`反序列化`时可以自动防止重新创建新的对象。（枚举`Java 5`之后才引入）
+
+延伸：还有一种`登记式单例`，即使用 Map 容器来管理单例模式。
+
+破坏单例模式的场景：    
+
+- 序列化
+- 反射
+- 克隆（实现 Cloneable 接口）
+
+
+参考：    
+[那些年，我们一起写过的“单例模式”](https://mp.weixin.qq.com/s/wEK3UcHjaHz1x-iXoW4_VQ)    
+[如何正确地写出单例模式](http://wuchong.me/blog/2014/08/28/how-to-correctly-write-singleton-pattern/)    
+
+
 #### （2）Buildr模式     
 
 #### （3）......     
