@@ -476,4 +476,7 @@ Android源码中的ActivityManagerService涉及到2个知识点。即`Proxy模�
 （3）[https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)    
 （4）[iOS应用架构谈](https://casatwy.com/iosying-yong-jia-gou-tan-kai-pian.html)    
 （5）[iOS 架构模式–解密 MVC，MVP，MVVM以及VIPER架构](http://ios.jobbole.com/83727/)    
+（6）[Android源码设计模式分析项目](https://github.com/simple-android-framework/android_design_patterns_analysis)    
+（7）[https://blog.csdn.net/column/details/14783.html](https://blog.csdn.net/column/details/14783.html)    
+
 
