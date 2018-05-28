@@ -17,7 +17,7 @@ tags: [Android]
 **（1）单例模式**     
 **（2）Buildr模式**     
 **（3）Proxy模式**     
-**（4）源码举例**        
+**（4）......**        
 **4、参考文档**    
 
 <!--more-->
@@ -260,9 +260,15 @@ Android源码里各种系统Service就是就是使用的这种方式。比如：
 
 #### （2）Buildr模式     
 
-特点：将一个复杂对象的构建和它的表示分离，使得同样的构建过程可以创建不同的表示。
-
 ![](/image/2018-05-12-learning-notes-code-organize/builder-uml.png)   
+
+`定义`：将一个复杂对象的构建和它的表示分离，使得同样的构建过程可以创建不同的表示。    
+
+`使用场景`：    
+
+- 需要生成的产品对象有`复杂的内部结构`，这些产品对象`具备共性`；    
+- `隔离`复杂对象的创建和使用，并使得`相同的创建过程`可以创建不同的产品。     
+
 
 AlertDialog就是Builder模式，源码如下：
 
@@ -366,7 +372,103 @@ AlertDialog就是Builder模式，源码如下：
 
 #### （3）Proxy模式     
 
-#### （4）源码举例        
+![](/image/2018-05-12-learning-notes-code-organize/proxy-uml.png)   
+
+`定义`：代理模式给某一个对象提供一个代理对象，并由代理对象控制对原对象的引用。
+
+`使用场景`：客户不想或者不能够直接引用一个目标对象时，代理对象可以在客户和目标对象之间起到中介的作用。
+
+Android源码中的ActivityManagerService涉及到2个知识点。即`Proxy模式`和`Binder机制`。
+
+下面的代码体现了Proxy设计模式：
+
+    //RealObject（ActivityManagerService继承了ActivityManagerNative）
+    public abstract class ActivityManagerNative extends Binder implements IActivityManager {
+    
+        @Override
+        public boolean onTransact(int code, Parcel data, Parcel reply, int flags)
+            throws RemoteException {
+            switch (code) {
+            case START_ACTIVITY_TRANSACTION:
+            {
+                data.enforceInterface(IActivityManager.descriptor);
+                IBinder b = data.readStrongBinder();
+                IApplicationThread app = ApplicationThreadNative.asInterface(b);
+                String callingPackage = data.readString();
+                Intent intent = Intent.CREATOR.createFromParcel(data);
+                String resolvedType = data.readString();
+                IBinder resultTo = data.readStrongBinder();
+                String resultWho = data.readString();
+                int requestCode = data.readInt();
+                int startFlags = data.readInt();
+                ProfilerInfo profilerInfo = data.readInt() != 0 ? ProfilerInfo.CREATOR.createFromParcel(data) : null;
+                Bundle options = data.readInt() != 0 ? Bundle.CREATOR.createFromParcel(data) : null;
+                
+                int result = startActivity(app, callingPackage, intent, resolvedType,
+                    resultTo, resultWho, requestCode, startFlags, profilerInfo, options);
+                    
+                reply.writeNoException();
+                reply.writeInt(result);
+                return true;
+            }
+            ...
+        }
+    }
+       
+    //ProxyObject    
+    class ActivityManagerProxy implements IActivityManager {
+        public ActivityManagerProxy(IBinder remote) {
+            mRemote = remote;
+        }
+
+        public IBinder asBinder() {
+            return mRemote;
+        }
+
+        public int startActivity(IApplicationThread caller, String callingPackage, Intent intent,
+                String resolvedType, IBinder resultTo, String resultWho, int requestCode,
+                int startFlags, ProfilerInfo profilerInfo, Bundle options) throws RemoteException {
+            //将数据装进data
+            Parcel data = Parcel.obtain();
+            data.writeInterfaceToken(IActivityManager.descriptor);
+            data.writeStrongBinder(caller != null ? caller.asBinder() : null);
+            data.writeString(callingPackage);
+            intent.writeToParcel(data, 0);
+            data.writeString(resolvedType);
+            data.writeStrongBinder(resultTo);
+            data.writeString(resultWho);
+            data.writeInt(requestCode);
+            data.writeInt(startFlags);
+            if (profilerInfo != null) {
+                data.writeInt(1);
+                profilerInfo.writeToParcel(data, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+            } else {
+                data.writeInt(0);
+            }
+            if (options != null) {
+                data.writeInt(1);
+                options.writeToParcel(data, 0);
+            } else {
+                data.writeInt(0);
+            }
+            //创建空的reply
+            Parcel reply = Parcel.obtain();
+
+            //请求服务端对象，执行任务            
+            mRemote.transact(START_ACTIVITY_TRANSACTION, data, reply, 0);
+            
+            //任务执行完后，得到reply
+            reply.readException();
+            int result = reply.readInt();
+            
+            reply.recycle();
+            data.recycle();
+            return result;
+        }
+    }
+
+
+#### （4）......        
 
 ### 4、参考文档    
 （1）[https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)    
