@@ -53,8 +53,22 @@ tags: [Android]
 
 ![](/image/2018-05-12-learning-notes-android-performance-optimization/draw_per_16ms.png)
 
+`使用工具`：    
+
+- `Hierarchy Viewer`查看层级    
+- `Lint`查看布局优化建议（Android -> Lint -> Performance）    
+- 查看过度绘制，`设置 -> 开发者选项 -> Show GPU Overdraw`    
 
 #### （3）内存优化    
+
+内存优化，就是解决`内存溢出`、`内存泄露`、`内存抖动`三个问题。    
+
+（1）内存溢出
+
+（2）内存泄漏    
+
+（3）内存抖动    
+
 
 #### （4）网络优化    
 
@@ -64,5 +78,5 @@ tags: [Android]
 
 ### 2、参考文档    
 
+（1）[http://hukai.me/blog/archives/](http://hukai.me/blog/archives/)    
 
-内存溢出、内存泄露、内存抖动等
