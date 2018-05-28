@@ -16,7 +16,7 @@ tags: [Android]
 **3、设计模式**     
 **（1）单例模式**     
 **（2）Buildr模式**     
-**（3）......**     
+**（3）Proxy模式**     
 **（4）源码举例**        
 **4、参考文档**    
 
@@ -198,7 +198,53 @@ VIPER：适用于逻辑比较复杂的模块，职责分明。
 
 特点：枚举类是在第一次访问时才被实例化，默认线程安全；在`反序列化`时可以自动防止重新创建新的对象。（枚举`Java 5`之后才引入）
 
-延伸：还有一种`登记式单例`，即使用 Map 容器来管理单例模式。
+5.`登记式单例`，使用 Map 容器来管理单例模式。
+
+	private static Map<String Singleton> objMap = new HashMap<String Singleton>();
+	
+	public static void registerService(String key, Singleton instance) {
+		if (!objMap.containsKey(key) ) {
+			objMap.put(key, instance) ;
+		}
+	}
+	
+	public static Singleton getService(String key) {
+		return objMap.get(key) ;
+	}
+
+Android源码里各种系统Service就是就是使用的这种方式。比如：
+
+    private static void registerService(String serviceName, ServiceFetcher fetcher) {
+        if (!(fetcher instanceof StaticServiceFetcher)) {
+            fetcher.mContextCacheIndex = sNextPerContextServiceCacheIndex++;
+        }
+        SYSTEM_SERVICE_MAP.put(serviceName, fetcher);
+    }
+    
+    @Override
+    public Object getSystemService(String name) {
+        // 根据name来获取服务
+        ServiceFetcher fetcher = SYSTEM_SERVICE_MAP.get(name);
+        return fetcher == null ? null : fetcher.getService(this);
+    }
+    
+    
+    //注册ActivityManager
+    registerService(ACTIVITY_SERVICE, new ServiceFetcher() {
+        public Object createService(ContextImpl ctx) {
+            return new ActivityManager(ctx.getOuterContext(), ctx.mMainThread.getHandler());
+        }
+    });
+
+    //注册LayoutInflater
+    registerService(LAYOUT_INFLATER_SERVICE, new ServiceFetcher() {
+        public Object createService(ContextImpl ctx) {
+            return PolicyManager.makeNewLayoutInflater(ctx.getOuterContext());
+        }
+    });
+    
+    //获取LayoutInflater
+    LayoutInflater LayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 破坏单例模式的场景：    
 
@@ -214,7 +260,111 @@ VIPER：适用于逻辑比较复杂的模块，职责分明。
 
 #### （2）Buildr模式     
 
-#### （3）......     
+特点：将一个复杂对象的构建和它的表示分离，使得同样的构建过程可以创建不同的表示。
+
+![](/image/2018-05-12-learning-notes-code-organize/builder-uml.png)   
+
+AlertDialog就是Builder模式，源码如下：
+
+    //Product
+    public class AlertDialog extends Dialog implements DialogInterface {
+        private AlertController mAlert;
+    
+        protected AlertDialog(Context context) {
+            this(context, resolveDialogTheme(context, 0), true);
+        }
+        
+        @Override
+        public void setTitle(CharSequence title) {
+            super.setTitle(title);
+            mAlert.setTitle(title);
+        }
+        
+        public void setMessage(CharSequence message) {
+            mAlert.setMessage(message);
+        }
+        
+        public void setView(View view) {
+            mAlert.setView(view);
+        }
+
+        //Builder
+        public static class Builder {
+            private final AlertController.AlertParams P;
+        
+            public Builder(Context context) {
+                this(context, resolveDialogTheme(context, 0));
+            }
+        
+            public Builder(Context context, int theme) {
+                P = new AlertController.AlertParams(new ContextThemeWrapper(
+                        context, resolveDialogTheme(context, theme)));
+                mTheme = theme;
+            }
+        
+            public Builder setTitle(CharSequence title) {
+                P.mTitle = title;
+                return this;
+            }
+        
+            public Builder setMessage(CharSequence message) {
+                P.mMessage = message;
+                return this;
+            }
+        
+            public Builder setView(View view) {
+                P.mView = view;
+                P.mViewLayoutResId = 0;
+                P.mViewSpacingSpecified = false;
+                return this;
+            }
+        
+            public AlertDialog create() {
+                final AlertDialog dialog = new AlertDialog(P.mContext, mTheme, false);
+                P.apply(dialog.mAlert);
+                dialog.setCancelable(P.mCancelable);
+                if (P.mCancelable) {
+                    dialog.setCanceledOnTouchOutside(true);
+                }
+                dialog.setOnCancelListener(P.mOnCancelListener);
+                dialog.setOnDismissListener(P.mOnDismissListener);
+                if (P.mOnKeyListener != null) {
+                    dialog.setOnKeyListener(P.mOnKeyListener);
+                }
+                return dialog;
+            }
+        }
+    }
+    
+用户调用代码，即Director：
+      
+    private void showDialog(Context context) {  
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);  
+        builder.setIcon(R.drawable.icon);  
+        builder.setTitle("Title");  
+        builder.setMessage("Message");  
+        builder.setPositiveButton("Button1",  
+                new DialogInterface.OnClickListener() {  
+                    public void onClick(DialogInterface dialog, int whichButton) {  
+                        setTitle("点击了对话框上的Button1");  
+                    }  
+                });  
+        builder.setNeutralButton("Button2",  
+                new DialogInterface.OnClickListener() {  
+                    public void onClick(DialogInterface dialog, int whichButton) {  
+                        setTitle("点击了对话框上的Button2");  
+                    }  
+                });  
+        builder.setNegativeButton("Button3",  
+                new DialogInterface.OnClickListener() {  
+                    public void onClick(DialogInterface dialog, int whichButton) {  
+                        setTitle("点击了对话框上的Button3");  
+                    }  
+                });  
+        builder.create().show();  // 构建AlertDialog， 并且显示
+    } 
+
+#### （3）Proxy模式     
 
 #### （4）源码举例        
 
