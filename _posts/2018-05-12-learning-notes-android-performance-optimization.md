@@ -105,6 +105,12 @@ Application的onCreate中不要做太多事情。将初始化任务分成不同�
 
 #### 相关理论：
 
+下图是触发GC事件以及内存抖动的情况：    
+
+![](/image/2018-05-12-learning-notes-android-performance-optimization/memory_monitor_gc_event.png)
+
+![](/image/2018-05-12-learning-notes-android-performance-optimization/memory_monitor_gc.png)
+
 `垃圾回收机制`：从GC Roots出发的引用树的可达性，不可达的将被回收。    
 
 `GC Root`:    
