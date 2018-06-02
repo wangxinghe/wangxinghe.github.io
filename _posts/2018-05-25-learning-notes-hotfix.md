@@ -19,7 +19,7 @@ tags: [Android]
 
 ### 1、业界热修复方案    
 
-阿里系：Dexposed／Andfix，基于Xposed框架的AOP技术进行native hook，属于方法级粒度。优点是可以做到实时生效，缺点是需要考虑dalvik／art虚拟机适配、指令集的兼容问题，兼容性上会有一定的影响。    
+阿里系：Dexposed／Andfix／阿里百川HotFix，基于Xposed框架的AOP技术进行native hook，属于方法级粒度。优点是可以做到实时生效，缺点是需要考虑dalvik／art虚拟机适配、指令集的兼容问题，兼容性上会有一定的影响。    
 
 腾讯系：QQ空间(Nuwa)／手Q(QFix)／Tinker，基于ClassLoader的方式加载multidex，下次启动时生效。缺点是需要反射更改DexElements，改变Dex的加载顺序，这使得patch需要在下次启动时才能生效，实时性就受到了影响。
 
