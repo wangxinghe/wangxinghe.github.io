@@ -31,8 +31,7 @@ Sophix：阿里系，综合以上方案的优点，同时包含native hook和Cla
 `Dalvik`情况，在基线dex里去掉补丁dex中包含的Class，保证没有重复Class，然后dexmerge基线dex和补丁dex，从而保证dexopt的效果（只需要移除Class定义的入口即可，不删除具体内容）。    
 `Art`情况，补丁dex命名为classes.dex，原来的dex依次命名为classes(2,3,4...).dex，然后一起打包为一个压缩文件；加载dex的时候调用DexFile.loadDexFiles得到dexFiles数组；然后整个替换掉旧的dexElements数组就可以了。    
 
-
-主要可以分为两类：一类是基于multidex的热更新框架，包括Nuwa、Tinker等；另一类就是native hook方案，如阿里开源的Andfix和Dexposed。
+上面主要是代码热修复的方案，资源热修复和so热修复后面有介绍。
 
 ### 2、代码热修复    
 
@@ -212,8 +211,6 @@ Sophix方案：
 （1）不侵入打包，直接对比新旧资源产生补丁资源；    
 （2）不必下发完整包，补丁包中只包含变动的资源；    
 （3）不需要在运行时合成完整包，不占用运行时计算和内存资源    
-
-
 
 ### 4、SO库热修复    
 
