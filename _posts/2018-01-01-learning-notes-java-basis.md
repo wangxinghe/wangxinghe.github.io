@@ -12,13 +12,17 @@ tags: [Java]
 **（1）基本概念**    
 **（2）clone()**    
 **（3）序列化**    
+**（4）集合的拷贝**    
 **3、拆箱／装箱**    
 **4、异常**    
 **（1）Error／Exception**    
 **（2）try...catch...finally**    
 **（3）static{...}异常**    
 **5、泛型**    
-**6、参考文档**    
+**6、序列化**    
+**（1）Serializable**    
+**（2）Parcelable**    
+**7、参考文档**    
 
 <!--more-->
 
@@ -90,13 +94,74 @@ Serializable/Parcelable序列化再反序列化得到的对象是深拷贝对象
     
 [细说 Java 的深拷贝和浅拷贝](https://segmentfault.com/a/1190000010648514)    
 
+#### （4）集合的拷贝    
+
+集合或是数组的add()／addAll()／Collections.copy()／System.arraycopy()都属于浅拷贝。
+
+深度拷贝的方式：    
+（1）先序列化再反序列化；    
+（2）List<T>转换为json，再把json转回List<T>        
+（3）每个元素先clone()再add()    
+
+[Java List 深度复制方法](https://blog.csdn.net/aiynmimi/article/details/76268851)    
+[Java如何克隆集合——深度拷贝ArrayList和HashSet](https://blog.csdn.net/cool_sti/article/details/21658521)    
+
 ### 3、拆箱／装箱    
 
-100L == new Long(100L) ?
+`拆箱`：对象 -> 基本数据类型，以int为例，会触发int = Integer.intValue()方法。    
+`装箱`：基本数据类型 -> 对象，以int为例，会触发Integer = Integer.valueOf(int)方法。    
 
-Long l1 = new Long(100);
-Long l2 = new Long(100);
-l1 == l2 ?
+Integer a = 100; //自动装箱    
+int b = a; //自动拆箱
+
+**关于valueOf(...)**：    
+（1）Long/Integer/Short/Byte/Character/Boolean的valueOf(...)实现都有缓存。    
+Long/Integer/Short/Byte缓存范围是[-128, 127]    
+Character缓存范围是[0, 127]    
+Boolean的true/false都是缓存的。    
+（2）Double/Float的valueOf(...)每次都是new新对象，因为其数据范围不是离散的没办法使用缓存。    
+
+**对于==运算符：**    
+若左右两边操作数都是包装器类型，则是比较指向的是否是同一个对象。    
+若某一边操作数是`基本类型`或`包含表达式`（即包含算术运算+-*/），则会触发自动拆箱，比较的是数值。    
+
+    Integer a = new Integer(100);
+    Integer b = new Integer(100);
+    System.out.println(a == b);//输出 false
+
+    Integer a = 100;
+    Integer b = 100;  
+    System.out.println(a == b);//输出 true
+
+    Integer a = 200;
+    Integer b = 200;
+    System.out.println(a == b);//输出 false
+    
+    int a = 100;
+    Integer b = new Integer(100);
+    System.out.println(a == b);//输出 true
+
+    Integer a = 1;
+    Integer b = 2;
+    Integer c = 3;
+    Long d = 3L;
+    Long e = 2L;
+         
+    System.out.println(c == (a+b)); // true
+    System.out.println(c.equals(a+b)); // true
+    System.out.println(d == (a+b)); // true
+    //(1)a、b拆箱 (2)结果相加 (3)结果装箱 (4)比较Long和Integer
+    System.out.println(d.equals(a+b)); // false，equals不会触发类型转换（比如Integer -> Long）
+    //(1)a、e拆箱 (2)结果相加，类型为long (3)结果装箱Long (4)比较Long和Long
+    System.out.println(d.equals(a+e)); // true，a+e得到的结果会升级为Long                   
+
+**性能问题：**    
+
+装箱过程存在性能损损耗。
+
+[深入剖析Java中的装箱和拆箱](https://www.cnblogs.com/dolphin0520/p/3780005.html)    
+[Java自动装箱与拆箱及其陷阱](https://blog.csdn.net/jairuschan/article/details/7513045)    
+[Java 性能要点：自动装箱/ 拆箱 (Autoboxing / Unboxing)](http://blog.oneapm.com/apm-tech/635.html)    
 
 ### 4、异常    
 
@@ -174,4 +239,10 @@ throw/throws的异常，函数自身不处理，均由上层函数处理。
 
 ### 5、泛型    
 
-### 6、参考文档    
+### 6、序列化    
+
+#### （1）Serializable    
+
+#### （2）Parcelable    
+
+### 7、参考文档    
