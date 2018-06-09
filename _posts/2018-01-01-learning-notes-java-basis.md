@@ -9,6 +9,9 @@ tags: [Java]
 
 **1、hashCode()/equal()**    
 **2、深拷贝／浅拷贝**    
+**（1）基本概念**    
+**（2）clone()**    
+**（3）序列化**    
 **3、拆箱／装箱**    
 **4、异常**    
 **（1）Error／Exception**    
@@ -27,9 +30,65 @@ Object源码
 
 ### 2、深拷贝／浅拷贝    
 
-深拷贝、浅拷贝
+#### （1）基本概念    
 
-clone()
+`深拷贝`：对基本数据类型进行值传递，对引用数据类型创建一个新对象，并复制其内容。    
+
+![](/image/2018-01-01-learning-notes-java-basis/deep-copy.jpg)   
+
+`浅拷贝`：对基本数据类型进行值传递，对引用数据类型进行引用传递。    
+
+![](/image/2018-01-01-learning-notes-java-basis/shallow-copy.jpg)   
+
+#### （2）clone()    
+
+clone()是Object的方法。     
+调用`clone()`方法的对象，需要implements Cloneable，整体来说`clone()是浅拷贝`。    
+如果对象属性都是`基本数据类型`，直接调用对象的默认clone()则浅拷贝和深拷贝的效果一样。    
+如果对象属性包含`引用数据类型`，直接调用对象的clone()是浅拷贝，需要在clone()方法里针对引用数据类型的属性再进行深拷贝。    
+
+简单理解就是：类的每个属性都进行深拷贝，类才算深拷贝，否则就是浅拷贝。clone()是浅拷贝，但是如果属性只有基本数据类型，则浅拷贝和深拷贝效果一样；如果有对象属性，则需要对对象属性进行深拷贝，整个类才算深拷贝。
+    
+    //深拷贝
+    public class SuperClass implements Cloneable {
+        public String name;
+        public int age;
+        public SubClass sub;
+        
+        @Override
+        public Object clone() {
+            try {
+                SuperClass cloneSuper = (A)super.clone();
+                // 这一行去掉就成了浅拷贝
+                cloneSuper.sub = (SubClass)sub.clone();
+                return cloneSuper;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+    
+    public class SubClass implements Cloneable {
+        public String name;
+        public int age;
+        
+        @Override
+        public Object clone() {
+            try {
+                return super.clone();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null; 
+        }
+    }
+
+#### （3）序列化    
+ 
+Serializable/Parcelable序列化再反序列化得到的对象是深拷贝对象。
+    
+[细说 Java 的深拷贝和浅拷贝](https://segmentfault.com/a/1190000010648514)    
 
 ### 3、拆箱／装箱    
 
