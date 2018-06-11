@@ -20,6 +20,10 @@ layout: none
         <priority>0.6</priority>
     </url>
     <url>
+        <loc>{{ site.url }}/books.html</loc>
+        <priority>0.6</priority>
+    </url>
+    <url>
         <loc>{{ site.url }}/about.html</loc>
         <priority>0.6</priority>
     </url>
