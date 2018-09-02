@@ -1,8 +1,8 @@
 ---
 layout: post
 comments: true
-title: "Android学习笔记——关于Service和BroadcastReceiver的实践"
-description: "Android学习笔记——关于Service和BroadcastReceiver的实践"
+title: "我所学会的那些事－－Service和BroadcastReceiver"
+description: "我所学会的那些事－－Service和BroadcastReceiver"
 category: Android
 tags: [Android]
 ---
