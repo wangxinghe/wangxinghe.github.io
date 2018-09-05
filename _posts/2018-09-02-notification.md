@@ -13,6 +13,7 @@ tags: [Android]
 （2）PendingIntent    
 （3）Notification    
 
+<!--more-->
 
 任玉刚的《Android开发艺术探索》里有第5章“理解RemoteViews”讲的比较详细。    
 
