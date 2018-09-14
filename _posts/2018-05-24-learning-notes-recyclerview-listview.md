@@ -14,3 +14,13 @@ tags: [Android]
 
 <!--more-->
 
+还有一些拓展功能基本套路：    
+支持多Header    
+支持多Footer    
+支持EmptyView       
+支持pulltorefresh    
+支持loadmore    
+局部刷新DiffUtil    
+
+以及实现上面提到的功能的多种方案    
+
