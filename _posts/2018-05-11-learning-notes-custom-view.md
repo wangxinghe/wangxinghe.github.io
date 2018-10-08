@@ -68,7 +68,8 @@ layout过程：得到所有View的坐标
 draw过程：绘制所有View
 
 关于requestLayout()/invalidate():    
-requestLayout()会触发measure、layout过程，但不会触发draw过程；invalidate()会出发draw过程。
+requestLayout()会调用到ViewRoot.performTraversals()，触发measure、layout和draw过程；postInvalidate()和invalidate()会出发当前View的draw过程，但是前者在非UI线程，后者在UI线程调用。    
+[Android View 深度分析requestLayout、invalidate与postInvalidate](https://blog.csdn.net/a553181867/article/details/51583060)    
 
 整个过程的简略版代码，以LinearLayout为例：    
 
