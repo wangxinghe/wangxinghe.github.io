@@ -162,7 +162,7 @@ wait()/notify()、sleep()/interrupt()
 
 ### 5、参考文档     
 
-（1）[进程和线程](https://developer.android.com/guide/components/processes-and-threads?hl=zh-cn)    
+（1）[Processes and threads overview](https://developer.android.com/guide/components/processes-and-threads)    
 （2）[进程间通信IPC (InterProcess Communication)](https://www.jianshu.com/p/c1015f5ffa74)    
     
 
