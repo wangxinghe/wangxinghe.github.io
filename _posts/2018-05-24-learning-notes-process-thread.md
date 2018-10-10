@@ -150,9 +150,9 @@ View.postDelayed(Runnable, long)
 
 #### （1）线程协作    
 
-死锁
-
-wait()/notify()、sleep()/interrupt()
+[死锁](https://love2.io/@funkkiid/doc/android_interview//java/concurrence/deadlock.md)
+    
+[wait()/notify()、sleep()/interrupt()](https://love2.io/@funkkiid/doc/android_interview//java/concurrence/producer-consumer.md)
 
 #### （2）生产者消费者    
 
