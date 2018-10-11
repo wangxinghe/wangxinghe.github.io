@@ -16,3 +16,5 @@ tags: [Android]
 [LoadingDrawable前言](https://www.jianshu.com/p/6e0ac5af4e8b)    
 [LoadingDrawable源码分析](https://www.jianshu.com/p/1c3c6fc1b7ff)    
 [拆轮子之Fish动画分析](https://blog.csdn.net/XSF50717/article/details/51494266)    
+[LoadingDrawable之CircleJump系列一](https://www.jianshu.com/p/fa85bc5e77d1)    
+
