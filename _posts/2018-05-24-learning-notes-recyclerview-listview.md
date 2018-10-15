@@ -24,3 +24,8 @@ tags: [Android]
 
 以及实现上面提到的功能的多种方案    
 
+[https://github.com/wangxinghe/SmartRecyclerView](https://github.com/wangxinghe/SmartRecyclerView)
+
+PS:多Header，多Footer，EmptyView有借鉴ListView的实现       
+
+
