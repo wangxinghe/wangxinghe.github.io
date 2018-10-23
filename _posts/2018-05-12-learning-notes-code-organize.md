@@ -96,6 +96,11 @@ VIPER模式，将MVP架构中原本由Model单独负责的Bean数据结构和业
 
 延伸阅读：[新版Uber App移动架构设计](https://zhuanlan.zhihu.com/p/24489480)
 
+uber/RIBs    
+[https://github.com/uber/RIBs](https://github.com/uber/RIBs)    
+[https://juejin.im/post/5a9f88466fb9a028e46e308a](https://juejin.im/post/5a9f88466fb9a028e46e308a)    
+
+
 TODO：clean architecture
 
 个人观点：    
