@@ -100,6 +100,8 @@ uber/RIBs
 [https://github.com/uber/RIBs](https://github.com/uber/RIBs)    
 [https://juejin.im/post/5a9f88466fb9a028e46e308a](https://juejin.im/post/5a9f88466fb9a028e46e308a)    
 
+官网：    
+[https://developer.android.com/topic/libraries/architecture/](https://developer.android.com/topic/libraries/architecture/)
 
 TODO：clean architecture
 
