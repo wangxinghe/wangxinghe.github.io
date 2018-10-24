@@ -200,6 +200,8 @@ ANR，Application Not Responding。
 Activity/Service/Broadcast Receiver／设置MainLoop的Handler 都是运行在主线程中的。    
 子线程有Thread／AsyncTask／HandlerThread／IntentService／Loader等
 
+开源工具ANRWatchDog    
+[https://github.com/SalomonBrys/ANR-WatchDog](https://github.com/SalomonBrys/ANR-WatchDog)    
 
 ### 2、参考文档    
 
