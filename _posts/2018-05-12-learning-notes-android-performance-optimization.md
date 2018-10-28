@@ -191,6 +191,9 @@ Res资源层面：
 其他：    
 插件化／业务精简    
 
+[爱奇艺Android移动客户端app瘦身经验](https://mp.weixin.qq.com/s?__biz=MzI2OTQxMTM4OQ==&amp;mid=2247485254&amp;idx=1&amp;sn=c5dbdf081af17e6213b83176a44c8843&amp;chksm=eae1f214dd967b022bbf43fb7e92051e8ee1db89d7d17bb12a75222c96beabf7ca7ba097cfda#rd)
+
+
 #### （7）ANR    
 
 ANR，Application Not Responding。
