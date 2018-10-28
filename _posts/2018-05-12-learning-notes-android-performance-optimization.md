@@ -39,6 +39,9 @@ Application的onCreate中不要做太多事情。将初始化任务分成不同�
 
 工具：Traceview。
 
+[http://hukai.me/android-performance-patterns-season-6/](http://hukai.me/android-performance-patterns-season-6/)
+
+
 #### （2）View渲染优化    
 
 主要包括`布局优化`和`绘制优化`两部分：    
