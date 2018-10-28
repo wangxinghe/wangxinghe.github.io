@@ -122,7 +122,7 @@ Application的onCreate中不要做太多事情。将初始化任务分成不同�
 `JNI`，JNI中的本地／全局变量或代码（包括用户自定义的和JVM内部的）    
 `Thread`，运行中的线程。    
 `Thread Block`，运行中的线程引用的对象。    
-`Java Local／Native Stack`，Thread方法栈中的传参或局部变量，Native代码中的传参。    
+`Java Local／Native Stack`，Java方法栈中的传参或局部变量，Native代码中的传参。    
 `Busy Monitor`，所有调用了wait()/notify()的对象，或调用了synchronized(Object)/synchronized方法的对象或类（如果是static方法就是类，如果非static方法就是对象）    
 `Finalizable`，队列中等待finalizer的对象，或不在队列中但有finalize()方法的对象。    
 
