@@ -117,6 +117,12 @@ Application的onCreate中不要做太多事情。将初始化任务分成不同�
 `垃圾回收机制`：从GC Roots出发的引用树的可达性，不可达的将被回收。    
 
 `GC Root`:    
+（1）方法区中类静态属性引用的对象    
+（2）方法区中常量引用的对象    
+（3）虚拟机栈（栈帧中的本地变量表）中引用的对象    
+（4）本地方法栈中JNI（即Native方法）引用的对象    
+
+
 总结下来就4点：System Class相关、JNI相关、Thread相关、Finalize相关。    
 `System Class`，Bootstrap/System ClassLoader加载的类，如rt.jar    
 `JNI`，JNI中的本地／全局变量或代码（包括用户自定义的和JVM内部的）    
