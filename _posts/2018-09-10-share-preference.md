@@ -1,8 +1,8 @@
 ---
 layout: post
 comments: true
-title: "我所学会的那些事——SharedPreference"
-description: "我所学会的那些事——SharedPreference"
+title: "Android学习笔记——SharedPreference"
+description: "Android学习笔记——SharedPreference"
 category: Android
 tags: [Android]
 ---

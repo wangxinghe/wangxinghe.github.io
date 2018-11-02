@@ -1,8 +1,8 @@
 ---
 layout: post
 comments: true
-title: "我所学会的那些事——Notification和RemoteView"
-description: "我所学会的那些事——Notification和RemoteView"
+title: "Android学习笔记——Notification和RemoteView"
+description: "Android学习笔记——Notification和RemoteView"
 category: Android
 tags: [Android]
 ---
