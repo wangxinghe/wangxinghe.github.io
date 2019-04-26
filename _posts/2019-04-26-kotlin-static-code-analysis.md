@@ -1,8 +1,8 @@
 ---
 layout: post
 comments: true
-title: "Kotlin静态代码检测调研"
-description: "Kotlin静态代码检测调研"
+title: "Kotlin静态代码检测方案分析"
+description: "Kotlin静态代码检测方案分析"
 category: Kotlin
 tags: [Kotlin]
 ---
