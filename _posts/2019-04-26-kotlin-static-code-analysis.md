@@ -7,8 +7,6 @@ category: Kotlin
 tags: [Kotlin]
 ---
 
-## Kotlin静态代码检测调研
-
 和Java静态代码检测一样，Kotlin静态代码检测包含两方面的检查：`代码风格`和`代码质量`两方面。
 
 <!--more-->
