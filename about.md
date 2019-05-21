@@ -7,11 +7,11 @@ footer: false
 
 Hi, welcome to my blog.
 
-I am **mouxuejie**. A female developer majoring in android and striving to be a full stack developer.
+I am **mouxuejie**. A female developer majors in Android, aims to be Architect and a Full Stack Developer.
 
 I graduated from Wuhan University and Beijing University of Posts and Telecommunications.
 
-If you like my articles, you can follow my WeChat Pub called **学姐的IT专栏**.
+If you like my articles, you can follow my WeChat Pub called **某学姐**.
 
 ## Contact Me
 
