@@ -7,6 +7,8 @@ category: Growth
 tags: [Growth]
 ---
 
+### 2019.06.06
+
 时常会感受自己到来自内心深处的痛苦，大部分都是一个人独处的时候。
 
 内心并不是那么强大，瘦弱的身体承载的是刚烈的性格。
@@ -43,3 +45,9 @@ tags: [Growth]
 - （9）将目前这份破败不堪的简历扭转成一份优秀的简历          
 - （10）情绪管理能力能达到cover重要事情的水平
 
+### 2019.06.28
+
+2019Q3学习计划：          
+- (1)Kotlin进阶，包括性能、原理、Coroutine源码
+- (2)Flutter熟练使用，熟练各种Widget使用，能使用Flutter熟练开发项目
+- (3)Framework源码学习总结，binder包括Java->Native->Kernel
