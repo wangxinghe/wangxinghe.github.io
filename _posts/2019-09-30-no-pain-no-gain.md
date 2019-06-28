@@ -1,8 +1,8 @@
 ---
 layout: post
 comments: true
-title: "谈谈痛苦"
-description: "谈谈痛苦"
+title: "no pain, no gain"
+description: "no pain, no gain"
 category: Growth
 tags: [Growth]
 ---
