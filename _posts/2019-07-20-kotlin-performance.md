@@ -116,6 +116,7 @@ Kotlin代码：
 	        return HELLO_2
 	    }
 	}
+
 字节码：
 
 	public final class com/mouxuejie/test/Test {
@@ -148,6 +149,7 @@ Kotlin代码：
 	    INVOKESTATIC com/mouxuejie/test/Test.access$getHELLO_2$cp ()I
 	    IRETURN
 	}
+
 结论：    
 companion object的`private val私有变量`，会在OuterClass生成对应的`private static final静态变量`，不生成额外方法。    
 companion object的`public val变量`，会在OuterClass生成对应的`private static final静态变量`和`public static getter方法`，并且会在`Companion类中生成对应的getter实例方法`。其他类访问这个类的变量时，调用顺序是：Companion的getter方法 -> OuterClass的statuc getter方法 -> private static final静态变量    
@@ -190,6 +192,7 @@ Kotlin代码：
 	        }
 	    }
 	}
+
 字节码：
 
 	public final class com/mouxuejie/test/Test {
@@ -274,6 +277,7 @@ Kotlin代码：
     fun transformIntToString(type: Int, body : (Int) -> String) : String {
         return body(type)
     }
+
 字节码：
 
     INVOKESTATIC java/lang/Integer.valueOf (I)Ljava/lang/Integer;
@@ -529,6 +533,7 @@ Kotlin代码：
 	        add1(1, null)
 	    }
 	}
+
 字节码：
 
 	  public final add0(II)I
@@ -641,6 +646,7 @@ Kotlin代码：
         result2[0] = 1
         result2[1] = 1
     }
+
 字节码：
 	
 	   // IntArray
@@ -836,6 +842,7 @@ case 2创建数组new int[] {1, 2, 3}，且调用Arrays.copyOf()拷贝了一份�
 
 	int[] values = new int[]{1, 2, 3};
 	printDouble(Arrays.copyOf(values, values.length));
+
 case 3等价于
 	
 	int[] values = new int[]{1, 2, 3};
@@ -857,6 +864,7 @@ lazy使用示例：
 	private val dateFormat: DateFormat by lazy {
 	    SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 	}
+
 lazy的懒加载特性，保证了只会在首次访问时才会初始化lambda中的代码
 
 lazy的3种模式：    
@@ -882,6 +890,7 @@ Kotlin代码：
             println(name)
         }
     }
+
 反编译代码：
 
 	public final void test0(int i) {
@@ -901,6 +910,7 @@ Kotlin代码：
            }
         }
 	 }
+
 Kotlin代码：
 
     private val myRange get() = 1..10
@@ -953,6 +963,7 @@ Kotlin代码：
 	       System.out.println(i);
 	    }
     }
+
 结论：    
 `直接引用1..n`相当于 i >= 1&&i <=n，不会创建额外的对象；通过`变量间接引用1..n`，则每次调用的时候都会创建IntRange对象。
 
@@ -988,6 +999,7 @@ Kotlin代码：
             println(i)
         }
     }
+
 反编译代码：
 
     public final void test0() {
@@ -1076,6 +1088,7 @@ Kotlin代码：
             println(list[i])
         }
     }
+
 反编译代码：
 
 	   public final void test() {
@@ -1087,6 +1100,7 @@ Kotlin代码：
 	         System.out.println(var4);
 	      }
 	   }
+
 Kotlin代码：
 
     inline val SparseArray<*>.indices: IntRange
@@ -1103,6 +1117,7 @@ Kotlin代码：
             println(map.valueAt(i))
         }
     }
+
 反编译代码：
 
 	   @NotNull
@@ -1138,6 +1153,7 @@ Kotlin代码：
 		      System.out.println(var4);
 		   }
 	   }
+
 结论：    
 对于继承Collection的集合类，until效率优于indices    
 
