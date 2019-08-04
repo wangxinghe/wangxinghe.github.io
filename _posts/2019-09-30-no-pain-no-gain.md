@@ -58,3 +58,8 @@ tags: [Growth]
 - (1)Kotlin进阶，包括性能、原理、Coroutine源码
 - (2)Flutter熟练使用，熟练各种Widget使用，能使用Flutter熟练开发项目
 - (3)Framework源码学习总结，binder包括Java->Native->Kernel
+
+## #CreateMySelf
+
+[重塑自我－2019.07基本回顾](http://mouxuejie.com/blog/2013-01-01/201907-create-myself/)
+
