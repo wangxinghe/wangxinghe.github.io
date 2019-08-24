@@ -40,7 +40,8 @@ tags: [Kotlin]
 具体可参考：[http://mouxuejie.com/blog/2019-07-20/kotlin-performance/](http://mouxuejie.com/blog/2019-07-20/kotlin-performance/)
 
 **（2）写扩展规则集**        
-网上相关的资料基本上没有，唯一可以参考的就是源码和官方文档。
+网上相关的资料基本上没有，唯一可以参考的就是源码和官方文档：        
+[https://github.com/arturbosch/detekt](https://github.com/arturbosch/detekt)
 
 新建一个detektExt的android library        
 ![](/image/2019-08-24-kotlin-code-static-analyze-performance/detektExt.jpg)
