@@ -9,6 +9,8 @@ tags: [Kotlin]
 
 前一段时间研究了下Kotlin基于Detekt实现性能检测，该做一个阶段性总结了。
 
+<!--more-->
+
 目录：        
 1. 为什么要做？        
 2. 为什么要这么做？        
@@ -26,9 +28,9 @@ tags: [Kotlin]
 
 之前调研Kotlin静态代码检测的时候，就得出使用Detekt的结论。Detekt已经提供了如下检测bugs和performance的规则集，但是我觉得能力还不够强大，还需要扩充。
 
-![Alt text](./1566647124200.png)
+![](/image/2019-08-24-kotlin-code-static-analyze-performance/detekt-bugs-rules.jpg)
 
-![Alt text](./1566647145544.png)
+![](/image/2019-08-24-kotlin-code-static-analyze-performance/detekt-performance-rules.jpg)
 
 而且Detekt是支持扩展的，源码和官方文档都有相关范例参考。
 
@@ -41,7 +43,7 @@ tags: [Kotlin]
 网上相关的资料基本上没有，唯一可以参考的就是源码和官方文档。
 
 新建一个detektExt的android library        
-![Alt text](./1566649828759.png)
+![](/image/2019-08-24-kotlin-code-static-analyze-performance/detektExt.jpg)
 
 由于官方demo是kotlin脚本，而我们项目用groovy脚本，因此build.gradle文件配置参考        https://github.com/vanniktech/kotlin-on-code-quality-tools/tree/master/custom-detekt-rules
 
