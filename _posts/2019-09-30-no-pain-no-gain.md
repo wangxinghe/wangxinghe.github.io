@@ -62,5 +62,6 @@ tags: [Growth]
 
 ## #CreateMySelf
 
-[重塑自我－2019.07基本回顾](http://mouxuejie.com/blog/2013-01-01/201907-create-myself/)
+[重塑自我－2019.07基本回顾](http://mouxuejie.com/blog/2013-01-01/201907-create-myself/)        
+[重塑自我－2019.08基本回顾](http://mouxuejie.com/blog/2013-01-02/201908-create-myself/)
 
