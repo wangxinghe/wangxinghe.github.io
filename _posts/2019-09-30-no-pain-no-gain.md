@@ -33,7 +33,7 @@ tags: [Growth]
 - 4 熟悉Android系统体系结构、framework、底层库        		
 - 5 熟悉Android系统打包、编译、插件化、热修复等主流技术原理并有独特见解，对Android系统框架、对客户端稳定性和性能优化有体系化思考        		
 
-目前这份工作的使命：        		
+目前这份工作的目标：        		
 - （1）掌握MIUI在Android方面沉淀下来的东西，包括Framework和xxx不想说            	  
 - （2）Android技术实力达到架构师水平            		
 - （3）深度掌握Kotlin和Flutter的方方面面            
