@@ -52,16 +52,14 @@ tags: [Growth]
 - （3）保证每周有一半的时间天数是在学习，提高自己的竞争力（自己想办法）
 - （4）重复的业务劳动，想办法用进一些新技术
 
-
-## #2019.06.28
-
-2019Q3学习计划：          
-- (1)Kotlin进阶，包括性能、原理、Coroutine源码
-- (2)Flutter熟练使用，熟练各种Widget使用，能使用Flutter熟练开发项目
-- (3)Framework源码学习总结，binder包括Java->Native->Kernel
-
 ## #CreateMySelf
 
+SOFT        
 [重塑自我－2019.07基本回顾](http://mouxuejie.com/blog/2013-01-01/201907-create-myself/)        
-[重塑自我－2019.08基本回顾](http://mouxuejie.com/blog/2013-01-02/201908-create-myself/)
+[重塑自我－2019.08基本回顾](http://mouxuejie.com/blog/2013-01-02/201908-create-myself/)        
+
+
+HARD        
+[2019.07-2019.09阶段性总结](http://mouxuejie.com/blog/2013-02-01/2019Q3-summary/)        
+[2019.10-2019.12阶段性总结](http://mouxuejie.com/blog/2013-02-02/2019Q4-summary/)        
 
