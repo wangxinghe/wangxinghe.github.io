@@ -22,7 +22,7 @@ REST这个概念最早由Roy Fielding的一篇博士论文提出，后面其他�
 REST全称`Representational State Transfer`，中文翻译为`可表示的状态转化`，是一种适用于分布式超媒体系统的架构设计风格。        
 `the Representational State Transfer (REST) architectural style for distributed hypermedia systems`        
 要理解REST，我们需要先理解一些数据元素，Resource / Representation / Components / Hypermedia        
-![Alt text](./1572158795803.png)
+![](/image/2019-10-30-understand-rest-api/elements.jpg)
 
 （1）Representation        
 `A representation is a sequence of bytes, plus representation metadata to describe those bytes. Other commonly used but less precise names for a representation include: document, file, and HTTP message entity, instance, or variant.`
@@ -36,7 +36,7 @@ Resource是REST中重要的一个概念。
 任何能被命名的信息都可以称作Resource，比如电子文档、图片、天气信息、某些资源的集合、或者某个具体的实物等。
 
 （3）Components        
-![Alt text](./1572150060448.png)
+![](/image/2019-10-30-understand-rest-api/components.jpg)
 
 Components可以理解为网络通信链路中一个个节点，如代理、网关、服务器等
 
