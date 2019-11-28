@@ -281,6 +281,13 @@ File -> Invalidate Caches/Restart 让设置生效.
 打开Android Studio,打开android.ipr,大概10分钟就可以加载好Android源码        
 源码加载好后, Android Studio的Project Structure视图选Java8和Android API 29(和下载的源码版本保持一致)
 
+删除不必要的代码, 便于debug时跳转到项目对应的源码:        
+android.iml中删除包含out路径的< sourceFolder />标签, 防止定位到编译后的out/soong的源码        
+Android Studio -> SDKs删除Classpath和Sourcepath里的文件, 防止定位到SDK的源码        
+
+解决Scan files to Index太久的问题:         
+项目右键 -> Open module setting -> Modules -> 找到gen -> 右键Resources        
+
 (4)调试
 
 点击Attach Debugger to Android Process按钮, 选择system_process进程        
