@@ -7,9 +7,6 @@ category: AOSP
 tags: [AOSP]
 ---
 
-
-[TOC]
-
 >基于Android 10.0的源码剖析, 站在Luoshengyang/Innost/Gityuan肩膀上.
 
 ## 0. 文件结构
