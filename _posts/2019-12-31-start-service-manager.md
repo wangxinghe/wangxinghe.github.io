@@ -707,8 +707,10 @@ servicemanager作为服务管理者, 主要作用是`添加服务`和`获取服�
 
 [ -> kernel/msm-3.18/drivers/staging/android/binder.c]
 
+```cpp
 	// binder初始化入口
 	device_initcall(binder_init);
+```
 
 ### 2.1 binder_init 
 [ -> kernel/msm-3.18/drivers/staging/android/binder.c]
