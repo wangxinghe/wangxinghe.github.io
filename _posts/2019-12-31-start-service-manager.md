@@ -158,6 +158,7 @@ tags: [AOSP]
 	 
 	    return 0;
 	}
+
 #### 	1.3.2 ioctl
 [ -> kernel/msm-3.18/drivers/staging/android/binder.c]
 
@@ -271,6 +272,7 @@ binder_ioctl涉及到的重要方法有:
 	    mutex_unlock(&proc->files_lock);
 	    return 0;
 	}
+
 #### (1) binder_alloc_mmap_handler
 [ -> kernel/msm-3.18/drivers/staging/android/binder_alloc.c]
 
@@ -332,6 +334,7 @@ binder_ioctl涉及到的重要方法有:
 	}
 
 通过【第1.3.2节】可知, 会走到BINDER_SET_CONTEXT_MGR分支, 调用binder_ioctl_set_ctx_mgr方法.        
+
 #### 1.4.1 binder_ioctl_set_ctx_mgr
 [ -> kernel/msm-3.18/drivers/staging/android/binder.c]
 
@@ -465,6 +468,7 @@ binder_write的调用链是: ioctl -> binder_ioctl -> binder_ioctl_write_read ->
 	    }
 	    return 0;
 	}
+
 发送BC_ENTER_LOOPER指令, 相当往binder驱动写数据, 设置线程循环标识.
 
 	thread->looper |= BINDER_LOOPER_STATE_ENTERED;
