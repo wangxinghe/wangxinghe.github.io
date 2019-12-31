@@ -9,6 +9,8 @@ tags: [AOSP]
 
 >基于Android 10.0的源码剖析, 站在Luoshengyang/Innost/Gityuan肩膀上.
 
+<!--more-->
+
 ## 0. 文件结构
 
     system/core/rootdir/init.rc
@@ -22,8 +24,6 @@ tags: [AOSP]
 	kernel/msm-3.18/drivers/staging/android/binder_alloc.c
 	kernel/msm-3.18/drivers/staging/android/uapi/binder.h
 	kernel/msm-3.18/include/linux/fs.h
-
-<!--more-->
 
 ## 1. 启动过程
 
