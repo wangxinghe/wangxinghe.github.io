@@ -812,6 +812,11 @@ binder_open又分为3步: open / ioctl / mmap
 - `ioctl`: 设置binder版本号, 使用户空间和内核空间版本信息一致.        
 - `mmap`: 分配128K的虚拟内存映射空间, 并将进程虚拟地址空间和内核虚拟地址空间,映射到同一块物理内存空间. 
 
+binder的mmap内存映射机制如图:        
+[ -> from gityuan.com]
+
+![binder_physical_memory](/image/2019-12-31-start-service-manager/binder_physical_memory.jpg)
+
 **(2) binder_become_context_manager**        
 创建进程的binder_node节点, 并将其设置为进程的上下文管理器节点. 打开设备文件/dev/binder的进程proc成为守护进程. servicemanager成为上下文管理器. 
 
