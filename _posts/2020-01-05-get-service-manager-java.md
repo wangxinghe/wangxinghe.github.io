@@ -266,10 +266,11 @@ ioctl在讲解talkWithDriver时再详细分析.
     // proper reference counting.
 	status_t status = IPCThreadState::self()->transact(
 	        0, IBinder::PING_TRANSACTION, data, nullptr, 0);
-根据注释可知, 在BpBinder对象创建之前, 需要先保证binder上下文管理器context manager准备就绪.
-那么是怎么保证的呢?就是向binder驱动发送一条IBinder::PING_TRANSACTION指令, 看是否返回正常. 和长连接心跳检测机制有点类似.
 
-调用链路:
+根据注释可知, 在BpBinder对象创建之前, 需要先保证binder上下文管理器context manager准备就绪.  
+那么是怎么保证的呢?就是向binder驱动发送一条IBinder::PING_TRANSACTION指令, 看是否返回正常. 和长连接心跳检测机制有点类似.  
+
+调用链路:  
 IPCThreadState::transact ---> writeTransactionData -> waitForResponse -> talkWithDriver -> binder_ioctl -> binder_ioctl_write_read -> binder_thread_write -> binder_transaction
 
 IPCThreadState::transact详细过程, 将会在后面binder驱动交互过程详细分析.
