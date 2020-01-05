@@ -28,7 +28,7 @@ tags: [AOSP]
 	frameworks/native/libs/binder/BpBinder.cpp
 
 ## 1.时序图
-![Alt text](/image/2020-01-05-get-service-manager-java/get-service-manager-java.png)
+![get-service-manager-java](/image/2020-01-05-get-service-manager-java/get-service-manager-java.png)
 
 ## 2.入口函数
 [ -> frameworks/base/core/java/android/os/ServiceManager.java ]
@@ -310,6 +310,7 @@ ServiceManager获取过程分为2步:
 
 - `ProcessState::self()`  创建ProcessState对象
 - `open_driver`  打开binder驱动,设置binder版本号和最大线程数15
+- `mmap`  执行binder mmap内存映射,分配一块虚拟内存,用来接收事务
 - `getContextObject`  获取BpBinder对象.调用getStrongProxyForHandle(0). 首先通过lookupHandleLocked方法查询mHandleToObject顺序列表中是否存在handle=0的BpBinder, 若不存在则通过BpBinder::create创建. 当然在创建BpBinder之前需要保证上下文管理器context manager准备就绪, 具体方法就是向binder驱动发送IBinder::PING_TRANSACTION指令, 看返回结果是否正常.
 - javaObjectForIBinder 获取BinderProxy对象. 通过JNI调用Java层的BinderProxy.getInstance()方法, 同时将上述得到的BpBinder对象赋值给BinderProxy.mNativeData.mObject属性.
 
