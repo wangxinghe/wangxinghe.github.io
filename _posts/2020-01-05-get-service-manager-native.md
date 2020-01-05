@@ -24,7 +24,7 @@ tags: [AOSP]
 	frameworks/native/libs/binder/BpBinder.cpp
 
 ## 1.时序图
-![get-service-manager-native](/image/2020-01-05-get-service-manager-java/get-service-manager-native.png)
+![get-service-manager-native](/image/2020-01-05-get-service-manager-native/get-service-manager-native.png)
 
 ## 2.入口函数
 [ -> frameworks/native/libs/binder/IServiceManager.cpp ]
