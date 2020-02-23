@@ -11,7 +11,7 @@ tags: [AOSP]
 
 <!--more-->
 
-本文分析Service获取过程, 包括从Java层获取和从Native层获取.
+本文以AMS服务为例, 分析Service获取过程, 包括从Java层获取和从Native层获取.
 
 ## 0.文件结构
 
@@ -27,9 +27,12 @@ tags: [AOSP]
 ## 1.时序图
 TODO
 
-## 2.获取服务入口
+## 2.获取服务入口  
 
 ### 2.1 Java层
+
+    final IBinder b = ServiceManager.getService(Context.ACTIVITY_SERVICE);
+    IActivityManager.Stub.asInterface(b);
 
 #### 2.1.1 ServiceManager.getService  
 [ -> frameworks/base/core/java/android/os/ServiceManager.java ]
@@ -68,7 +71,6 @@ TODO
 	}
 
 ### 2.2 Native层
-以AMS服务为例.
 
 [ -> frameworks/av/media/libmediaplayerservice/ActivityManager.cpp ]
 
@@ -360,8 +362,14 @@ ServiceManager进程处理过程略有差别.
 	    return NO_ERROR;
 	}
 
-### 4.5 interface_cast (Native层)  
-接下来看`sp<IActivityManager> am = interface_cast<IActivityManager>(binder);`
+### 4.5 获取服务代理
+
+(1) IActivityManager.Stub.asInterface (Java层)  
+IActivityManager.Stub.asInterface(b) 最终得到new IActivityManager.Stub.Proxy(new BinderProxy(handle))
+
+(2) interface_cast (Native层)  
+`sp<IActivityManager> am = interface_cast<IActivityManager>(binder);`
+
 
 根据文章 **[ServiceManager获取过程--Native层](http://mouxuejie.com/blog/2020-01-05/get-service-manager-native/)** 的章节**4.获取BpServiceManager对象** 可类比得出, 下面三者等价.  
 
@@ -369,6 +377,9 @@ ServiceManager进程处理过程略有差别.
 	interface_cast<IActivityManager>(binder)
 	IActivityManager::asInterface(binder)
 	new BpActivityManager(new BpBinder(handle)) 
+
+最终得到new BpActivityManager(new BpBinder(handle)) 
+
 
 ## 5.总结  
 **获取服务**和**注册服务**Binder通信过程差不多.   
