@@ -37,7 +37,7 @@ TODO
 	    ...
 	    // 启动相互依赖关系复杂的服务
 	    startBootstrapServices();
-	    // 启动相互依赖性的基本服务
+	    // 启动相互独立的基本服务
 	    startCoreServices();
 	    // 启动其他服务
 	    startOtherServices();
