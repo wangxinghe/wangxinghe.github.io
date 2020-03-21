@@ -160,7 +160,7 @@ TODO
 	        // 执行启动Activity，见【第4.1节】
 	        Instrumentation.ActivityResult ar = mInstrumentation.execStartActivity(this, mMainThread.getApplicationThread(), mToken, this, intent, requestCode, options);
 	        if (ar != null) {
-		        // 发送启动结果，见【第21.4节】
+		        // 发送启动结果，见【第28节】
 	            mMainThread.sendActivityResult(mToken, mEmbeddedID, requestCode, ar.getResultCode(), ar.getResultData());
 	        }
 	        if (requestCode >= 0) {
