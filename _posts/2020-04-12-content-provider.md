@@ -1679,3 +1679,16 @@ ContentProviderProxy.query -> ContactsProvider2.query -> SQLite操作, 同时拿
 
 后续操作都是通过CursorWrapperInner来进行读取.  
 
+根据ContactsProvider2的继承关系, 可知Contacts中的数据操作还是SQLite操作
+
+	public class ContactsProvider2 extends AbstractContactsProvider 
+	public abstract class AbstractContactsProvider extends ContentProvider implements SQLiteTransactionListener
+
+当其他App想访问数据库中的数据时, Contacts端需要提供一个ContactProvider2的接口来提供服务, 其他App端通过Binder通信来请求这个ContactsProvider2服务. 
+
+实际上, 根据源码目录:
+	
+	packages/apps/Contacts:  联系人App
+	packages/providers/ContactsProvider:  数据提供接口 
+
+ContentProvider的这种设计和App开发中调用第三方SDK有种类似的感觉.
