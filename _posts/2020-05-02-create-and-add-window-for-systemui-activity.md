@@ -11,9 +11,11 @@ tags: [AOSP]
 
 <!--more-->
 
-本文主要分析SystemUI(如StatusBar)和Activity中Window的创建和添加.  
-限于篇幅原因, 本文只分析到WindowManager.addView调用这一步, 具体的addView过程在下一篇文章分析.  
-接着会分析Activity/PhoneWindow/DecorView/StatusBar/ViewRootImpl之间的关系.  
+本文主要分析内容:  
+1.SystemUI(如StatusBar)和Activity中Window的创建和添加.  
+2.Activity/PhoneWindow/DecorView/StatusBar/ViewRootImpl之间的关系.  
+
+限于篇幅原因, WindowManager.addView具体的添加过程在下一篇文章分析.  
 
 ## 0.文件结构
 
