@@ -15,7 +15,7 @@ tags: [AOSP]
 1.SystemUI(如StatusBar)和Activity中Window的创建和添加.  
 2.Activity/PhoneWindow/DecorView/StatusBar/ViewRootImpl之间的关系.  
 
-限于篇幅原因, WindowManager.addView具体的添加过程在下一篇文章分析.  
+限于篇幅原因, WindowManager.addView具体的添加过程在下一篇文章分析.
 
 ## 0.文件结构
 
@@ -40,7 +40,7 @@ tags: [AOSP]
 
 TODO
 
-## 2.SystemUI
+## 2.系统窗口
 
 SystemUI包括很多子类, 状态栏StatusBar是最常见的一种. 本文以StatusBar为例进行分析.
 
@@ -150,7 +150,7 @@ SystemBars#start做的事情:
 	    // 根据布局文件super_status_bar.xml创建StatusBarWindowView. 参考【第2.3.3节】
 	    makeStatusBarView(result);
 	    mStatusBarWindowController = Dependency.get(StatusBarWindowController.class);
-	    // 参考
+	    // 将StatusBarWindowView添加到WindowManager. 参考【第2.4节】
 	    mStatusBarWindowController.add(mStatusBarWindow, getStatusBarHeight());
 	}
 
@@ -214,7 +214,7 @@ SystemBars#start做的事情:
                 LayoutInflater.from(context)).inflate(R.layout.super_status_bar, null);
     }
 
-#### 2.3.5 StatusBarWindowController.start  
+### 2.4 StatusBarWindowController.start  
 [ -> frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarWindowController.java ]
 
 	// Adds the status bar view to the window manager.
@@ -441,10 +441,12 @@ SystemBars#start做的事情:
 	        android:layout="@layout/emergency_cryptkeeper_text"/>
 	</com.android.systemui.statusbar.phone.PhoneStatusBarView>
 
-## 3.Activity  
+## 3.应用窗口    
 [ -> frameworks/base/core/java/android/app/ActivityThread.java ]
 
-### 3.1 ActivityThread.handleLaunchActivity
+### 3.1 ActivityThread
+
+#### 3.1.1 handleLaunchActivity
 
     @Override
     public Activity handleLaunchActivity(ActivityClientRecord r,
@@ -455,8 +457,8 @@ SystemBars#start做的事情:
         return a;
     }
  
-### 3.2 ActivityThread.performLaunchActivity
- 
+#### 3.1.2 performLaunchActivity
+
     private Activity performLaunchActivity(ActivityClientRecord r, Intent customIntent) {
         ActivityInfo aInfo = r.activityInfo;
         if (r.packageInfo == null) {
@@ -518,7 +520,7 @@ SystemBars#start做的事情:
             }
  
             activity.mCalled = false;
-            // 调用Activity.onCreate方法
+            // 调用Activity.onCreate方法. 参考【第3.2.2节】
             if (r.isPersistable()) {
                 mInstrumentation.callActivityOnCreate(activity, r.state, r.persistentState);
             } else {
@@ -535,7 +537,9 @@ SystemBars#start做的事情:
         return activity;
     }
 
-### 3.3 Activity.attach  
+### 3.2 Activity
+
+#### 3.2.1 attach  
 [ -> frameworks/base/core/java/android/app/Activity.java ]
  
 	final void attach(Context context, ActivityThread aThread,
@@ -603,6 +607,43 @@ SystemBars#start做的事情:
 	    setAutofillOptions(application.getAutofillOptions());
 	    setContentCaptureOptions(application.getContentCaptureOptions());
 	}
+
+#### 3.2.2 onCreate
+
+在App开发过程中, Activity#onCreate方法会调用setContentView(layoutResID).  
+那么我们来看下setContentView.  
+
+#### 3.2.3 setContentView
+
+    public void setContentView(@LayoutRes int layoutResID) {
+        getWindow().setContentView(layoutResID);
+        initWindowDecorActionBar();
+    }
+
+### 3.3 PhoneWindow.setContentView
+
+    @Override
+    public void setContentView(int layoutResID) {
+        if (mContentParent == null) {
+            installDecor();
+        } else if (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) {
+            mContentParent.removeAllViews();
+        }
+
+        if (hasFeature(FEATURE_CONTENT_TRANSITIONS)) {
+            final Scene newScene = Scene.getSceneForLayout(mContentParent, layoutResID, getContext());
+            transitionTo(newScene);
+        } else {
+	        // 将布局layoutResID添加到DecorView中id为R.id.content的位置
+            mLayoutInflater.inflate(layoutResID, mContentParent);
+        }
+        mContentParent.requestApplyInsets();
+        final Callback cb = getCallback();
+        if (cb != null && !isDestroyed()) {
+            cb.onContentChanged();
+        }
+        mContentParentExplicitlySet = true;
+    }
 
 ### 3.4 ActivityThread.handleResumeActivity
 
@@ -699,9 +740,588 @@ Activity中PhoneWindow的创建和添加过程:
 1.handleLaunchActivity过程  
 (1)  创建Activity实例和Application实例, 调用Activity#attach将Activity attach到Application.  
 (2)  在Activity中创建PhoneWindow, PhoneWindow又创建DecorView. 设置WindowManagerImpl到PhoneWindow.  
+(3)  调用Activity#onCreate -> setContentView(layoutResID) 将layoutResId添加到DecorView中R.id.content位置.  
 2.handleResumeActivity过程  
 (1)  PhoneWindow中的DecorView添加到WindowManager  
 (2)  设置DecorView可见  
 
-## 4.PhoneWindow详解  
+## 4.PhoneWindow&DecorView详解  
+
+第3节已经分析了Activity中PhoneWindow的创建和添加过程.  
+在Activity#onCreate中会调用PhoneWindow#installDecor创建DecorView和子View.  
+
+这一节来具体分析下PhoneWindow和DecorView的组成.  
+
+### 4.1 PhoneWindow  
+[ -> frameworks/base/core/java/com/android/internal/policy/PhoneWindow.java ]
+
+#### 4.1.1 installDecor
+
+	// 创建DecorView及其子View
+	private void installDecor() {
+	    mForceDecorInstall = false;
+	    if (mDecor == null) {
+	        // 创建DecorView
+	        mDecor = generateDecor(-1);
+	        mDecor.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+	        mDecor.setIsRootNamespace(true);
+	        if (!mInvalidatePanelMenuPosted && mInvalidatePanelMenuFeatures != 0) {
+	            mDecor.postOnAnimation(mInvalidatePanelMenuRunnable);
+	        }
+	    } else {
+	        mDecor.setWindow(this);
+	    }
+	    if (mContentParent == null) {
+	        // 根据设置的Window相关属性, 设置PhoneWindow特性. 给PhoneWindow的根DecorView添加子View, 并返回ContentView
+	        mContentParent = generateLayout(mDecor);
+ 
+	        // Set up decor part of UI to ignore fitsSystemWindows if appropriate.
+	        mDecor.makeOptionalFitsSystemWindows();
+ 
+	        // 对于R.layout.screen_simple没有该元素, 但对于R.layout.screen_action_bar包含该元素
+	        final DecorContentParent decorContentParent = (DecorContentParent) mDecor.findViewById(R.id.decor_content_parent);
+ 
+	        // 如果根View为ActionBarOverlayLayout, 则设置ActionBarOverlayLayout的title/icon/logo/menu等
+	        if (decorContentParent != null) {
+	            mDecorContentParent = decorContentParent;
+	            mDecorContentParent.setWindowCallback(getCallback());
+	            if (mDecorContentParent.getTitle() == null) {
+	                mDecorContentParent.setWindowTitle(mTitle);
+	            }
+ 
+	            final int localFeatures = getLocalFeatures();
+	            for (int i = 0; i < FEATURE_MAX; i++) {
+	                if ((localFeatures & (1 << i)) != 0) {
+	                    mDecorContentParent.initFeature(i);
+	                }
+	            }
+ 
+	            mDecorContentParent.setUiOptions(mUiOptions);
+ 
+	            if ((mResourcesSetFlags & FLAG_RESOURCE_SET_ICON) != 0 ||
+	                    (mIconRes != 0 && !mDecorContentParent.hasIcon())) {
+	                mDecorContentParent.setIcon(mIconRes);
+	            } else if ((mResourcesSetFlags & FLAG_RESOURCE_SET_ICON) == 0 &&
+	                    mIconRes == 0 && !mDecorContentParent.hasIcon()) {
+                mDecorContentParent.setIcon(getContext().getPackageManager().getDefaultActivityIcon());
+	                mResourcesSetFlags |= FLAG_RESOURCE_SET_ICON_FALLBACK;
+	            }
+	            if ((mResourcesSetFlags & FLAG_RESOURCE_SET_LOGO) != 0 ||
+	                    (mLogoRes != 0 && !mDecorContentParent.hasLogo())) {
+	                mDecorContentParent.setLogo(mLogoRes);
+	            }
+ 
+	            PanelFeatureState st = getPanelState(FEATURE_OPTIONS_PANEL, false);
+	            if (!isDestroyed() && (st == null || st.menu == null) && !mIsStartingWindow) {
+	                invalidatePanelMenu(FEATURE_ACTION_BAR);
+	            }
+	        } else {
+	            // 如果有title元素, 更新title
+	            mTitleView = findViewById(R.id.title);
+	            if (mTitleView != null) {
+	                if ((getLocalFeatures() & (1 << FEATURE_NO_TITLE)) != 0) {
+	                    final View titleContainer = findViewById(R.id.title_container);
+	                    if (titleContainer != null) {
+	                        titleContainer.setVisibility(View.GONE);
+	                    } else {
+	                        mTitleView.setVisibility(View.GONE);
+	                    }
+	                    mContentParent.setForeground(null);
+	                } else {
+	                    mTitleView.setText(mTitle);
+	                }
+	            }
+	        }
+	        ...
+	    }
+	}
+
+#### 4.1.2 generateDecor
+
+	protected DecorView generateDecor(int featureId) {
+	    Context context;
+	    if (mUseDecorContext) {
+	        Context applicationContext = getContext().getApplicationContext();
+	        if (applicationContext == null) {
+	            context = getContext();
+	        } else {
+	            context = new DecorContext(applicationContext, getContext());
+	            if (mTheme != -1) {
+	                context.setTheme(mTheme);
+	            }
+	        }
+	    } else {
+	        context = getContext();
+	    }
+	    return new DecorView(context, featureId, this, getAttributes());
+	}
+
+#### 4.1.3 generateLayout
+
+	protected ViewGroup generateLayout(DecorView decor) {
+	    // Apply data from current theme.
+	    TypedArray a = getWindowStyle();
+ 
+	    mIsFloating = a.getBoolean(R.styleable.Window_windowIsFloating, false);
+	    int flagsToUpdate = (FLAG_LAYOUT_IN_SCREEN|FLAG_LAYOUT_INSET_DECOR) & (~getForcedWindowFlags());
+	    if (mIsFloating) {
+	        setLayout(WRAP_CONTENT, WRAP_CONTENT);
+	        setFlags(0, flagsToUpdate);
+	    } else {
+	        setFlags(FLAG_LAYOUT_IN_SCREEN|FLAG_LAYOUT_INSET_DECOR, flagsToUpdate);
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowNoTitle, false)) {
+	        requestFeature(FEATURE_NO_TITLE);
+	    } else if (a.getBoolean(R.styleable.Window_windowActionBar, false)) {
+	        // Don't allow an action bar if there is no title.
+	        requestFeature(FEATURE_ACTION_BAR);
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowActionBarOverlay, false)) {
+	        requestFeature(FEATURE_ACTION_BAR_OVERLAY);
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowActionModeOverlay, false)) {
+	        requestFeature(FEATURE_ACTION_MODE_OVERLAY);
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowSwipeToDismiss, false)) {
+	        requestFeature(FEATURE_SWIPE_TO_DISMISS);
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowFullscreen, false)) {
+	        setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN & (~getForcedWindowFlags()));
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowTranslucentStatus, false)) {
+	        setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS & (~getForcedWindowFlags()));
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowTranslucentNavigation, false)) {
+	        setFlags(FLAG_TRANSLUCENT_NAVIGATION, FLAG_TRANSLUCENT_NAVIGATION & (~getForcedWindowFlags()));
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowOverscan, false)) {
+	        setFlags(FLAG_LAYOUT_IN_OVERSCAN, FLAG_LAYOUT_IN_OVERSCAN&(~getForcedWindowFlags()));
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowShowWallpaper, false)) {
+	        setFlags(FLAG_SHOW_WALLPAPER, FLAG_SHOW_WALLPAPER&(~getForcedWindowFlags()));
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_windowEnableSplitTouch,
+	            getContext().getApplicationInfo().targetSdkVersion >= android.os.Build.VERSION_CODES.HONEYCOMB)) {
+	        setFlags(FLAG_SPLIT_TOUCH, FLAG_SPLIT_TOUCH&(~getForcedWindowFlags()));
+	    }
+ 
+	    a.getValue(R.styleable.Window_windowMinWidthMajor, mMinWidthMajor);
+	    a.getValue(R.styleable.Window_windowMinWidthMinor, mMinWidthMinor);
+	    if (a.hasValue(R.styleable.Window_windowFixedWidthMajor)) {
+	        if (mFixedWidthMajor == null) mFixedWidthMajor = new TypedValue();
+	        a.getValue(R.styleable.Window_windowFixedWidthMajor, mFixedWidthMajor);
+	    }
+	    if (a.hasValue(R.styleable.Window_windowFixedWidthMinor)) {
+	        if (mFixedWidthMinor == null) mFixedWidthMinor = new TypedValue();
+	        a.getValue(R.styleable.Window_windowFixedWidthMinor, mFixedWidthMinor);
+	    }
+	    if (a.hasValue(R.styleable.Window_windowFixedHeightMajor)) {
+	        if (mFixedHeightMajor == null) mFixedHeightMajor = new TypedValue();
+	        a.getValue(R.styleable.Window_windowFixedHeightMajor, mFixedHeightMajor);
+	    }
+	    if (a.hasValue(R.styleable.Window_windowFixedHeightMinor)) {
+	        if (mFixedHeightMinor == null) mFixedHeightMinor = new TypedValue();
+	        a.getValue(R.styleable.Window_windowFixedHeightMinor, mFixedHeightMinor);
+	    }
+	    if (a.getBoolean(R.styleable.Window_windowContentTransitions, false)) {
+	        requestFeature(FEATURE_CONTENT_TRANSITIONS);
+	    }
+	    if (a.getBoolean(R.styleable.Window_windowActivityTransitions, false)) {
+	        requestFeature(FEATURE_ACTIVITY_TRANSITIONS);
+	    }
+ 
+	    mIsTranslucent = a.getBoolean(R.styleable.Window_windowIsTranslucent, false);
+ 
+	    final Context context = getContext();
+	    final int targetSdk = context.getApplicationInfo().targetSdkVersion;
+	    final boolean targetPreHoneycomb = targetSdk < android.os.Build.VERSION_CODES.HONEYCOMB;
+	    final boolean targetPreIcs = targetSdk < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+	    final boolean targetPreL = targetSdk < android.os.Build.VERSION_CODES.LOLLIPOP;
+	    final boolean targetPreQ = targetSdk < Build.VERSION_CODES.Q;
+	    final boolean targetHcNeedsOptions = context.getResources().getBoolean(R.bool.target_honeycomb_needs_options_menu);
+	    final boolean noActionBar = !hasFeature(FEATURE_ACTION_BAR) || hasFeature(FEATURE_NO_TITLE);
+ 
+	    if (targetPreHoneycomb || (targetPreIcs && targetHcNeedsOptions && noActionBar)) {
+	        setNeedsMenuKey(WindowManager.LayoutParams.NEEDS_MENU_SET_TRUE);
+	    } else {
+	        setNeedsMenuKey(WindowManager.LayoutParams.NEEDS_MENU_SET_FALSE);
+	    }
+ 
+	    if (!mForcedStatusBarColor) {
+	        mStatusBarColor = a.getColor(R.styleable.Window_statusBarColor, 0xFF000000);
+	    }
+	    if (!mForcedNavigationBarColor) {
+	        mNavigationBarColor = a.getColor(R.styleable.Window_navigationBarColor, 0xFF000000);
+	        mNavigationBarDividerColor = a.getColor(R.styleable.Window_navigationBarDividerColor, 0x00000000);
+	    }
+	    if (!targetPreQ) {
+	        mEnsureStatusBarContrastWhenTransparent = a.getBoolean(R.styleable.Window_enforceStatusBarContrast, false);
+	        mEnsureNavigationBarContrastWhenTransparent = a.getBoolean(R.styleable.Window_enforceNavigationBarContrast, true);
+	    }
+ 
+	    WindowManager.LayoutParams params = getAttributes();
+ 
+	    // Non-floating windows on high end devices must put up decor beneath the system bars and
+	    // therefore must know about visibility changes of those.
+	    if (!mIsFloating) {
+	        if (!targetPreL && a.getBoolean(R.styleable.Window_windowDrawsSystemBarBackgrounds, false)) {
+	            setFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS & ~getForcedWindowFlags());
+	        }
+	        if (mDecor.mForceWindowDrawsBarBackgrounds) {
+	            params.privateFlags |= PRIVATE_FLAG_FORCE_DRAW_BAR_BACKGROUNDS;
+	        }
+	    }
+	    if (a.getBoolean(R.styleable.Window_windowLightStatusBar, false)) {
+	        decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+	    }
+	    if (a.getBoolean(R.styleable.Window_windowLightNavigationBar, false)) {
+	        decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+	    }
+	    if (a.hasValue(R.styleable.Window_windowLayoutInDisplayCutoutMode)) {
+	        int mode = a.getInt(R.styleable.Window_windowLayoutInDisplayCutoutMode, -1);
+	        params.layoutInDisplayCutoutMode = mode;
+	    }
+ 
+	    if (mAlwaysReadCloseOnTouchAttr || getContext().getApplicationInfo().targetSdkVersion
+	            >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+	        if (a.getBoolean(R.styleable.Window_windowCloseOnTouchOutside, false)) {
+	            setCloseOnTouchOutsideIfNotSet(true);
+	        }
+	    }
+ 
+	    if (!hasSoftInputMode()) {
+	        params.softInputMode = a.getInt(R.styleable.Window_windowSoftInputMode, params.softInputMode);
+	    }
+ 
+	    if (a.getBoolean(R.styleable.Window_backgroundDimEnabled, mIsFloating)) {
+	        /* All dialogs should have the window dimmed */
+	        if ((getForcedWindowFlags()&WindowManager.LayoutParams.FLAG_DIM_BEHIND) == 0) {
+	            params.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+	        }
+	        if (!haveDimAmount()) {
+	            params.dimAmount = a.getFloat(android.R.styleable.Window_backgroundDimAmount, 0.5f);
+	        }
+	    }
+ 
+	    if (params.windowAnimations == 0) {
+	        params.windowAnimations = a.getResourceId(R.styleable.Window_windowAnimationStyle, 0);
+	    }
+ 
+	    // The rest are only done if this window is not embedded; otherwise,
+	    // the values are inherited from our container.
+	    if (getContainer() == null) {
+	        if (mBackgroundDrawable == null) {
+	            if (mFrameResource == 0) {
+	                mFrameResource = a.getResourceId(R.styleable.Window_windowFrame, 0);
+	            }
+ 
+	            if (a.hasValue(R.styleable.Window_windowBackground)) {
+	                mBackgroundDrawable = a.getDrawable(R.styleable.Window_windowBackground);
+	            }
+	        }
+	        if (a.hasValue(R.styleable.Window_windowBackgroundFallback)) {
+	            mBackgroundFallbackDrawable = a.getDrawable(R.styleable.Window_windowBackgroundFallback);
+	        }
+	        if (mLoadElevation) {
+	            mElevation = a.getDimension(R.styleable.Window_windowElevation, 0);
+	        }
+	        mClipToOutline = a.getBoolean(R.styleable.Window_windowClipToOutline, false);
+	        mTextColor = a.getColor(R.styleable.Window_textColor, Color.TRANSPARENT);
+	    }
+ 
+	    // Inflate the window decor.
+ 
+	    int layoutResource;
+	    int features = getLocalFeatures();
+	    // System.out.println("Features: 0x" + Integer.toHexString(features));
+	    if ((features & (1 << FEATURE_SWIPE_TO_DISMISS)) != 0) {
+	        layoutResource = R.layout.screen_swipe_dismiss;
+	        setCloseOnSwipeEnabled(true);
+	    } else if ((features & ((1 << FEATURE_LEFT_ICON) | (1 << FEATURE_RIGHT_ICON))) != 0) {
+	        if (mIsFloating) {
+	            TypedValue res = new TypedValue();
+	            getContext().getTheme().resolveAttribute(
+	                    R.attr.dialogTitleIconsDecorLayout, res, true);
+	            layoutResource = res.resourceId;
+	        } else {
+	            layoutResource = R.layout.screen_title_icons;
+	        }
+	        // XXX Remove this once action bar supports these features.
+	        removeFeature(FEATURE_ACTION_BAR);
+	        // System.out.println("Title Icons!");
+	    } else if ((features & ((1 << FEATURE_PROGRESS) | (1 << FEATURE_INDETERMINATE_PROGRESS))) != 0
+            && (features & (1 << FEATURE_ACTION_BAR)) == 0) {
+	        // Special case for a window with only a progress bar (and title).
+	        // XXX Need to have a no-title version of embedded windows.
+	        layoutResource = R.layout.screen_progress;
+	        // System.out.println("Progress!");
+	    } else if ((features & (1 << FEATURE_CUSTOM_TITLE)) != 0) {
+	        // Special case for a window with a custom title.
+	        // If the window is floating, we need a dialog layout
+	        if (mIsFloating) {
+	            TypedValue res = new TypedValue();
+	            getContext().getTheme().resolveAttribute(
+	                    R.attr.dialogCustomTitleDecorLayout, res, true);
+	            layoutResource = res.resourceId;
+	        } else {
+	            layoutResource = R.layout.screen_custom_title;
+	        }
+	        // XXX Remove this once action bar supports these features.
+	        removeFeature(FEATURE_ACTION_BAR);
+	    } else if ((features & (1 << FEATURE_NO_TITLE)) == 0) {
+	        // If no other features and not embedded, only need a title.
+	        // If the window is floating, we need a dialog layout
+        if (mIsFloating) {
+            TypedValue res = new TypedValue();
+            getContext().getTheme().resolveAttribute(R.attr.dialogTitleDecorLayout, res, true);
+            layoutResource = res.resourceId;
+        } else if ((features & (1 << FEATURE_ACTION_BAR)) != 0) {
+            layoutResource = a.getResourceId(
+                    R.styleable.Window_windowActionBarFullscreenDecorLayout,
+                    R.layout.screen_action_bar);
+        } else {
+            layoutResource = R.layout.screen_title;
+        }
+        // System.out.println("Title!");
+	    } else if ((features & (1 << FEATURE_ACTION_MODE_OVERLAY)) != 0) {
+	        layoutResource = R.layout.screen_simple_overlay_action_mode;
+	    } else {
+	        // Embedded, so no decoration is needed.
+	        layoutResource = R.layout.screen_simple;
+	        // System.out.println("Simple!");
+	    }
+ 
+	    mDecor.startChanging();
+	    // DecorView添加子View. 从父到子依次是:DecorView -> DecorCaptionView(不一定包含) -> root(即layoutResource对应的View)
+	    mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);
+ 
+	    // 获取R.id.content对应的ContentView
+	    ViewGroup contentParent = (ViewGroup)findViewById(ID_ANDROID_CONTENT);
+ 
+	    if ((features & (1 << FEATURE_INDETERMINATE_PROGRESS)) != 0) {
+	        ProgressBar progress = getCircularProgressBar(false);
+	        if (progress != null) {
+	            progress.setIndeterminate(true);
+	        }
+	    }
+ 
+	    if ((features & (1 << FEATURE_SWIPE_TO_DISMISS)) != 0) {
+	        registerSwipeCallbacks(contentParent);
+	    }
+ 
+	    // 仅最顶层Window执行
+	    if (getContainer() == null) {
+	        mDecor.setWindowBackground(mBackgroundDrawable);
+ 
+	        final Drawable frame;
+	        if (mFrameResource != 0) {
+	            frame = getContext().getDrawable(mFrameResource);
+	        } else {
+	            frame = null;
+	        }
+	        mDecor.setWindowFrame(frame);
+ 
+	        mDecor.setElevation(mElevation);
+	        mDecor.setClipToOutline(mClipToOutline);
+ 
+	        if (mTitle != null) {
+	            setTitle(mTitle);
+	        }
+ 
+	        if (mTitleColor == 0) {
+	            mTitleColor = mTextColor;
+	        }
+	        setTitleColor(mTitleColor);
+	    }
+ 
+	    mDecor.finishChanging();
+ 
+	    return contentParent;
+	}
+
+### 4.2 DecorView  
+[ -> frameworks/base/core/java/com/android/internal/policy/DecorView.java ]
+
+#### 4.2.1 onResourcesLoaded
+
+	void onResourcesLoaded(LayoutInflater inflater, int layoutResource) {
+	    if (mBackdropFrameRenderer != null) {
+	        loadBackgroundDrawablesIfNeeded();
+	        mBackdropFrameRenderer.onResourcesLoaded(
+	                this, mResizingBackgroundDrawable, mCaptionBackgroundDrawable,
+	                mUserCaptionBackgroundDrawable, getCurrentColor(mStatusColorViewState),
+	                getCurrentColor(mNavigationColorViewState));
+	    }
+ 
+	    // 创建DecorCaptionView(即包含系统按钮如最大化,关闭等的标题)
+	    mDecorCaptionView = createDecorCaptionView(inflater);
+	    final View root = inflater.inflate(layoutResource, null);
+	    if (mDecorCaptionView != null) {
+	        // 从父到子依次是:DecorView -> DecorCaptionView -> root
+	        if (mDecorCaptionView.getParent() == null) {
+	            addView(mDecorCaptionView, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+	        }
+	        mDecorCaptionView.addView(root, new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT));
+	    } else {
+	        // 从父到子依次是:DecorView -> root
+	        addView(root, 0, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+	    }
+	    mContentRoot = (ViewGroup) root;
+	    initializeElevation();
+	}
+ 
+	private DecorCaptionView createDecorCaptionView(LayoutInflater inflater) {
+	    DecorCaptionView decorCaptionView = null;
+	    for (int i = getChildCount() - 1; i >= 0 && decorCaptionView == null; i--) {
+	        View view = getChildAt(i);
+	        if (view instanceof DecorCaptionView) {
+	            // The decor was most likely saved from a relaunch - so reuse it.
+	            decorCaptionView = (DecorCaptionView) view;
+	            removeViewAt(i);
+	        }
+	    }
+	    final WindowManager.LayoutParams attrs = mWindow.getAttributes();
+	    final boolean isApplication = attrs.type == TYPE_BASE_APPLICATION ||
+	            attrs.type == TYPE_APPLICATION || attrs.type == TYPE_DRAWN_APPLICATION;
+	    final WindowConfiguration winConfig = getResources().getConfiguration().windowConfiguration;
+	    if (!mWindow.isFloating() && isApplication && winConfig.hasWindowDecorCaption()) {
+	        if (decorCaptionView == null) {
+	            decorCaptionView = inflateDecorCaptionView(inflater);
+	        }
+	        decorCaptionView.setPhoneWindow(mWindow, true /*showDecor*/);
+	    } else {
+	        decorCaptionView = null;
+	    }
+ 
+	    // Tell the decor if it has a visible caption.
+	    enableCaption(decorCaptionView != null);
+	    return decorCaptionView;
+	}
+
+**一句话总结PhoneWindow#installDecor**:   
+该方法在Activity#setContentView(layoutResID)里调用. 用来在PhoneWindow创建DecorView及其子View.   
+
+PhoneWindow#installDecor具体步骤:   
+1.`generateDecor`:  创建DecorView(即一个FrameLayout)
+2.`generateLayout`:  根据设置的Window相关属性, 设置PhoneWindow特性. 给PhoneWindow的根DecorView添加子View, 并返回ContentView  
+(1)  读取`frameworks/base/core/res/res/values/attrs.xml`中Window相关的属性`< declare-styleable name="Window">`  
+(2)  根据设置的Window各属性值, 设置PhoneWindow的特性(例如requestFeature/setFlags/WindowManager.LayoutParams), 以及选择对应的layout(默认为screen_simple)  
+(3)  DecorView添加子View. 从父到子依次是:DecorView -> DecorCaptionView(不一定包含) -> root(即上述layout对应的View)  
+(4)  返回root(即`R.layout.screen_simple`)中R.id.content对应的ContentView(即一个FrameLayout)  
+
+DecorCaptionView即包含系统按钮如最大化,关闭等的标题, 此处不细纠.  
+
+[ -> frameworks/base/core/res/res/layout/screen_simple.xml ]  
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:fitsSystemWindows="true"
+	    android:orientation="vertical">
+	    <ViewStub
+		     android:id="@+id/action_mode_bar_stub"
+             android:inflatedId="@+id/action_mode_bar"
+             android:layout="@layout/action_mode_bar"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:theme="?attr/actionBarTheme" />
+	    <FrameLayout
+	         android:id="@android:id/content"
+	         android:layout_width="match_parent"
+	         android:layout_height="match_parent"
+	         android:foregroundInsidePadding="false"
+	         android:foregroundGravity="fill_horizontal|top"
+	         android:foreground="?android:attr/windowContentOverlay" />
+	</LinearLayout>
+
+## 5.Activity&PhoneWindow&DecorView关系图  
+
+![PhoneWindow](/image/2020-05-02-create-and-add-window-for-systemui-activity/PhoneWindow.png)
+
+上图是根据源码总结出来的各个类的关系图. 主要包含3部分:  
+**1.`StatusBar`**  
+状态栏(系统UI), 其根View为StatusBarWindowView, 通过WindowManagerImpl.addView添加到窗口管理器.  
+**2.`DecorView`**  
+(1)  应用程序View. 通过WindowManagerImpl.addView添加到窗口管理器.  一个页面对应一个Activity, 一个Activity包含一个PhoneWindow, PhoneWindow的根View即为DecorView, DecorView为FrameLayout.  
+(2)  根据创建Activity时设置的Window属性的不同, 选择不同的layout布局, 并将该layout布局添加到DecorView中. 最简单的为R.layout.screen_simple.     
+(3)  上述layout布局R.layout.screen_simple为LinearLayout, 包含2个元素: @id/action_mode_bar_stub和@android:id/content. 即标题栏和内容体. 在Activity#onCreate -> setContentView(layoutResID)调用时,  会将layoutResID填充到@android:id/content  
+**3.`NavigationBar`**  
+通常指的手机底部的虚拟按键.  
+
+上面我们已经知道StatusBar和DecorView都会添加到WindowManagerImpl, 通过窗口管理器进行管理. 因此开发者可以定制状态栏和应用程序的UI样式及他们之间的显示关系.  
+
+下面以沉浸式状态栏实现为例:  
+
+![transparent_statusbar](/image/2020-05-02-create-and-add-window-for-systemui-activity/transparent_statusbar.png)
+
+我们实现这样的效果需要遵循几个步骤:    
+(1)  状态栏透明  
+(2)  DecorView占满整个屏幕  
+(3)  NavigationBar的控制  
+
+实现代码如下:  
+
+    private static void transparentStatusBar(final Activity activity) {
+        // Android Android 4.4以下, 跳过
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        Window window = activity.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Android 5.0及以上, 设置DecorView全屏和系统状态栏透明
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            window.getDecorView().setSystemUiVisibility(option);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else {
+	        // Android 4.4 设置系统状态栏透明(不能实现DecorView全屏)
+	        // 由于Android 4.4不存在PhoneWindow#setStatusBarColor这个方法.
+	        // 因此设置透明状态栏需要在DecorView添加一个AlphaStatusBarView
+	        addStatusBarAlpha(activity, 0)
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
+
+	// 仅仅用于Android 4.4
+    private static void addStatusBarAlpha(final Activity activity, final int alpha) {
+        ViewGroup parent = (ViewGroup) activity.getWindow().getDecorView()
+        View fakeStatusBarView = parent.findViewWithTag(TAG_ALPHA);
+        if (fakeStatusBarView != null) {
+            if (fakeStatusBarView.getVisibility() == View.GONE) {
+                fakeStatusBarView.setVisibility(View.VISIBLE);
+            }
+            fakeStatusBarView.setBackgroundColor(Color.argb(alpha, 0, 0, 0));
+        } else {
+            parent.addView(createAlphaStatusBarView(parent.getContext(), alpha));
+        }
+    }
+    
+	// 仅仅用于Android 4.4
+	private static View createAlphaStatusBarView(final Context context, final int alpha) {
+        View statusBarView = new View(context);
+        statusBarView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight()));
+        statusBarView.setBackgroundColor(Color.argb(alpha, 0, 0, 0));
+        statusBarView.setTag(TAG_ALPHA);
+        return statusBarView;
+    }
+
+
+**系统UI的可见性** :  
+系统UI(如StatusBar和NavigationBar), 可以在Activity中通过DecorView#setSystemUiVisibility控制.    
+(1)  设置DecorView全屏  
+View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN  
+(2)  隐藏NavigationBar  
+View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION  | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION  
+(3)  其他参考View.SYSTEM_UI_FLAG_XXX
 
