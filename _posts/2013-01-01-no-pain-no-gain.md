@@ -3,8 +3,8 @@ layout: post
 comments: true
 title: "no pain, no gain"
 description: "no pain, no gain"
-category: Growth
-tags: [Growth]
+category: Android
+tags: [Android]
 ---
 
 ## #2019.06.06
