@@ -3,8 +3,8 @@ layout: post
 comments: true
 title: "理解ViewRootImpl"
 description: "理解ViewRootImpl"
-category: Efficiency
-tags: [Efficiency]
+category: AOSP
+tags: [AOSP]
 ---
 
 <!--more-->
