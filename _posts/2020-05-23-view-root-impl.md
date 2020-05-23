@@ -1,6 +1,13 @@
-# 理解ViewRootImpl
+---
+layout: post
+comments: true
+title: "理解ViewRootImpl"
+description: "理解ViewRootImpl"
+category: Efficiency
+tags: [Efficiency]
+---
 
-@(Summary)
+<!--more-->
 
 本文以View的requestLayout/invalidate/postInvalidate为切入口, 引申到ViewRootImpl过程分析.
 
