@@ -126,7 +126,7 @@ DecorView(即根View)对应的mParent是ViewRootImpl, 普通子View(非根View)�
 `ViewGroup#onDescendantInvalidated -> ...-> DecorView#onDescendantInvalidated ->  ViewRootImpl#onDescendantInvalidated`
 
 (2) 非硬件加速:  
-`View#invalidateChild -> ViewGroup#invalidateChild -> ViewGroup#invalidateChildInParent -> ... -> DecorView#invalidateChildInParent -> ViewRootImpl#invalidateChildInParent`
+`ViewGroup#invalidateChild -> ViewGroup#invalidateChild -> ViewGroup#invalidateChildInParent -> ... -> DecorView#invalidateChildInParent -> ViewRootImpl#invalidateChildInParent`
 
 **3. skipInvalidate逻辑**  
 
@@ -403,7 +403,7 @@ DecorView(即根View)对应的mParent是ViewRootImpl, 普通子View(非根View)�
 
 上面提到了int measureSpec为测量规范. 怎么理解这个测量规范呢? 可以用类`MeasureSpec`来描述.   
 
-MeasureSpec由**mode**和**size**组成, 前2位为mode, 后30位为size.  之所以这么设计, 是
+MeasureSpec由**mode**和**size**组成, 前2位为mode, 后30位为size.  之所以这么设计, 是出于节省内存考虑.  
 
 **3种mode类型**:  
 `UNSPECIFIED`  父View没有对子View做限制  
