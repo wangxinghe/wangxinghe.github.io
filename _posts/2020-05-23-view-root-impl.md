@@ -126,7 +126,7 @@ DecorView(即根View)对应的mParent是ViewRootImpl, 普通子View(非根View)�
 `ViewGroup#onDescendantInvalidated -> ...-> DecorView#onDescendantInvalidated ->  ViewRootImpl#onDescendantInvalidated`
 
 (2) 非硬件加速:  
-`ViewGroup#invalidateChild -> ViewGroup#invalidateChild -> ViewGroup#invalidateChildInParent -> ... -> DecorView#invalidateChildInParent -> ViewRootImpl#invalidateChildInParent`
+`ViewGroup#invalidateChild -> ViewGroup#invalidateChildInParent -> ... -> DecorView#invalidateChildInParent -> ViewRootImpl#invalidateChildInParent`
 
 **3. skipInvalidate逻辑**  
 
