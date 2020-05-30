@@ -7,6 +7,8 @@ category: AOSP
 tags: [AOSP]
 ---
 
+>基于Android 10.0的源码剖析
+
 <!--more-->
 
 本文以View的requestLayout/invalidate/postInvalidate为切入口, 引申到ViewRootImpl过程分析.
