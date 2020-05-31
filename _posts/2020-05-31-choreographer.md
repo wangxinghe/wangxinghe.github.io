@@ -493,6 +493,12 @@ Native层的Vsync垂直同步脉冲信号会回传到Java层的`FrameDisplayEven
 对应的Runnable为ConsumeBatchedInputRunnable:  
     
     final ConsumeBatchedInputRunnable mConsumedBatchedInputRunnable = new ConsumeBatchedInputRunnable();
+	final class ConsumeBatchedInputRunnable implements Runnable {
+        @Override
+        public void run() {
+            doConsumeBatchedInput(mChoreographer.getFrameTimeNanos());
+        }
+    }
 
 **2.CALLBACK_ANIMATION**  
 对应的Runnable为InvalidateOnAnimationRunnable:  
