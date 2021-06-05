@@ -11,43 +11,32 @@ I am **mouxuejie**. A female developer majors in Android, aims to be an Architec
 
 I graduated from Wuhan University and Beijing University of Posts and Telecommunications.
 
-If you like my articles, you can follow my WeChat Pub called **某学姐**.
+If you like my articles, you can follow my WeChat Official accounts called **某学姐**.
 
-## Contact Me
 
-- [Email](mailto:mouxuejie@gmail.com)     
-- [Weibo](http://weibo.com/u/2019322347)	  
-- [Github](https://github.com/wangxinghe)       
-- [Twitter](https://twitter.com/mouxuejie)
-
-## Recent Plan
-
-- Learn iOS Basically
-- Learn Android Deeply
-- Learn TCP/IP Protocol
-- Commit code to Github More
-   
 ## Book List
-
-**Have Read**
 
 - 少有人走的路
 - 百年孤独
 - 人类简史
 - 小王子
 - 摆渡人
-
-**In Reading**
-
 - 三体
 - 禅与摩托车维修艺术
-
-## Interesting Guys
-
-- [casatwy.com](casatwy.com)
-- [txx](http://weibo.com/u/2157980617?topnav=1&wvr=6&topsug=1&is_all=1)
-- [Lody](http://weibo.com/p/1005055627960273/home?from=page_100505&mod=TAB#place)
-- [某烧饼](http://feng.moe/)
+- 邓小平时代
+- 原则
+- 亲密关系
+- OKR工作法：谷歌、领英等顶级公司的高绩效秘籍
+- 奈飞文化手册
+- 影响力
+- 被讨厌的勇气：“自我启发之父”阿德勒的哲学课
+- 认知觉醒：开启自我改变的原动力
+- 重来3：跳出疯狂的忙碌
+- 稀缺：我们是如何陷入贫穷与忙碌的
+- 自卑与超越
+- 格鲁夫给经理人的第一课
+- 所谓情商高，就是会说话
+- 指数基金投资指南
    
 ## Copyright Announcement
 
