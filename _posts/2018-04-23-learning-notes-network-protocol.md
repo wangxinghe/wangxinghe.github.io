@@ -163,6 +163,11 @@ HTTP协议位于应用层，一个HTTP请求的流转方向为：
 实现可靠传输的关键点：    
 TCP发送一个报文段，需要对方回复一个ACK来确认报文段是否发送成功，如果没有收到ACK则需要进行报文重传。    
 
+单工/半双工/全双工：    
+[https://zh.wikipedia.org/wiki/%E9%9B%99%E5%B7%A5](https://zh.wikipedia.org/wiki/%E9%9B%99%E5%B7%A5)    
+[https://blog.csdn.net/chaofanwei/article/details/13274815](https://blog.csdn.net/chaofanwei/article/details/13274815)    
+
+
 **报文格式：**    
 关于TCP报文格式，本文暂时不讲，只介绍几个重要的字段：    
 （1）`序列号Seq`：占4个字节，TCP连接中传输的每一个字节都按顺序编号    
