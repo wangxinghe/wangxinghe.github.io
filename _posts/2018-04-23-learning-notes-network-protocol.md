@@ -341,8 +341,10 @@ ps：SSL/TLS握手是个对称加密密钥协商的过程。涉及3个随机数�
 实际上在第（6）步，服务端会向客户端发一个Session Ticket，客户端收到后就可以保存下来，然后下一次握手发送ClientHello的时候将这个Session Ticket发送给服务端，服务端收到后直接告诉客户端使用上一次的密钥，这样SSL/TLS只占1个RTT，整个握手过程占2个RTT。    
 当然Session Id也有类似的作用，这里不深究，可以参考下面的链接。    
 
-附上之前写的一篇HTTPS的文章：[关于https的那些事儿
-](http://mouxuejie.com/blog/2017-03-16/https-ssl-tls-introduction/)
+附上之前写的一篇HTTPS的文章：[关于https的那些事儿](http://mouxuejie.com/blog/2017-03-16/https-ssl-tls-introduction/)    
+[HTTPS 温故知新（三） —— 直观感受 TLS 握手流程(上)](https://halfrost.com/https_tls1-2_handshake/)        
+[HTTPS 温故知新（四） —— 直观感受 TLS 握手流程(下)](https://halfrost.com/https_tls1-3_handshake/)         
+
 
 ### 3、HTTP2.0协议    
 
