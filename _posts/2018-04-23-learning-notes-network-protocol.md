@@ -247,6 +247,7 @@ Client发了FIN-ACK后，表明Client端没有数据要发送了，但是Server�
 [What really happens when you navigate to a URL](http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/)    
 [https://github.com/skyline75489/what-happens-when-zh_CN](https://github.com/skyline75489/what-happens-when-zh_CN)    
 [从输入URL到页面加载完成的过程中都发生了什么事情？](http://fex.baidu.com/blog/2014/05/what-happen/)        
+[从输入URL到浏览器显示页面的流程](https://nyimac.gitee.io/2020/12/10/URL%E8%AE%BF%E9%97%AE%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%B5%81%E7%A8%8B/)        
 
 #### （4）HTTP协议缺点    
 
