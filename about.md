@@ -34,6 +34,7 @@ If you like my articles, you can follow my WeChat Official accounts called **某
 - 重来3：跳出疯狂的忙碌
 - 稀缺：我们是如何陷入贫穷与忙碌的
 - 自卑与超越
+- 即兴演讲
 - 格鲁夫给经理人的第一课
 - 所谓情商高，就是会说话
 - 指数基金投资指南
