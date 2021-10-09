@@ -35,6 +35,7 @@ If you like my articles, you can follow my WeChat Official accounts called **某
 - 稀缺：我们是如何陷入贫穷与忙碌的
 - 自卑与超越
 - 即兴演讲
+- 高效能人士的七个习惯
 - 格鲁夫给经理人的第一课
 - 所谓情商高，就是会说话
 - 指数基金投资指南
