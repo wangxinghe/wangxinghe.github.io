@@ -39,6 +39,7 @@ If you like my articles, you can follow my WeChat Official accounts called **某
 - 毛泽东传(reading)
 - 活法(reading)
 - 社会心理学(reading)
+- 也许你该找个人聊聊
 - 蛤蟆先生去看心理医生
 - 格鲁夫给经理人的第一课
 - 所谓情商高，就是会说话
