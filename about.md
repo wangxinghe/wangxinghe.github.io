@@ -38,6 +38,7 @@ If you like my articles, you can follow my WeChat Official accounts called **某
 - 高效能人士的七个习惯
 - 毛泽东传(reading)
 - 活法(reading)
+- 非暴力沟通
 - 社会心理学(reading)
 - 也许你该找个人聊聊
 - 蛤蟆先生去看心理医生
