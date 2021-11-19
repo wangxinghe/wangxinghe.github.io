@@ -43,6 +43,7 @@ If you like my articles, you can follow my WeChat Official accounts called **某
 - 也许你该找个人聊聊
 - 蛤蟆先生去看心理医生
 - 格鲁夫给经理人的第一课
+- 横向领导力
 - 所谓情商高，就是会说话
 - 指数基金投资指南
 
